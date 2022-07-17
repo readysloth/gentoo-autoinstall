@@ -1,3 +1,4 @@
+import os
 import logging
 
 class Colors:
@@ -12,4 +13,9 @@ class Colors:
     UNDERLINE = '\033[4m'
 
 DRY_RUN = False
-LOGGER_LEVEL = logging.DEBUG
+
+LOGGER_LEVEL = logging.INFO
+if 'LOGLEVEL' in os.environ:
+    LOGGER_LEVEL = getattr(logging,
+                           os.environ['LOGLEVEL'],
+                           LOGGER_LEVEL)
