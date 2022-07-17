@@ -1,28 +1,35 @@
 import logging
 import subprocess as sp
 
-from abc import ABC, abstractmethod
+from abc import ABC
 
+import common
 import install_logger
 
 
 class Action:
-    def __init__(self, name, cmd, env):
+    def __init__(self, cmd, name='', env=None):
         self.cmd = cmd
-        self.env = env
+        self.env = env or {}
         self.name = name
         self.proc = None
         self.succeded = False
+        self.value = ''
 
 
     def __call__(self, *append):
-        self.proc = sp.Popen(self.cmd.split() + append,
+        if common.DRY_RUN:
+            self.succeded = True
+            return self
+
+        self.proc = sp.Popen(self.cmd.split() + list(append),
                              shell=True,
                              env=self.env,
                              stdout=sp.PIPE,
                              stderr=sp.PIPE)
         self.proc.wait()
         self.succeded = self.proc.returncode == 0
+        self.value = self.proc.stdout.read().decode()
         return self
 
 
@@ -39,29 +46,30 @@ class Action:
 
 
     def __str__(self):
-        begin = f"{self.env} {self.name}({self.cmd})"
+        begin = f"{self.env} [{self.name}]({self.cmd})"
         if self.proc:
             return f"{begin} = {self.proc.returncode}"
         return begin
 
 
 class Executor(ABC):
-    @abstractmethod
-    def exec(self, action, fallbacks=None, do_crash=False):
-        l = logger.getLogger('install_logger')
-        l.debug(f'At the start of an action({action})')
-        ended_action = action()
-        l.debug(f'action({ended_action}) ended with [{ret}]')
+    @staticmethod
+    def exec(action, *args, fallbacks=None, do_crash=False):
+        l = logging.getLogger(__name__)
+        l.info(f'Executing {action.name}')
+        l.debug(f'Start of {action}')
+        ended_action = action(*args)
+        l.debug(f'End of {ended_action}, successfully? {ended_action.succeded}')
         ended_action.report()
-        if ended_action.succeded:
+        if not ended_action.succeded:
             if fallbacks:
                 for fallback in fallbacks:
-                    l.debug(f'At the start of fallback({fallback}) do_crash={do_crash}')
+                    l.debug(f'Fallback start {fallback} do_crash={do_crash}')
                     ended_fallback = fallback()
-                    l.debug(f'fallback({fallback}) ended with [{fret}]')
+                    l.debug(f'Fallback end {fallback}, successfully? {ended_fallback.succeded}')
                     ended_fallback.report()
                     if ended_fallback.succeded:
                         return
             if do_crash:
                 l.info(f'do_crash specified and fallbock return code is not 0, crash attempt imminent')
-                raise RuntimeError(f'For failed action [{action}] fallback [{fallback}] failed too')
+                raise RuntimeError(f'For failed [{action}] every specified fallback failed too')
