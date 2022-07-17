@@ -2,21 +2,13 @@ import os
 import logging
 import functools as ft
 
-class Colors:
-    BLUE = '\033[94m'
-    CYAN = '\033[96m'
-    GREEN = '\033[92m'
-    WARNING = '\033[93m'
-    MAGENTA = '\033[35;1m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
+import common
+from common import Colors
 
 class InstallLogger(logging.Logger):
     def __init__(self, *args, **kwargs):
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=common.LOGGER_LEVEL,
+                            format='%(name)s :: %(levelname)-8s :: %(message)s')
         super().__init__(*args, **kwargs)
 
 
