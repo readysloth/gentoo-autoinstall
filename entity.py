@@ -35,14 +35,14 @@ class Action:
 
     def report(self):
         if self.proc:
-            with open(self.name, 'wb'):
-                fd.write(str(self).encode())
-                fd.write(b'-----BEGIN STDOUT-----')
-                fd.write(finished_process.stdout)
-                fd.write(b'-----END STDOUT-----')
-                fd.write(b'-----BEGIN STDERR-----')
-                fd.write(finished_process.stderr)
-                fd.write(b'-----END STDERR-----')
+            with open(self.name, 'wb') as f:
+                f.write(str(self).encode() + '\n')
+                f.write(b'-----BEGIN STDOUT-----\n')
+                f.write(self.proc.stdout.read()+'\n')
+                f.write(b'-----END STDOUT-----\n')
+                f.write(b'-----BEGIN STDERR-----\n')
+                f.write(self.proc.stderr.read()+'\n')
+                f.write(b'-----END STDERR-----\n')
 
 
     def __str__(self):
@@ -56,8 +56,8 @@ class Executor(ABC):
     @staticmethod
     def exec(action, *args, fallbacks=None, do_crash=False):
         l = logging.getLogger(__name__)
-        l.info(f'Executing {action.name}')
-        l.debug(f'Start of {action}')
+        l.info(f'Executing "{action.name}"')
+        l.debug(f'Start of {action} + {list(args)}')
         ended_action = action(*args)
         l.debug(f'End of {ended_action}, successfully? {ended_action.succeded}')
         ended_action.report()
@@ -71,5 +71,5 @@ class Executor(ABC):
                     if ended_fallback.succeded:
                         return
             if do_crash:
-                l.info(f'do_crash specified and fallbock return code is not 0, crash attempt imminent')
+                l.info(f'do_crash specified and fallback return code is not 0, crash attempt imminent')
                 raise RuntimeError(f'For failed [{action}] every specified fallback failed too')
