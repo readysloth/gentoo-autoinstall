@@ -1,4 +1,3 @@
-import os
 import logging
 import functools as ft
 
@@ -8,7 +7,8 @@ from common import Colors
 class InstallLogger(logging.Logger):
     def __init__(self, *args, **kwargs):
         logging.basicConfig(level=common.LOGGER_LEVEL,
-                            format='%(name)s :: %(levelname)-8s :: %(message)s')
+                            format='%(asctime)s :: %(name)s :: %(levelname)-8s :: %(message)s',
+                            datefmt=f'%d.%m.%Y {Colors.MAGENTA}%H:%M:%S{Colors.ENDC}')
         super().__init__(*args, **kwargs)
 
 
