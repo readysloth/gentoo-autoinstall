@@ -37,6 +37,6 @@ def add_value_to_string_variable(filename, variable_name, value, quot='"', delim
         file.writelines(changed_lines)
 
 
-def add_variable_to_file(filename, variable_name, value, quot='"')
+def add_variable_to_file(filename, variable_name, value, quot='"'):
     with open(filename, 'a') as file:
         file.write(f'{variable_name}={quot}{value}{quot}\n')
