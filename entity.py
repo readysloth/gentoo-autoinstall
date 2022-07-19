@@ -8,21 +8,22 @@ import install_logger
 
 
 class Action:
-    def __init__(self, cmd, name='', env=None):
+    def __init__(self, cmd, name='-unnamed-', env=None, nondestructive=False):
         self.cmd = cmd
         self.env = env or {}
         self.name = name
+        self.nondestructive = nondestructive
         self.proc = None
         self.succeded = False
         self.value = ''
 
 
     def __call__(self, *append):
-        if common.DRY_RUN:
+        if common.DRY_RUN and not self.nondestructive:
             self.succeded = True
             return self
 
-        self.proc = sp.Popen(self.cmd.split() + list(append),
+        self.proc = sp.Popen(f'{self.cmd} {" ".join(append)}',
                              shell=True,
                              env=self.env,
                              stdout=sp.PIPE,
@@ -35,13 +36,13 @@ class Action:
 
     def report(self):
         if self.proc:
-            with open(self.name, 'wb') as f:
-                f.write(str(self).encode() + '\n')
+            with open(self.name, 'ab') as f:
+                f.write(str(self).encode() + b'\n')
                 f.write(b'-----BEGIN STDOUT-----\n')
-                f.write(self.proc.stdout.read()+'\n')
+                f.write(self.proc.stdout.read()+b'\n')
                 f.write(b'-----END STDOUT-----\n')
                 f.write(b'-----BEGIN STDERR-----\n')
-                f.write(self.proc.stderr.read()+'\n')
+                f.write(self.proc.stderr.read()+b'\n')
                 f.write(b'-----END STDERR-----\n')
 
 
