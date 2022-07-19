@@ -1,7 +1,3 @@
-import logging
-
-import install_logger
-
 from entity import Action
 
 
