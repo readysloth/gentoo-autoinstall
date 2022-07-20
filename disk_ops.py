@@ -39,8 +39,9 @@ def part_for_lvm():
 
 
 def get_dev_node(disk, number):
-    return Action(f"fdisk -lo device | grep {disk} sed 1d | sed -n {number}p",
-                  name='partition node name')
+    return Action(f'fdisk -lo device {disk} | grep {disk} | sed 1d | sed -n {number}p',
+                  name='partition node name',
+                  nondestructive=True)
 
 
 def start_lvm_daemon():
