@@ -76,12 +76,12 @@ def _chroot_to_mnt():
     os.chdir('/')
 
 
-def bootstrap():
+def bootstrap(processor='amd64', init='openrc'):
     l = logging.getLogger(__name__)
     _launch_ntpd()
     _chroot_to_mnt()
     l.info('Chrooted to /mnt/gentoo')
-    stage3_archive = _stage3_download()
+    stage3_archive = _stage3_download(processor='amd64', init='openrc')
     _unpack(stage3_archive)
     if not common.DRY_RUN:
         os.remove(stage3_archive)
