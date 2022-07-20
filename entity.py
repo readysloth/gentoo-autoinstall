@@ -1,3 +1,4 @@
+import os
 import logging
 import subprocess as sp
 
@@ -25,7 +26,7 @@ class Action:
 
         self.proc = sp.Popen(f'{self.cmd} {" ".join(append)}',
                              shell=True,
-                             env=self.env,
+                             env={**os.environ, **self.env},
                              stdout=sp.PIPE,
                              stderr=sp.PIPE)
         self.proc.wait()
@@ -51,6 +52,18 @@ class Action:
         if self.proc:
             return f"{begin} = {self.proc.returncode}"
         return begin
+
+
+class Package(Action):
+    def __init__(self, package, options, use_flags=None):
+        self.package = package
+        if use_flags is not None:
+            if type(use_flags) == list:
+                use_flags = ' '.join(use_flags)
+        super().__init__(f'emerge {options} {package}',
+                         name=f'{package.sub("/", "_")}',
+                         env={'USE': use_flags},
+                         nondestructive=False)
 
 
 class Executor(ABC):
