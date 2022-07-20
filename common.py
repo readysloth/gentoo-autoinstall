@@ -1,6 +1,7 @@
 import os
 import re
 import logging
+import subprocess as sp
 
 class Colors:
     BLUE = '\033[94m'
@@ -13,13 +14,16 @@ class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-DRY_RUN = False
-
 LOGGER_LEVEL = logging.INFO
 if 'LOGLEVEL' in os.environ:
     LOGGER_LEVEL = getattr(logging,
                            os.environ['LOGLEVEL'],
                            LOGGER_LEVEL)
+
+
+DRY_RUN = False
+MAKE_CONF_PATH = 'make.conf'
+DEFAULT_GENTOO_PROFILE = 6
 
 
 def add_value_to_string_variable(filename, variable_name, value, quot='"', delim=' '):
@@ -40,3 +44,12 @@ def add_value_to_string_variable(filename, variable_name, value, quot='"', delim
 def add_variable_to_file(filename, variable_name, value, quot='"'):
     with open(filename, 'a') as file:
         file.write(f'{variable_name}={quot}{value}{quot}\n')
+
+
+def source(file):
+    command = shlex.split(f"env -i bash -c 'source {file} && env'")
+    proc = sp.Popen(command, stdout = sp.PIPE)
+    for line in proc.stdout:
+        variable = line.decode().strip()
+        (key, _, value) = formatted_line.partition('=')
+        os.environ[key] = value
