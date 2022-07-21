@@ -52,8 +52,12 @@ def setup_portage():
 
 
 def install_packages():
+    failed_count = 0
     for p in PACKAGE_LIST:
         if type(p) == tuple:
             Executor.exec(p[0], fallbacks=p[1], do_crash=True)
         else:
             Executor.exec(p)
+            if not p.succeded:
+                failed_count += 1
+    return failed_count
