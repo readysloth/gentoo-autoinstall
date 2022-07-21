@@ -60,5 +60,6 @@ args = parse_args()
 
 partition_disk(args.disk)
 b.bootstrap(processor=args.cpu, init=args.init)
-si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags)
+si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
+                                 prefer_binary=args.prefer_binary)
 si.setup_portage()
