@@ -87,8 +87,8 @@ def bootstrap(processor='amd64', init='openrc'):
     stage3_archive = _stage3_download(processor='amd64', init='openrc')
     _unpack(stage3_archive)
     _mirrorselect()
+    _final_bootstrap_configuration()
     if not common.DRY_RUN:
         os.remove(stage3_archive)
     _chroot_to_mnt()
     l.checkpoint('Chrooted to /mnt/gentoo')
-    _final_bootstrap_configuration()
