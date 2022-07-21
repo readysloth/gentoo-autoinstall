@@ -10,6 +10,9 @@ import common
 import install_logger
 
 
+MOUNTPOINT = '/mnt/gentoo'
+
+
 def _launch_ntpd():
     Executor.exec(Action('ntpd -q -g', name='time syncing'), do_crash=True)
 
@@ -49,7 +52,7 @@ def _stage3_download(processor='amd64',
 
 
 def _unpack(stage3_archive):
-    Executor.exec(Action(f'tar xpf {stage3_archive} --xattrs-include="*.*" --numeric-owner -C /mnt/gentoo',
+    Executor.exec(Action(f'tar xpf {stage3_archive} --xattrs-include="*.*" --numeric-owner -C {MOUNTPOINT}',
                          name='stage3 archive extraction'), do_crash=True)
 
 
@@ -58,15 +61,15 @@ def _mirrorselect():
 
 
 def _final_bootstrap_configuration():
-    final_actions = [Action('mkdir -p etc/portage/repos.conf', name='creating repos.conf folder'),
-                     Action('cp usr/share/portage/config/repos.conf etc/portage/repos.conf/gentoo.conf',
+    final_actions = [Action(f'mkdir -p {MOUNTPOINT}/etc/portage/repos.conf', name='creating repos.conf folder'),
+                     Action(f'cp /usr/share/portage/config/repos.conf {MOUNTPOINT}/etc/portage/repos.conf/gentoo.conf',
                             name='copying repos.conf'),
-                     Action('cp --dereference /etc/resolv.conf etc/', name='copying resolv.conf'),
-                     Action('mount --types proc  /proc proc', name='mounting virtual fs'),
-                     Action('mount --rbind       /sys  sys', name='binding virtual fs'),
-                     Action('mount --make-rslave       sys', name='enslaving virtual fs'),
-                     Action('mount --rbind       /dev  dev', name='binding virtual fs'),
-                     Action('mount --make-rslave       dev', name='enslaving virtual fs')]
+                     Action(f'cp --dereference /etc/resolv.conf {MOUNTPOINT}/etc/', name='copying resolv.conf'),
+                     Action(f'mount --types proc  /proc {MOUNTPOINT}/proc', name='mounting virtual fs'),
+                     Action(f'mount --rbind       /sys  {MOUNTPOINT}/sys', name='binding virtual fs'),
+                     Action(f'mount --make-rslave       {MOUNTPOINT}/sys', name='enslaving virtual fs'),
+                     Action(f'mount --rbind       /dev  {MOUNTPOINT}/dev', name='binding virtual fs'),
+                     Action(f'mount --make-rslave       {MOUNTPOINT}/dev', name='enslaving virtual fs')]
     for a in final_actions:
         Executor.exec(a, do_crash=True)
 
@@ -76,8 +79,8 @@ def _chroot_to_mnt():
         return
     scripts = glob.glob('*.sh') + glob.glob('*.py')
     for script in scripts:
-        shutil.copy(script, '/mnt/gentoo')
-    os.chroot('/mnt/gentoo')
+        shutil.copy(script, MOUNTPOINT)
+    os.chroot(MOUNTPOINT)
     os.chdir('/')
 
 
@@ -91,4 +94,4 @@ def bootstrap(processor='amd64', init='openrc'):
     if not common.DRY_RUN:
         os.remove(stage3_archive)
     _chroot_to_mnt()
-    l.checkpoint('Chrooted to /mnt/gentoo')
+    l.checkpoint(f'Chrooted to {MOUNTPOINT}')
