@@ -2,6 +2,7 @@ import logging
 import argparse
 
 import common
+import install_logger
 import partitioning as p
 import bootstrap as b
 import system_install as si
@@ -59,13 +60,20 @@ def partition_disk(disk):
     p.prepare_for_os_install()
 
 
+l = logging.getLogger(__name__)
 args = parse_args()
 
 partition_disk(args.disk)
+l.checkpoint(f'Partitioned {args.disk}')
 b.bootstrap(processor=args.cpu, init=args.init)
+l.checkpoint(f'Bootstrapped for further install')
 si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
                                  prefer_binary=args.prefer_binary)
 si.setup_portage()
+l.checkpoint(f'Set up portage')
 
 if not args.no_packages:
-    si.install_packages()
+    l.checkpoint(f'Package install started')
+    failed_count = si.install_packages()
+    l.checkpoint(f'Package install ended')
+    l.warning(f'{failed_count} packages failed to install')

@@ -20,6 +20,8 @@ def _stage3_download(processor='amd64',
                      hardened=False,
                      nomultilib=False,
                      musl=False):
+    l = logging.getLogger(__name__)
+    l.info('Preparing to download stage3 acrhive')
     if common.DRY_RUN:
         return ''
     site = 'https://mirror.yandex.ru'
@@ -35,11 +37,14 @@ def _stage3_download(processor='amd64',
         distro_location_file += '-musl'
     distro_location_file += f'-{init}.txt'
 
+    l.info(f'Will download {distro_location_file}-{init}')
+
     distro_location_data = map(bytes.decode, ur.urlopen(f'{site}/{folder}/{distro_location_file}').readlines())
     distro_path_line = next((l for l in distro_location_data if not l.startswith('#')))
     distro_path = distro_path_line.split()[0]
     filename = 'stage3'
     ur.urlretrieve(f'{site}/{folder}/{distro_path}', filename)
+    l.checkpoint(f'Stage3 archive is downloaded!')
     return filename
 
 
@@ -84,6 +89,6 @@ def bootstrap(processor='amd64', init='openrc'):
     if not common.DRY_RUN:
         os.remove(stage3_archive)
     _chroot_to_mnt()
-    l.info('Chrooted to /mnt/gentoo')
+    l.checkpoint('Chrooted to /mnt/gentoo')
     _mirrorselect()
     _final_bootstrap_configuration()
