@@ -66,6 +66,13 @@ class Package(Action):
                          nondestructive=False)
 
 
+    def __call__(self, *append):
+        use_file_name = self.package.replace('/', '.')
+        with open(f'/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
+            use_flags_file.write(f'{self.package} {self.env["USE"]}')
+        super().__call__(*append)
+
+
 class Executor(ABC):
     @staticmethod
     def exec(action, *args, fallbacks=None, do_crash=False):
