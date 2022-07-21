@@ -19,7 +19,7 @@ def parse_args():
     parser.add_argument('-v', '--verbose',
                         action='store_true',
                         help='enable debug logging')
-    parser.add_argument('-p', '--cpu',
+    parser.add_argument('-c', '--cpu',
                         const='amd64',
                         nargs='?',
                         help='cpu architecture')
@@ -37,6 +37,9 @@ def parse_args():
     parser.add_argument('-T', '--no-wm',
                         action='store_true',
                         help='install only terminal packages and X server')
+    parser.add_argument('-p', '--no-packages',
+                        action='store_true',
+                        help='do not install any supplied packages')
 
     install_args = parser.parse_args()
 
@@ -63,3 +66,6 @@ b.bootstrap(processor=args.cpu, init=args.init)
 si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
                                  prefer_binary=args.prefer_binary)
 si.setup_portage()
+
+if not args.no_packages:
+    si.install_packages()

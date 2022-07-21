@@ -2,6 +2,7 @@ import multiprocessing as mp
 
 import common
 from entity import Action, Executor
+from packages import PACKAGE_LIST
 
 
 def add_common_flags_to_make_conf(additional_use_flags='', prefer_binary=False):
@@ -48,3 +49,11 @@ def setup_portage():
 
     Executor.exec(Action('emerge app-portage/cpuid2cpuflags', name='emerging cpuid2cpuflags'))
     Executor.exec(Action('echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags', name='setting cpu-flags'))
+
+
+def install_packages():
+    for p in PACKAGE_LIST:
+        if type(p) == tuple:
+            Executor.exec(p[0], fallbacks=p[1], do_crash=True)
+        else:
+            Executor.exec(p)
