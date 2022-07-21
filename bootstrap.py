@@ -37,7 +37,7 @@ def _stage3_download(processor='amd64',
         distro_location_file += '-musl'
     distro_location_file += f'-{init}.txt'
 
-    l.info(f'Will download {distro_location_file}-{init}')
+    l.info(f'Will download {distro_location_file.replace('.txt', '')}')
 
     distro_location_data = map(bytes.decode, ur.urlopen(f'{site}/{folder}/{distro_location_file}').readlines())
     distro_path_line = next((l for l in distro_location_data if not l.startswith('#')))
