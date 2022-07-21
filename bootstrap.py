@@ -44,7 +44,7 @@ def _stage3_download(processor='amd64',
 
 
 def _unpack(stage3_archive):
-    Executor.exec(Action(f'tar xpf {stage3_archive} --xattrs-include="*.*" --numeric-owner',
+    Executor.exec(Action(f'tar xpf {stage3_archive} --xattrs-include="*.*" --numeric-owner -C /mnt/gentoo',
                          name='stage3 archive extraction'), do_crash=True)
 
 
@@ -79,11 +79,11 @@ def _chroot_to_mnt():
 def bootstrap(processor='amd64', init='openrc'):
     l = logging.getLogger(__name__)
     _launch_ntpd()
-    _chroot_to_mnt()
-    l.info('Chrooted to /mnt/gentoo')
     stage3_archive = _stage3_download(processor='amd64', init='openrc')
     _unpack(stage3_archive)
     if not common.DRY_RUN:
         os.remove(stage3_archive)
+    _chroot_to_mnt()
+    l.info('Chrooted to /mnt/gentoo')
     _mirrorselect()
     _final_bootstrap_configuration()
