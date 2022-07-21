@@ -24,6 +24,10 @@ class InstallLogger(logging.Logger):
         self.add_color(super().info, Colors.BOLD, msg)(*args, **kwargs)
 
 
+    def checkpoint(self, msg, *args, **kwargs):
+        self.add_color(super().info, Colors.BLUE, msg)(*args, **kwargs)
+
+
     def warning(self, msg, *args, **kwargs):
         self.add_color(super().warning, Colors.WARNING, msg)(*args, **kwargs)
 
