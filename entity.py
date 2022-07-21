@@ -61,7 +61,7 @@ class Package(Action):
             if type(use_flags) == list:
                 use_flags = ' '.join(use_flags)
         super().__init__(f'emerge {options} {package}',
-                         name=f'{package.sub("/", "_")}',
+                         name=f'{package.replace("/", "_")}',
                          env={'USE': use_flags},
                          nondestructive=False)
 
