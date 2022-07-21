@@ -40,7 +40,7 @@ class Action:
             with open(self.name, 'ab') as f:
                 f.write(str(self).encode() + b'\n')
                 f.write(b'-----BEGIN STDOUT-----\n')
-                f.write(self.proc.stdout.read()+b'\n')
+                f.write(self.value.encode()+b'\n')
                 f.write(b'-----END STDOUT-----\n')
                 f.write(b'-----BEGIN STDERR-----\n')
                 f.write(self.proc.stderr.read()+b'\n')
