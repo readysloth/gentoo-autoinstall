@@ -55,7 +55,7 @@ class Action:
 
 
 class Package(Action):
-    def __init__(self, package, options, use_flags=None):
+    def __init__(self, package, options='', use_flags=None):
         self.package = package
         if use_flags is not None:
             if type(use_flags) == list:
