@@ -36,11 +36,12 @@ def create_lvm_partition(bootloader_partition,
                          rootfs_percent=100,
                          swap_size=2048):
     lvm_daemon_start_action = disk_ops.start_lvm_daemon()
-    physical_volume_creation_action = disk_ops.create_physical_volume(lvm_partition)
+    lvm_volume_creation_actions = disk_ops.create_lvm_volume(lvm_partition)
     lvm_partitioning_actions = disk_ops.allocate_space_in_lvm(rootfs_percent=rootfs_percent,
                                                               swap_size=swap_size)
     fs_and_swap_actions = disk_ops.make_fs_and_swap(bootloader_partition)
-    for a in [lvm_daemon_start_action, physical_volume_creation_action] \
+    for a in [lvm_daemon_start_action] \
+             + lvm_volume_creation_actions \
              + lvm_partitioning_actions \
              + fs_and_swap_actions:
         Executor.exec(a, do_crash=True)

@@ -49,9 +49,9 @@ def start_lvm_daemon():
                   name='lvm daemon start')
 
 
-def create_physical_volume(partition):
-    return Action(f'pvcreate -ff {partition} && vgcreate {LVM_GROUP_NAME} {partition}',
-                  name='physical lvm volume creation')
+def create_lvm_volume(partition):
+    return [Action(f'pvcreate -ff {partition}', name='physical lvm volume creation'),
+            Action(f'vgcreate {LVM_GROUP_NAME} {partition}', name='lvm volume creation')]
 
 
 def allocate_space_in_lvm(rootfs_percent=100, swap_size=2048):
