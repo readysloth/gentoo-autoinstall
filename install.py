@@ -14,6 +14,7 @@ def parse_args():
     parser.add_argument('-n', '--dry-run',
                         action='store_true',
                         help='pretend to install, do nothing actually')
+    # TODO: https://dilfridge.blogspot.com/2021/09/experimental-binary-gentoo-package.html
     parser.add_argument('-b', '--prefer-binary',
                         action='store_true',
                         help='prefer binary packages to source')
