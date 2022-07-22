@@ -22,7 +22,7 @@ if 'LOGLEVEL' in os.environ:
 
 
 DRY_RUN = False
-MAKE_CONF_PATH = 'make.conf'
+MAKE_CONF_PATH = '/etc/portage/make.conf'
 DEFAULT_GENTOO_PROFILE = 6
 
 
