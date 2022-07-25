@@ -42,6 +42,14 @@ def parse_args():
     parser.add_argument('-p', '--no-packages',
                         action='store_true',
                         help='do not install any supplied packages')
+    parser.add_argument('-H', '--host-name',
+                        default='gentoo',
+                        nargs='?',
+                        help='OS hostame')
+    parser.add_argument('-U', '--user',
+                        default='user',
+                        nargs='?',
+                        help='user name')
 
     install_args = parser.parse_args()
 
