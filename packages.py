@@ -167,6 +167,8 @@ ACTION_LIST = [
            name='service update'),
     Action('rc-update add libvirtd default',
            name='service update')
+    Action('bash create_configs.sh',
+           name='configuration file creation')
 ]
 
 
