@@ -2,7 +2,7 @@ from entity import Package, Action, Executor
 
 
 ESSENTIAL_PACKAGE_LIST = [
-    Package('sys-devel/gcc', use_flags='go sanitize graphite')
+    Package('sys-devel/gcc', use_flags='go sanitize graphite'),
     Package('app-shells/dash'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
@@ -122,7 +122,7 @@ TERMINAL_PACKAGE_LIST = [
     Package('app-shells/fzf'),
     Package('app-misc/tmux'),
     Package('sys-apps/ripgrep-all'),
-    Package('sys-process/htop'))
+    Package('sys-process/htop'),
 ]
 
 X_SERVER_PACKAGE_LIST = [
@@ -166,7 +166,7 @@ ACTION_LIST = [
     Action('rc-update add docker default',
            name='service update'),
     Action('rc-update add libvirtd default',
-           name='service update')
+           name='service update'),
     Action('bash create_configs.sh',
            name='configuration file creation')
 ]

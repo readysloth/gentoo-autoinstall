@@ -53,7 +53,7 @@ def setup_portage():
     Executor.exec(Action('emerge app-portage/cpuid2cpuflags', name='emerging cpuid2cpuflags'))
     Executor.exec(Action('echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags', name='setting cpu-flags'))
 
-    common.add_variable_to_file('/etc/default/grub', 'GRUB_CMDLINE_LINUX', 'dolvm'):
+    common.add_variable_to_file('/etc/default/grub', 'GRUB_CMDLINE_LINUX', 'dolvm')
 
 
 def install_packages():
