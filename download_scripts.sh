@@ -9,7 +9,8 @@ install.py
 install_logger.py
 packages.py
 partitioning.py
-system_install.py"
+system_install.py
+create_configs.sh"
 
 FOLDER=installation_scripts
 
