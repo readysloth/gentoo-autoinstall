@@ -2,7 +2,10 @@ import multiprocessing as mp
 
 import common
 from entity import Action, Executor
-from packages import PACKAGE_LIST
+from packages import (PACKAGE_LIST,
+                      pre_install,
+                      post_install,
+                      execute_each_in)
 
 
 def add_common_flags_to_make_conf(additional_use_flags='', prefer_binary=False):
@@ -14,7 +17,7 @@ def add_common_flags_to_make_conf(additional_use_flags='', prefer_binary=False):
     common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-pipe -march=native')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_LICENSE', '*')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'FEATURES', 'parallel-install parallel-fetch')
-    common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'lto pgo openmp {additional_use_flags}')
+    common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'python alsa opencl inotify lto pgo openmp {additional_use_flags}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'EMERGE_DEFAULT_OPTS', f'--jobs={mp.cpu_count() // 3 + 1} {emerge_binary_opt}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_KEYWORDS', '~amd64 amd64 x86')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'INPUT_DEVICES', 'synaptics libinput')
@@ -50,14 +53,11 @@ def setup_portage():
     Executor.exec(Action('emerge app-portage/cpuid2cpuflags', name='emerging cpuid2cpuflags'))
     Executor.exec(Action('echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags', name='setting cpu-flags'))
 
+    common.add_variable_to_file('/etc/default/grub', 'GRUB_CMDLINE_LINUX', 'dolvm'):
+
 
 def install_packages():
-    failed_count = 0
-    for p in PACKAGE_LIST:
-        if type(p) == tuple:
-            Executor.exec(p[0], fallbacks=p[1], do_crash=True)
-        else:
-            Executor.exec(p)
-            if not p.succeded:
-                failed_count += 1
-    return failed_count
+    pre_install()
+    failed_packages_count = execute_each_in(PACKAGE_LIST)
+    failed_actions_count = post_install()
+    return (failed_packages_count, failed_actions_count)
