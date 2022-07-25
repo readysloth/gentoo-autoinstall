@@ -179,7 +179,7 @@ def pre_install():
 def execute_each_in(action_container):
     failed_count = 0
     for a in action_container:
-        if type(p) == tuple:
+        if type(a) == tuple:
             Executor.exec(a[0], fallbacks=a[1], do_crash=True)
         else:
             Executor.exec(a)
