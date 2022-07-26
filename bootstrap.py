@@ -68,6 +68,8 @@ def _final_bootstrap_configuration():
                      Action(f'mount --types proc  /proc {MOUNTPOINT}/proc', name='mounting virtual fs'),
                      Action(f'mount --rbind       /sys  {MOUNTPOINT}/sys', name='binding virtual fs'),
                      Action(f'mount --make-rslave       {MOUNTPOINT}/sys', name='enslaving virtual fs'),
+                     Action(f'mount --rbind       /run  {MOUNTPOINT}/run', name='binding virtual fs'),
+                     Action(f'mount --make-rslave       {MOUNTPOINT}/run', name='enslaving virtual fs'),
                      Action(f'mount --rbind       /dev  {MOUNTPOINT}/dev', name='binding virtual fs'),
                      Action(f'mount --make-rslave       {MOUNTPOINT}/dev', name='enslaving virtual fs')]
     for a in final_actions:
