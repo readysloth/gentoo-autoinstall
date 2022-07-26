@@ -1,4 +1,5 @@
 import os
+import time
 import logging
 import subprocess as sp
 
@@ -29,6 +30,13 @@ class Action:
                              env={**os.environ, **self.env},
                              stdout=sp.PIPE,
                              stderr=sp.PIPE)
+        print_len = 70
+        while self.proc.poll() is None:
+            cpu_utilization = sp.check_output(f'ps --no-headers -p {self.proc.pid} -o %cpu,%mem,etime,cmd',
+                                              shell=True).decode().strip()
+            message = f'<cpu> <mem> <time> <cmd>: {" ".join(cpu_utilization.split())}'[0:print_len] + '...'
+            print(message, end='\r')
+        print(' '*(print_len+3), end='\r')
         self.proc.wait()
         self.succeded = self.proc.returncode == 0
         self.value = self.proc.stdout.read().decode()
