@@ -7,6 +7,8 @@ import partitioning as p
 import bootstrap as b
 import system_install as si
 
+from entity import init_executor, deinit_executor
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Gentoo workspace installer')
@@ -50,6 +52,9 @@ def parse_args():
                         default='user',
                         nargs='?',
                         help='user name')
+    parser.add_argument('-r', '--resume',
+                        action='store_true',
+                        help='resume installation')
 
     install_args = parser.parse_args()
 
@@ -59,6 +64,9 @@ def parse_args():
 
     if not install_args.no_gui:
         install_args.use_flags.append('X')
+
+    if install_args.resume:
+        common.RESUME = True
     return install_args
 
 
@@ -71,6 +79,9 @@ def partition_disk(disk):
 
 l = logging.getLogger(__name__)
 args = parse_args()
+
+init_executor()
+
 
 partition_disk(args.disk)
 l.checkpoint(f'Partitioned {args.disk}')
@@ -86,3 +97,6 @@ if not args.no_packages:
     failed_count = si.install_packages()
     l.checkpoint(f'Package install ended')
     l.warning(f'{failed_count} packages failed to install')
+
+
+deinit_executor()

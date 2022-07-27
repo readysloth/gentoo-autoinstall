@@ -62,6 +62,10 @@ class Action:
         return begin
 
 
+    def __hash__(self):
+        return hash(self.name + self.cmd)
+
+
 class Package(Action):
     def __init__(self, package, options='', use_flags=''):
         self.package = package
@@ -82,9 +86,25 @@ class Package(Action):
 
 
 class Executor(ABC):
+    executed_actions_filename = 'executed.actions'
+    executed_actions_set = None
+    executed_actions_file = None
+
+    @staticmethod
+    def init():
+        with open(executed_actions_filename, 'r') as f:
+            Executor.executed_actions_set = set(map(str.strip, f.readlines()))
+
+        Executor.executed_actions_file = open(executed_actions_filename, 'a')
+
+
     @staticmethod
     def exec(action, *args, fallbacks=None, do_crash=False):
         l = logging.getLogger(__name__)
+        if common.RESUME and hash(action) in Executor.executed_actions_set:
+            l.info(f'Skipping "{action.name}"')
+            return
+
         l.info(f'Executing "{action.name}"')
         l.debug(f'Start of {action} + {list(args)}')
         ended_action = action(*args)
@@ -98,7 +118,23 @@ class Executor(ABC):
                     l.debug(f'Fallback end {fallback}, successfully? {ended_fallback.succeded}')
                     ended_fallback.report()
                     if ended_fallback.succeded:
+                        Executor.executed_actions_file.writeline(f'{hash(action)}\n')
                         return
             if do_crash:
                 l.info(f'do_crash specified and fallback return code is not 0, crash attempt imminent')
                 raise RuntimeError(f'For failed [{action}] every specified fallback failed too')
+        else:
+            Executor.executed_actions_file.writeline(f'{hash(action)}\n')
+
+
+    @staticmethod
+    def close():
+        Executor.executed_actions_file.close()
+
+
+def init_executor():
+    Executor.init()
+
+
+def deinit_executor():
+    Executor.close()
