@@ -92,7 +92,7 @@ class Executor(ABC):
     @staticmethod
     def init():
         with open(common.EXECUTED_ACTIONS_FILENAME, 'r') as f:
-            Executor.executed_actions_set = set(map(str.strip, f.readlines()))
+            Executor.executed_actions_set = set(map(int, map(str.strip, f.readlines())))
 
         Executor.executed_actions_file = open(common.EXECUTED_ACTIONS_FILENAME, 'a')
 
