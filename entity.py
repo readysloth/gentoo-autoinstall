@@ -123,7 +123,7 @@ class Executor(ABC):
                 l.info(f'do_crash specified and fallback return code is not 0, crash attempt imminent')
                 raise RuntimeError(f'For failed [{action}] every specified fallback failed too')
         else:
-            Executor.executed_actions_file.writeline(f'{hash(action)}\n')
+            Executor.executed_actions_file.write(f'{hash(action)}\n')
 
 
     @staticmethod
