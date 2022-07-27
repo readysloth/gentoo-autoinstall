@@ -86,16 +86,15 @@ class Package(Action):
 
 
 class Executor(ABC):
-    executed_actions_filename = 'executed.actions'
     executed_actions_set = None
     executed_actions_file = None
 
     @staticmethod
     def init():
-        with open(executed_actions_filename, 'r') as f:
+        with open(common.EXECUTED_ACTIONS_FILENAME, 'r') as f:
             Executor.executed_actions_set = set(map(str.strip, f.readlines()))
 
-        Executor.executed_actions_file = open(executed_actions_filename, 'a')
+        Executor.executed_actions_file = open(common.EXECUTED_ACTIONS_FILENAME, 'a')
 
 
     @staticmethod

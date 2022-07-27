@@ -25,6 +25,7 @@ DRY_RUN = False
 MAKE_CONF_PATH = '/etc/portage/make.conf'
 DEFAULT_GENTOO_PROFILE = 6
 RESUME = False
+EXECUTED_ACTIONS_FILENAME = 'executed.actions'
 
 
 def add_value_to_string_variable(filename, variable_name, value, quot='"', delim=' '):

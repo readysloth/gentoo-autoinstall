@@ -82,6 +82,7 @@ def _chroot_to_mnt():
     scripts = glob.glob('*.sh') + glob.glob('*.py')
     for script in scripts:
         shutil.copy(script, MOUNTPOINT)
+    shutil.copy(common.EXECUTED_ACTIONS_FILENAME, MOUNTPOINT)
     os.chroot(MOUNTPOINT)
     os.chdir('/')
 
