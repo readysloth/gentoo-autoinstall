@@ -1,6 +1,7 @@
 import os
 import time
 import logging
+import hashlib
 import subprocess as sp
 
 from abc import ABC
@@ -63,7 +64,7 @@ class Action:
 
 
     def __hash__(self):
-        return hash(self.name + self.cmd)
+        return int(hashlib.md5((self.name + self.cmd).encode()).hexdigest(), 16)
 
 
 class Package(Action):
