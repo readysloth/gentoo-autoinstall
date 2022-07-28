@@ -73,6 +73,7 @@ class Package(Action):
         if use_flags is not None:
             if type(use_flags) == list:
                 use_flags = ' '.join(use_flags)
+        self.use_flags = use_flags
         super().__init__(f'emerge {options} {package}',
                          name=f'{package.replace("/", "_")}',
                          nondestructive=False)
@@ -81,7 +82,7 @@ class Package(Action):
     def __call__(self, *append):
         use_file_name = self.package.replace('/', '.')
         with open(f'/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
-            use_flags_file.write(f'{self.package} {self.env["USE"]}')
+            use_flags_file.write(f'{self.package} {self.use_flags}')
         super().__call__(*append)
         return self
 
