@@ -152,6 +152,7 @@ X_PACKAGE_LIST = [
     Package('app-office/libreoffice', use_flags='pdfimport'),
     Package('net-im/telegram-desktop', use_flags='screencast hunspell'),
     Package('media-gfx/feh', use_flags='xinerama'),
+    Package('media-gfx/gimp', use_flags='webp lua'),
     Package('media-gfx/flameshot'),
     Package('media-video/peek'),
 ]
