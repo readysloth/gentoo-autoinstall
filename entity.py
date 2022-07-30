@@ -11,6 +11,8 @@ import install_logger
 
 
 class Action:
+    exec_counter = 0
+
     def __init__(self, cmd, name='-unnamed-', env=None, nondestructive=False):
         self.cmd = cmd
         self.env = env or {}
@@ -22,6 +24,8 @@ class Action:
 
 
     def __call__(self, *append):
+        Action.exec_counter += 1
+
         if common.DRY_RUN and not self.nondestructive:
             self.succeded = True
             return self
@@ -64,7 +68,7 @@ class Action:
 
 
     def __hash__(self):
-        return int(hashlib.md5((self.name + self.cmd).encode()).hexdigest(), 16)
+        return int(hashlib.md5((self.name + self.cmd + str(Action.exec_counter)).encode()).hexdigest(), 16)
 
 
 class Package(Action):
@@ -103,6 +107,7 @@ class Executor(ABC):
         l = logging.getLogger(__name__)
         if common.RESUME and hash(action) in Executor.executed_actions_set:
             l.info(f'Skipping "{action.name}"')
+            Action.exec_counter += 1
             return
 
         l.info(f'Executing "{action.name}"')
