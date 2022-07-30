@@ -54,7 +54,7 @@ def parse_args():
                         help='user name')
     parser.add_argument('-r', '--resume',
                         action='store_true',
-                        help='resume installation')
+                        help='executed.actions file for installation resume')
 
     install_args = parser.parse_args()
 
@@ -67,6 +67,7 @@ def parse_args():
 
     if install_args.resume:
         common.RESUME = True
+        common.EXECUTED_ACTIONS_FILENAME = install_args.resume
     return install_args
 
 

@@ -83,9 +83,11 @@ def _chroot_to_mnt():
     for script in scripts:
         shutil.copy(script, MOUNTPOINT)
     if not os.path.isfile(f'{MOUNTPOINT}/{common.EXECUTED_ACTIONS_FILENAME}'):
+        Executor.executed_actions_file.close()
         shutil.copy(common.EXECUTED_ACTIONS_FILENAME, MOUNTPOINT)
     os.chroot(MOUNTPOINT)
     os.chdir('/')
+    Executor.executed_actions_file = open(common.EXECUTED_ACTIONS_FILENAME, 'a')
 
 
 def bootstrap(processor='amd64', init='openrc'):
