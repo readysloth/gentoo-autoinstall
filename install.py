@@ -3,6 +3,7 @@ import argparse
 
 import common
 import install_logger
+import packages as pkg
 import partitioning as p
 import bootstrap as b
 import system_install as si
@@ -62,8 +63,15 @@ def parse_args():
     if install_args.verbose:
         common.LOGGER_LEVEL = logging.DEBUG
 
-    if not install_args.no_gui:
+    if not install_args.no_gui or install_args.no_wm:
         install_args.use_flags.append('X')
+        if install_args.no_wm:
+            pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST + pkg.X_PACKAGE_LIST
+        else:
+            pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST \
+                                + pkg.X_WM_PACKAGE_LIST \
+                                + pkg.X_PACKAGE_LIST
+
 
     if install_args.resume:
         common.RESUME = True

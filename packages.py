@@ -70,7 +70,6 @@ DEV_PACKAGE_LIST = [
 EXTRA_PACKAGE_LIST = [
     Package('media-fonts/noto', use_flags='cjk'),
     Package('media-fonts/noto-emoji'),
-    Package('x11-apps/xbacklight'),
     Package('media-libs/mesa', use_flags=['classic', 'd3d9', 'lm-sensors',
                                           'osmesa', 'vdpau', 'vulkan']),
     Package('media-sound/alsa-utils', use_flags='bat'),
@@ -86,7 +85,6 @@ EXTRA_PACKAGE_LIST = [
                        'io-uring', 'plugins', 'png', 'jpeg', 'fuse',
                        'sdl', 'sdl-image', 'spice', 'ssh', 'usb',
                        'usbredir', 'gtk', 'vnc', 'vhost-net']),
-    Package('app-emulation/virt-manager', use_flags='gtk'),
     Package('app-emulation/wine-staging',
             use_flags=['dos', 'gecko', 'faudio',
                        'mono', 'udev', 'run-exes',
@@ -97,18 +95,12 @@ EXTRA_PACKAGE_LIST = [
             use_flags=['djvu', 'jpeg', 'lzma',
                        'png', 'postscript',
                        'raw', 'svg', 'webp']),
-    Package('www-client/firefox',
-            use_flags=['system-harfbuzz', 'system-icu', 'system-jpeg',
-                       'system-libevent', 'system-png', 'system-python-libs',
-                       'system-webp', 'geckodriver', 'screencast']),
 
     Package('www-client/links',
             use_flags=['freetype', 'libevent', 'fbcon',
                        'ipv6', 'jpeg', 'lzma',
                        'ssl', 'svga', 'tiff',
                        'unicode']),
-    Package('app-office/libreoffice', use_flags='pdfimport'),
-    Package('net-im/telegram-desktop', use_flags='screencast hunspell'),
 
     Package('app-text/html-xml-utils'),
 ]
@@ -125,19 +117,18 @@ TERMINAL_PACKAGE_LIST = [
     Package('sys-process/htop'),
 ]
 
+
 X_SERVER_PACKAGE_LIST = [
     Package('x11-base/xorg-server', use_flags='xephyr xorg xvfb'),
     Package('x11-apps/setxkbmap'),
+    Package('x11-apps/xrandr'),
+    Package('x11-apps/xev'),
 ]
 
 
-X_PACKAGE_LIST = [
-    Package('x11-apps/xrandr'),
-    Package('x11-apps/xev'),
+X_WM_PACKAGE_LIST = [
     Package('media-gfx/scrot'),
     Package('x11-misc/clipmenu', use_flags='rofi'),
-    Package('media-gfx/flameshot'),
-    Package('media-video/peek'),
 
     Package('x11-wm/bspwm'),
     Package('x11-misk/xdo'),
@@ -145,10 +136,24 @@ X_PACKAGE_LIST = [
 
     Package('x11-misc/picom', use_flags='config-file drm opengl'),
     Package('x11-misc/polybar', use_flags='mpd network curl ipc'),
-    Package('media-gfx/feh', use_flags='xinerama'),
     Package('x11-misc/rofi'),
     Package('x11-misc/xclip'),
     Package('x11-apps/xdpyinfo'),
+    Package('x11-apps/xbacklight'),
+]
+
+
+X_PACKAGE_LIST = [
+    Package('app-emulation/virt-manager', use_flags='gtk'),
+    Package('www-client/firefox',
+            use_flags=['system-harfbuzz', 'system-icu', 'system-jpeg',
+                       'system-libevent', 'system-png', 'system-python-libs',
+                       'system-webp', 'geckodriver', 'screencast']),
+    Package('app-office/libreoffice', use_flags='pdfimport'),
+    Package('net-im/telegram-desktop', use_flags='screencast hunspell'),
+    Package('media-gfx/feh', use_flags='xinerama'),
+    Package('media-gfx/flameshot'),
+    Package('media-video/peek'),
 ]
 
 
