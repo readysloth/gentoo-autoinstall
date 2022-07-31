@@ -30,34 +30,24 @@ class Action:
             self.succeded = True
             return self
 
-        self.proc = sp.Popen(f'{self.cmd} {" ".join(append)}',
-                             shell=True,
-                             env={**os.environ, **self.env},
-                             stdout=sp.PIPE,
-                             stderr=sp.PIPE)
-        print_len = 70
-        while self.proc.poll() is None:
-            cpu_utilization = sp.check_output(f'ps --no-headers -p {self.proc.pid} -o %cpu,%mem,etime,cmd',
-                                              shell=True).decode().strip()
-            message = f'<cpu> <mem> <time> <cmd>: {" ".join(cpu_utilization.split())}'[0:print_len] + '...'
-            print(message, end='\r')
-        print(' '*(print_len+3), end='\r')
-        self.proc.wait()
-        self.succeded = self.proc.returncode == 0
-        self.value = self.proc.stdout.read().decode()
+        with open(f'{self.name}.stdout', 'ab') as stdout_file, \
+             open(f'{self.name}.stderr', 'ab') as stderr_file:
+            self.proc = sp.Popen(f'{self.cmd} {" ".join(append)}',
+                                 shell=True,
+                                 env={**os.environ, **self.env},
+                                 stdout=stdout_file,
+                                 stderr=stderr_file)
+            print_len = 70
+            while self.proc.poll() is None:
+                cpu_utilization = sp.check_output(f'ps --no-headers -p {self.proc.pid} -o %cpu,%mem,etime,cmd',
+                                                  shell=True).decode().strip()
+                message = f'<cpu> <mem> <time> <cmd>: {" ".join(cpu_utilization.split())}'[0:print_len] + '...'
+                print(message, end='\r')
+            print(' '*(print_len+3), end='\r')
+            self.proc.wait()
+            self.succeded = self.proc.returncode == 0
+            self.value = self.proc.stdout.read().decode()
         return self
-
-
-    def report(self):
-        if self.proc:
-            with open(self.name, 'ab') as f:
-                f.write(str(self).encode() + b'\n')
-                f.write(b'-----BEGIN STDOUT-----\n')
-                f.write(self.value.encode()+b'\n')
-                f.write(b'-----END STDOUT-----\n')
-                f.write(b'-----BEGIN STDERR-----\n')
-                f.write(self.proc.stderr.read()+b'\n')
-                f.write(b'-----END STDERR-----\n')
 
 
     def __str__(self):
@@ -114,14 +104,12 @@ class Executor(ABC):
         l.debug(f'Start of {action} + {list(args)}')
         ended_action = action(*args)
         l.debug(f'End of {ended_action}, successfully? {ended_action.succeded}')
-        ended_action.report()
         if not ended_action.succeded:
             if fallbacks:
                 for fallback in fallbacks:
                     l.debug(f'Fallback start {fallback} do_crash={do_crash}')
                     ended_fallback = fallback()
                     l.debug(f'Fallback end {fallback}, successfully? {ended_fallback.succeded}')
-                    ended_fallback.report()
                     if ended_fallback.succeded:
                         Executor.executed_actions_file.writeline(f'{hash(action)}\n')
                         Executor.executed_actions_file.flush()
