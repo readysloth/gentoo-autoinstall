@@ -46,7 +46,8 @@ class Action:
             print(' '*(print_len+3), end='\r')
             self.proc.wait()
             self.succeded = self.proc.returncode == 0
-            self.value = self.proc.stdout.read().decode()
+        with open(f'{self.name}.stdout', 'r') as stdout_file:
+            self.value = stdout_file.read().strip()
         return self
 
 
