@@ -2,14 +2,10 @@ import logging
 import argparse
 
 import common
-import install_logger
-import packages as pkg
-import partitioning as p
-import bootstrap as b
-import system_install as si
 
 from entity import init_executor, deinit_executor
 
+import packages as pkg
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Gentoo workspace installer')
@@ -86,8 +82,14 @@ def partition_disk(disk):
     p.prepare_for_os_install()
 
 
-l = logging.getLogger(__name__)
 args = parse_args()
+
+import install_logger
+import partitioning as p
+import bootstrap as b
+import system_install as si
+
+l = logging.getLogger(__name__)
 
 init_executor()
 
