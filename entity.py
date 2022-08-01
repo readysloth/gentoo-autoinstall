@@ -30,6 +30,8 @@ class Action:
             self.succeded = True
             return self
 
+        l = logging.getLogger(__name__)
+
         with open(f'{self.name}.stdout', 'ab') as stdout_file, \
              open(f'{self.name}.stderr', 'ab') as stderr_file:
             self.proc = sp.Popen(f'{self.cmd} {" ".join(append)}',
@@ -48,6 +50,7 @@ class Action:
             self.succeded = self.proc.returncode == 0
         with open(f'{self.name}.stdout', 'r') as stdout_file:
             self.value = stdout_file.read().strip()
+            l.debug(f'[{self.name}] value = "{self.value}"')
         return self
 
 
@@ -75,9 +78,11 @@ class Package(Action):
 
 
     def __call__(self, *append):
+        l = logging.getLogger(__name__)
         use_file_name = self.package.replace('/', '.')
         with open(f'/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
             use_flags_file.write(f'{self.package} {self.use_flags}')
+        l.debug(f'Installing {self.package}, USE="{self.use_flags}"')
         super().__call__(*append)
         return self
 
