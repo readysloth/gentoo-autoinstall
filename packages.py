@@ -6,7 +6,6 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('app-shells/dash'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
-    Package('media-libs/libpng', use_flags='apng'),
     Package('sys-libs/ncurses', use_flags='-gpm'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
