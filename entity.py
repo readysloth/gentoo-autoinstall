@@ -32,8 +32,8 @@ class Action:
 
         l = logging.getLogger(__name__)
 
-        with open(f'{self.name}.stdout', 'ab') as stdout_file, \
-             open(f'{self.name}.stderr', 'ab') as stderr_file:
+        with open(f'{self.name}_{Action.exec_counter}.stdout', 'ab') as stdout_file, \
+             open(f'{self.name}_{Action.exec_counter}.stderr', 'ab') as stderr_file:
             self.proc = sp.Popen(f'{self.cmd} {" ".join(append)}',
                                  shell=True,
                                  env={**os.environ, **self.env},
@@ -48,7 +48,7 @@ class Action:
             print(' '*(print_len+3), end='\r')
             self.proc.wait()
             self.succeded = self.proc.returncode == 0
-        with open(f'{self.name}.stdout', 'r') as stdout_file:
+        with open(f'{self.name}_{Action.exec_counter}.stdout', 'r') as stdout_file:
             self.value = stdout_file.read().strip()
             l.debug(f'[{self.name}] value = "{self.value}"')
         return self
