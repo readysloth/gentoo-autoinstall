@@ -48,3 +48,11 @@ optional arguments:
                         user name
   -r, --resume          executed.actions file for installation resume
 ```
+
+## Example install
+
+```
+curl https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/main/download_scripts.sh | bash
+cd installation_scripts
+python3 install.py /dev/sda
+```
