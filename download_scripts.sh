@@ -18,7 +18,7 @@ mkdir $FOLDER
 cd $FOLDER
   for script in $SCRIPTS
   do
-    wget "https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/main/$script"
+    wget "https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/main/scripts/$script"
   done
 cd -
 
