@@ -83,9 +83,9 @@ class Package(Action):
         with open(f'/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
             use_flags_file.write(f'{self.package} {self.use_flags}')
         l.debug(f'Installing {self.package}, USE="{self.use_flags}"')
+        super().__call__(*append)
         if not self.succeded:
             l.warning(f'{self.package} install failed')
-        super().__call__(*append)
         return self
 
 
