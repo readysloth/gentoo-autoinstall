@@ -181,6 +181,10 @@ X_PACKAGE_LIST = [
 ACTION_LIST = [
     Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install all',
            name='genkernel'),
+    Action('grub-mkconfig -o /boot/grub/grub.cfg',
+           name='grub config creation'),
+    Action("grub-install --target=$(lscpu | awk '/Architecture/ {print $2}')-efi --efi-directory=/boot --removable",
+           name='grub config creation'),
     Action('rc-update add sysklogd default',
            name='service update'),
     Action('rc-update add cronie default',
@@ -192,6 +196,10 @@ ACTION_LIST = [
     Action('rc-update add docker default',
            name='service update'),
     Action('rc-update add libvirtd default',
+           name='service update'),
+    Action('rc-update add dhpcd default',
+           name='service update'),
+    Action('rc-update add lvmetad boot',
            name='service update'),
     Action('bash create_configs.sh',
            name='configuration file creation')
