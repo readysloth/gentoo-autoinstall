@@ -60,8 +60,8 @@ def system_boot_configuration():
                                name='fstab alter with swap')
     fstab_rootfs_action = Action('echo "UUID=$(blkid -t LABEL=rootfs -s UUID -o value) \t / \t ext4 \t noatime \t 0 \t 1" >> /etc/fstab',
                                  name='fstab alter with rootfs')
-    Exeutor.exec(fstab_swap_action)
-    Exeutor.exec(fstab_rootfs_action)
+    Executor.exec(fstab_swap_action)
+    Executor.exec(fstab_rootfs_action)
 
 
 
