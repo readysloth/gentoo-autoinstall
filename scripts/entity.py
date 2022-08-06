@@ -13,7 +13,7 @@ import install_logger
 class Action:
     exec_counter = 0
 
-    def __init__(self, cmd, name='-unnamed-', env=None, nondestructive=False):
+    def __init__(self, cmd, name='-unnamed-', env=None, nondestructive=False, pre=None):
         self.cmd = cmd
         self.env = env or {}
         self.name = name
@@ -21,6 +21,7 @@ class Action:
         self.proc = None
         self.succeded = False
         self.value = ''
+        self.pre = pre
 
 
     def __call__(self, *append):
@@ -32,6 +33,9 @@ class Action:
 
         l = logging.getLogger(__name__)
 
+        if self.pre:
+            l.debug('Executing pre-function')
+            self.pre()
         with open(f'{self.name}_{Action.exec_counter}.stdout', 'ab') as stdout_file, \
              open(f'{self.name}_{Action.exec_counter}.stderr', 'ab') as stderr_file:
             self.proc = sp.Popen(f'{self.cmd} {" ".join(append)}',
@@ -66,7 +70,7 @@ class Action:
 
 
 class Package(Action):
-    def __init__(self, package, options='', use_flags=''):
+    def __init__(self, package, options='', use_flags='', **kwargs):
         self.package = package
         if use_flags is not None:
             if type(use_flags) == list:
@@ -74,7 +78,8 @@ class Package(Action):
         self.use_flags = use_flags
         super().__init__(f'emerge {options} {package}',
                          name=f'{package.replace("/", "_")}',
-                         nondestructive=False)
+                         nondestructive=False,
+                         **kwargs)
 
 
     def __call__(self, *append):
