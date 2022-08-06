@@ -207,7 +207,17 @@ ACTION_LIST = [
 
 
 def pre_install():
-    pass
+    total_memory_action = Action("free -t | awk '/Total/{print $2}'",
+                                 name='getting total memory')
+    Executor.exec(total_memory_action, do_crash=True)
+    # If system has less than 6 Gigs of free space, better create swap
+    if int(total_memory_action.value()) < 8000000:
+        l = logging.getLogger(__name__)
+        l.info(f'Your system have less than 8 Gigs of free space, creating swap')
+        swapfile = '/tmp/swapfile'
+        dd_action = Action(f'sudo dd if=/dev/zero of={swapfile} bs=1M count=4000')
+        mkswap_action = Action(f'mkswap {swapfile}')
+        swapon_action = Action(f'swapon {swapfile}')
 
 
 def execute_each_in(action_container):
