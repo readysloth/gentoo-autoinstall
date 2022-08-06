@@ -41,10 +41,10 @@ def parse_args():
     parser.add_argument('-p', '--no-packages',
                         action='store_true',
                         help='do not install any supplied packages')
-    parser.add_argument('-H', '--host-name',
+    parser.add_argument('-H', '--hostname',
                         default='gentoo',
                         nargs='?',
-                        help='OS hostame')
+                        help='OS hostname')
     parser.add_argument('-U', '--user',
                         default='user',
                         nargs='?',
@@ -108,6 +108,10 @@ if not args.no_packages:
     failed_count = si.install_packages()
     l.checkpoint(f'Package install ended')
     l.warning(f'{failed_count} packages failed to install')
+
+
+with open('/etc/conf.d/hostname', 'w') as f:
+    f.write(args.hostname)
 
 
 deinit_executor()
