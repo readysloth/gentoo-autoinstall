@@ -218,6 +218,8 @@ def pre_install():
         dd_action = Action(f'sudo dd if=/dev/zero of={swapfile} bs=1M count=4000')
         mkswap_action = Action(f'mkswap {swapfile}')
         swapon_action = Action(f'swapon {swapfile}')
+        for a in [dd_action, mkswap_action, swapon_action]:
+            Executor.exec(a)
 
 
 def execute_each_in(action_container):
