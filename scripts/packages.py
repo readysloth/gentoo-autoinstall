@@ -1,3 +1,9 @@
+import os
+import logging
+import urllib.request as ur
+
+import install_logger
+
 from entity import Package, Action, Executor
 
 
@@ -142,6 +148,20 @@ X_WM_PACKAGE_LIST = [
 ]
 
 
+def download_patches_for_st():
+    l = logging.getLogger(__name__)
+    patch_folder_path = '/etc/portage/patches/dev-lang/x11-terms/st'
+    base_url = 'https://st.suckless.org/patches/'
+    patches = ['alpha/st-alpha-20220206-0.8.5.diff',
+               'dynamic-cursor-color/st-dynamic-cursor-color-0.8.4.diff']
+    os.makedirs(folder, exist_ok=True)
+    for p in patches:
+        l.info('Downloading patch for st')
+        patchname = p.split('/')[1]
+        ur.urlretrieve(f'{base_url}/{p}', f'{patch_folder_path}/{patchname}')
+
+
+
 X_PACKAGE_LIST = [
     Package('app-emulation/virt-manager', use_flags='gtk'),
     Package('www-client/firefox',
@@ -154,6 +174,7 @@ X_PACKAGE_LIST = [
     Package('media-gfx/gimp', use_flags='webp lua'),
     Package('media-gfx/flameshot'),
     Package('media-video/peek'),
+    Package('x11-terms/st', use_flags='savedconfig', pre=download_patches_for_st),
 ]
 
 
