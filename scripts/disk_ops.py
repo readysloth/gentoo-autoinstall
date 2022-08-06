@@ -68,7 +68,9 @@ def allocate_space_in_lvm(rootfs_percent=100, swap_size=2048):
 def make_fs_and_swap(partition):
     return [Action(f'mkfs.fat -F 32 {partition}', name='filesystem creation'),
             Action(f'mkfs.ext4 /dev/{LVM_GROUP_NAME}/rootfs', name='filesystem creation'),
+            Action(f'e2label /dev/{LVM_GROUP_NAME}/rootfs rootfs', name='rootfs labeling'),
             Action(f'mkswap /dev/{LVM_GROUP_NAME}/swap', name='swap creation'),
+            Action(f'swaplabel -L swap /dev/{LVM_GROUP_NAME}/swap', name='swap labeling'),
             Action(f'swapon /dev/{LVM_GROUP_NAME}/swap', name='swap initialization')]
 
 
