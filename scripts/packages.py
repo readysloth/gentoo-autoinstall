@@ -215,9 +215,12 @@ def pre_install():
         l = logging.getLogger(__name__)
         l.info(f'Your system have less than 8 Gigs of free space, creating swap')
         swapfile = '/tmp/swapfile'
-        dd_action = Action(f'sudo dd if=/dev/zero of={swapfile} bs=1M count=4000')
-        mkswap_action = Action(f'mkswap {swapfile}')
-        swapon_action = Action(f'swapon {swapfile}')
+        dd_action = Action(f'sudo dd if=/dev/zero of={swapfile} bs=1M count=4000',
+                           name='swap file populating')
+        mkswap_action = Action(f'mkswap {swapfile}',
+                               name='formatting swap file')
+        swapon_action = Action(f'swapon {swapfile}',
+                               name='activating swap file')
         for a in [dd_action, mkswap_action, swapon_action]:
             Executor.exec(a)
 
