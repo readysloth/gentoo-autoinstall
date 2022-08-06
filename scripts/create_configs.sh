@@ -15,6 +15,10 @@ echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf
 mkdir -p ~/Images
 cp -r "${RECREATION_DIR}/wallpapers" ~/Images
 
+
+# vim plugin manager
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 # scripts
 mkdir -p ~/.scripts
 echo '#!/bin/bash'                                      > ~/.scripts/autochanging_wallpaper.sh
@@ -197,6 +201,18 @@ echo                                                 >> ~/.vimrc
 echo 'let g:diminactive_use_syntax = 1'              >> ~/.vimrc
 echo 'let g:diminactive_use_colorcolumn = 0'         >> ~/.vimrc
 
+
+git clone https://github.com/grwlf/xkb-switch.git;
+pushd xkb-switch;
+    mkdir build;
+    pushd build;
+        cmake ..;
+        make -j$(nproc);
+        make -j$(nproc) install;
+        ldconfig;
+    popd;
+popd
+rm -rf xkb-switch
 vim +PlugInstall +qa
 
 
