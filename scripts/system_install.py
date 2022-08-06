@@ -53,7 +53,16 @@ def setup_portage():
     Executor.exec(Action('emerge app-portage/cpuid2cpuflags', name='emerging cpuid2cpuflags'))
     Executor.exec(Action('echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags', name='setting cpu-flags'))
 
+
+def system_boot_configuration():
     common.add_variable_to_file('/etc/default/grub', 'GRUB_CMDLINE_LINUX', 'dolvm')
+    fstab_swap_action = Action('echo "UUID=$(blkid -t LABEL=swap -s UUID -o value) \t none \t swap \t sw \t 0 \t 0" >> /etc/fstab',
+                               name='fstab alter with swap')
+    fstab_rootfs_action = Action('echo "UUID=$(blkid -t LABEL=rootfs -s UUID -o value) \t / \t ext4 \t noatime \t 0 \t 1" >> /etc/fstab',
+                                 name='fstab alter with rootfs')
+    Exeutor.exec(fstab_swap_action)
+    Exeutor.exec(fstab_rootfs_action)
+
 
 
 def install_packages():

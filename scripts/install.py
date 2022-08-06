@@ -102,6 +102,8 @@ si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
                                  prefer_binary=args.prefer_binary)
 si.setup_portage()
 l.checkpoint(f'Set up portage')
+si.system_boot_configuration()
+l.checkpoint(f'Set up boot configuration')
 
 if not args.no_packages:
     l.checkpoint(f'Package install started')
