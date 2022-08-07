@@ -136,7 +136,8 @@ X_WM_PACKAGE_LIST = [
     Package('x11-misc/clipmenu', use_flags='rofi'),
 
     Package('x11-wm/bspwm'),
-    Package('x11-misk/xdo'),
+    Package('x11-misc/xdo'),
+    Package('x11-misc/xdotool'),
     Package('x11-misc/sxhkd'),
 
     Package('x11-misc/picom', use_flags='config-file drm opengl'),
