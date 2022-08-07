@@ -52,7 +52,6 @@ optional arguments:
 ## Example install
 
 ```
-curl https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/main/download_scripts.sh | bash
-cd installation_scripts
-python3 install.py /dev/sda
+wget https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/main/online_install.sh
+bash online_install.sh
 ```
