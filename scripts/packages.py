@@ -210,12 +210,15 @@ def pre_install():
     total_memory_action = Action("free -t | awk '/Total/{print $2}'",
                                  name='getting total memory')
     Executor.exec(total_memory_action, do_crash=True)
-    # If system has less than 6 Gigs of free space, better create swap
-    if int(total_memory_action.value) < 8000000:
+    # If system has less than 10 Gigs of free space, better create swap
+    free_memory = int(total_memory_action.value)
+    _12_GB = 12000000
+    if free_memory < _12_GB:
         l = logging.getLogger(__name__)
-        l.info(f'Your system have less than 8 Gigs of free space, creating swap')
+        l.info(f'Your system have less than 12 Gigs of free space, creating swap')
+        block_count = (_12_GB - free_memory) // 1024
         swapfile = '/tmp/swapfile'
-        dd_action = Action(f'sudo dd if=/dev/zero of={swapfile} bs=1M count=4000',
+        dd_action = Action(f'sudo dd if=/dev/zero of={swapfile} bs=1M count={block_count}',
                            name='swap file populating')
         mkswap_action = Action(f'mkswap {swapfile}',
                                name='formatting swap file')
