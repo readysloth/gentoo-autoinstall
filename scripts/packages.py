@@ -231,6 +231,8 @@ def pre_install():
         for a in [dd_action, mkswap_action, swapon_action]:
             Executor.exec(a)
 
+    Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
+
 
 def execute_each_in(action_container):
     failed_count = 0
