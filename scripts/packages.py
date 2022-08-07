@@ -218,8 +218,8 @@ def pre_install():
         l.info(f'Your system have less than 12 Gigs of free space, creating swap')
         block_count = (_12_GB - free_memory) // 1024
         swapfile = '/tmp/swapfile'
-        dd_action = Action(f'sudo dd if=/dev/zero of={swapfile} bs=1M count={block_count}',
-                           name='swap file populating')
+        dd_action = Action(f'dd if=/dev/zero of={swapfile} bs=1M count={block_count}',
+                           name='swap file initialization')
         mkswap_action = Action(f'mkswap {swapfile}',
                                name='formatting swap file')
         swapon_action = Action(f'swapon {swapfile}',
