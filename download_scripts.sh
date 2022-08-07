@@ -22,8 +22,8 @@ cd $FOLDER
   done
 cd -
 
-echo "++++++++++++++++++++++"
-echo "+Download is complete+"
-echo "++++++++++++++++++++++"
+echo "++++++++++++++++++++++++"
+echo "+ Download is complete +"
+echo "++++++++++++++++++++++++"
 echo
 echo "Go to folder '$FOLDER' and run 'install.py'"
