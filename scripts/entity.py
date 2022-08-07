@@ -94,6 +94,28 @@ class Package(Action):
         return self
 
 
+class MetaAction(Action):
+    def __init__(self, cmds, name='-unnamed-meta-action-',  env=None, nondestructive=False, pre=None):
+        self.actions = [Action(cmd,
+                               f'{name}-{i}',
+                               env,
+                               nondestructive,
+                               pre) for cmd, i in enumerate(cmds)]
+        self.succeded = True
+
+
+    def __call__(self, *append):
+        for a in self.actions:
+            Executor.exec(a, *append)
+            if not a.succeded:
+                self.succeded = False
+        return self
+
+
+    def __str__(self):
+        return f"{self.env} [{self.name}]"
+
+
 class Executor(ABC):
     executed_actions_set = None
     executed_actions_file = None

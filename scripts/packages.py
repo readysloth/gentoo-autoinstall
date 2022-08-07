@@ -4,7 +4,7 @@ import urllib.request as ur
 
 import install_logger
 
-from entity import Package, Action, Executor
+from entity import Package, Action, MetaAction, Executor
 
 
 ESSENTIAL_PACKAGE_LIST = [
@@ -128,6 +128,12 @@ X_SERVER_PACKAGE_LIST = [
     Package('x11-apps/setxkbmap'),
     Package('x11-apps/xrandr'),
     Package('x11-apps/xev'),
+    Package('x11-misc/xdo'),
+    Package('x11-misc/xdotool'),
+    MetaAction(['git clone https://github.com/jordansissel/keynav.git',
+                'cd keynav; make install; cd -',
+                'rm -rf keynav'],
+               name='keynav git install'),
 ]
 
 
@@ -136,8 +142,6 @@ X_WM_PACKAGE_LIST = [
     Package('x11-misc/clipmenu', use_flags='rofi'),
 
     Package('x11-wm/bspwm'),
-    Package('x11-misc/xdo'),
-    Package('x11-misc/xdotool'),
     Package('x11-misc/sxhkd'),
 
     Package('x11-misc/picom', use_flags='config-file drm opengl'),
@@ -160,7 +164,6 @@ def download_patches_for_st():
         l.info('Downloading patch for st')
         patchname = p.split('/')[1]
         ur.urlretrieve(f'{base_url}/{p}', f'{patch_folder_path}/{patchname}')
-
 
 
 X_PACKAGE_LIST = [
