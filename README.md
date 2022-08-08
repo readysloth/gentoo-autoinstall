@@ -52,6 +52,6 @@ optional arguments:
 ## Example install
 
 ```
-wget https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/main/online_install.sh
-bash online_install.sh
+wget https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/main/easy_install.sh
+bash easy_install.sh
 ```
