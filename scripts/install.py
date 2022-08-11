@@ -52,6 +52,8 @@ def parse_args():
     parser.add_argument('-r', '--resume',
                         action='store_true',
                         help='executed.actions file for installation resume')
+    parser.add_argument('-d', '--download-packages-only',
+                        help='folder for packages')
 
     install_args = parser.parse_args()
 
@@ -107,7 +109,7 @@ l.checkpoint(f'Set up boot configuration')
 
 if not args.no_packages:
     l.checkpoint(f'Package install started')
-    failed_count = si.install_packages()
+    failed_count = si.install_packages(args.download_packages_only)
     l.checkpoint(f'Package install ended')
     l.warning(f'{failed_count} packages failed to install')
 

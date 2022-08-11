@@ -1,3 +1,4 @@
+import os
 import multiprocessing as mp
 
 import common
@@ -65,8 +66,14 @@ def system_boot_configuration():
 
 
 
-def install_packages():
+def install_packages(download_only_folder=None):
     pre_install()
-    failed_packages_count = execute_each_in(PACKAGE_LIST)
+    if download_only_folder:
+        os.makedirs(download_only_folder, exist_ok=True)
+        failed_packages_count = execute_each_in(PACKAGE_LIST, '--fetch-only')
+        Executor.exec(Action(f'rsync -a /var/cache/distfiles/ {download_only_folder}',
+                             name='syncing downloaded packages'))
+    else:
+        failed_packages_count = execute_each_in(PACKAGE_LIST)
     failed_actions_count = post_install()
     return (failed_packages_count, failed_actions_count)

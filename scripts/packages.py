@@ -234,13 +234,13 @@ def pre_install():
     Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
 
 
-def execute_each_in(action_container):
+def execute_each_in(action_container, *args):
     failed_count = 0
     for a in action_container:
         if type(a) == tuple:
-            Executor.exec(a[0], fallbacks=a[1], do_crash=True)
+            Executor.exec(a[0], *args, fallbacks=a[1], do_crash=True)
         else:
-            Executor.exec(a)
+            Executor.exec(a, *args)
             if not a.succeded:
                 failed_count += 1
     return failed_count
