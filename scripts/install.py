@@ -109,9 +109,10 @@ l.checkpoint(f'Set up boot configuration')
 
 if not args.no_packages:
     l.checkpoint(f'Package install started')
-    failed_count = si.install_packages(args.download_packages_only)
+    failed_packages, failed_actions = si.install_packages(args.download_packages_only)
     l.checkpoint(f'Package install ended')
-    l.warning(f'{failed_count} packages failed to install')
+    l.warning(f'{failed_packages} packages failed to install')
+    l.warning(f'{failed_actions} actions failed to execute')
 
 
 with open('/etc/conf.d/hostname', 'w') as f:

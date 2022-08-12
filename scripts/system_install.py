@@ -70,7 +70,7 @@ def install_packages(download_only_folder=None):
     pre_install()
     if download_only_folder:
         os.makedirs(download_only_folder, exist_ok=True)
-        failed_packages_count = execute_each_in(PACKAGE_LIST, '--fetch-only')
+        failed_packages_count = execute_each_in(PACKAGE_LIST, '--fetchonly')
         Executor.exec(Action(f'rsync -a /var/cache/distfiles/ {download_only_folder}',
                              name='syncing downloaded packages'))
     else:
