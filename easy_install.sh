@@ -21,4 +21,4 @@ echo "+++++++++++++++++++++++++++"
 printf "INSTALL_OPTS="
 read INSTALL_OPTS
 
-python3 install.py $INSTALL_OPTS $DISK
+python3 install.py $DISK $INSTALL_OPTS
