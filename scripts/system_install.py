@@ -13,7 +13,14 @@ def add_common_flags_to_make_conf(additional_use_flags='', prefer_binary=False):
     if type(additional_use_flags) != str:
         additional_use_flags = ' '.join(additional_use_flags)
 
-    emerge_binary_opt = '--getbinpkgonly' if prefer_binary else ''
+    emerge_binary_opt = ''
+    if prefer_binary:
+        emerge_binary_opt = '--binpkg-respect-use=y --getbinpkg=y'
+        additional_use_flags += ' bindist'
+        with open(common.BIN_CONF_PATH, 'w') as binrepos:
+            binrepos.writelines(['[binhost]',
+                                 'priority = 9999',
+                                 'sync-uri = https://gentoo.osuosl.org/experimental/amd64/binpkg/default/linux/17.1/x86-64/'])
 
     common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-pipe -march=native')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_LICENSE', '*')
