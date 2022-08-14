@@ -44,6 +44,22 @@ def add_value_to_string_variable(filename, variable_name, value, quot='"', delim
         file.writelines(changed_lines)
 
 
+def remove_variable_value(filename, variable_name, value='', quot='"', delim=' ', full=False):
+    variable_name_re = re.compile(fr'^\s*{variable_name}=')
+    changed_lines = []
+    with open(filename, 'r') as file:
+        for l in file:
+            if variable_name_re.match(l):
+                if full:
+                    continue
+                changed_lines.append(l.replace(value, ''))
+            else:
+                changed_lines.append(l)
+
+    with open(filename, 'w') as file:
+        file.writelines(changed_lines)
+
+
 def add_variable_to_file(filename, variable_name, value, quot='"'):
     with open(filename, 'a') as file:
         file.write(f'{variable_name}={quot}{value}{quot}\n')

@@ -4,12 +4,15 @@ import multiprocessing as mp
 import common
 from entity import Action, Executor
 from packages import (PACKAGE_LIST,
+                      POST_INSTALL_CALLBACKS,
                       pre_install,
                       post_install,
                       execute_each_in)
 
 
-def add_common_flags_to_make_conf(additional_use_flags='', prefer_binary=False):
+def add_common_flags_to_make_conf(additional_use_flags='',
+                                  prefer_binary=False,
+                                  move_performance_tweaks_to_post_inst=False):
     if type(additional_use_flags) != str:
         additional_use_flags = ' '.join(additional_use_flags)
 
@@ -22,11 +25,22 @@ def add_common_flags_to_make_conf(additional_use_flags='', prefer_binary=False):
                                  'priority = 9999',
                                  'sync-uri = https://gentoo.osuosl.org/experimental/amd64/binpkg/default/linux/17.1/x86-64/'])
 
-    common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-pipe -march=native')
+    if move_performance_tweaks_to_post_inst:
+        # to save RAM
+        POST_INSTALL_CALLBACKS.append(lambda: common.add_variable_to_file(common.MAKE_CONF_PATH,
+                                                                          'EMERGE_DEFAULT_OPTS',
+                                                                          f'--jobs={mp.cpu_count() // 3 + 1} {emerge_binary_opt}'))
+        POST_INSTALL_CALLBACKS.append(lambda: common.add_variable_to_file(common.MAKE_CONF_PATH,
+                                                                          'FEATURES',
+                                                                          'parallel-install parallel-fetch'))
+        common.remove_variable_value(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-pipe')
+        POST_INSTALL_CALLBACKS.append(lambda: common.add_variable_to_file(common.MAKE_CONF_PATH,
+                                                                          'COMMON_FLAGS',
+                                                                          '-pipe'))
+
+    common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-march=native')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_LICENSE', '*')
-    common.add_variable_to_file(common.MAKE_CONF_PATH, 'FEATURES', 'parallel-install parallel-fetch')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'python alsa opencl inotify lto pgo openmp {additional_use_flags}')
-    common.add_variable_to_file(common.MAKE_CONF_PATH, 'EMERGE_DEFAULT_OPTS', f'--jobs={mp.cpu_count() // 3 + 1} {emerge_binary_opt}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_KEYWORDS', '~amd64 amd64 x86')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'INPUT_DEVICES', 'synaptics libinput')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'GRUB_PLATFORMS', 'emu efi-32 efi-64 pc')

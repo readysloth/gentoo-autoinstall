@@ -54,6 +54,9 @@ def parse_args():
                         help='executed.actions file for installation resume')
     parser.add_argument('-d', '--download-packages-only',
                         help='folder for packages')
+    parser.add_argument('-w', '--tweak-performance-after-install',
+                        action='store_true',
+                        help='tweak portage performance after package install')
 
     install_args = parser.parse_args()
 
@@ -101,7 +104,8 @@ l.checkpoint(f'Partitioned {args.disk}')
 b.bootstrap(processor=args.cpu, init=args.init)
 l.checkpoint(f'Bootstrapped for further install')
 si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
-                                 prefer_binary=args.prefer_binary)
+                                 prefer_binary=args.prefer_binary,
+                                 move_performance_tweaks_to_post_inst=args.tweak_performance_after_install)
 si.setup_portage()
 l.checkpoint(f'Set up portage')
 si.system_boot_configuration()

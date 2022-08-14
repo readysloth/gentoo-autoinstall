@@ -209,6 +209,8 @@ ACTION_LIST = [
            name='configuration file creation')
 ]
 
+POST_INSTALL_CALLBACKS = []
+
 
 def pre_install():
     total_memory_action = Action("free -t | awk '/Total/{print $2}'",
@@ -247,6 +249,8 @@ def execute_each_in(action_container, *args):
 
 
 def post_install():
+    for c in POST_INSTALL_CALLBACKS:
+        c()
     return execute_each_in(ACTION_LIST)
 
 
