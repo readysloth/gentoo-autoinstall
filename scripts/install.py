@@ -129,6 +129,7 @@ l.checkpoint(f'Bootstrapped for further install')
 si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
                                  prefer_binary=args.prefer_binary,
                                  delay_performance_tweaks=quirks['delay-performance'])
+si.create_package_env(linker_tradeoff=quirks['linker-tradeoff'])
 si.setup_portage()
 l.checkpoint(f'Set up portage')
 si.system_boot_configuration()
