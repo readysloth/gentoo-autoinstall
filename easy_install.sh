@@ -13,7 +13,7 @@ lsblk
 printf "DISK="
 read DISK
 
-python3 install.py -h
+python3 install.py install -h
 
 echo "+++++++++++++++++++++++++++"
 echo "+ Specify install options +"
@@ -21,4 +21,4 @@ echo "+++++++++++++++++++++++++++"
 printf "INSTALL_OPTS="
 read INSTALL_OPTS
 
-python3 install.py $DISK $INSTALL_OPTS
+python3 install.py install $DISK $INSTALL_OPTS

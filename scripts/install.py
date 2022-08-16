@@ -9,75 +9,98 @@ import packages as pkg
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Gentoo workspace installer')
-    parser.add_argument('disk', help='dev node to install gentoo')
-    parser.add_argument('-n', '--dry-run',
-                        action='store_true',
-                        help='pretend to install, do nothing actually')
+    subparsers = parser.add_subparsers(dest='subparser_name')
+
+    install_parser = subparsers.add_parser('install', help='install options')
+
+    install_parser.add_argument('disk', help='dev node to install gentoo')
+    install_parser.add_argument('-n', '--dry-run',
+                                action='store_true',
+                                help='pretend to install, do nothing actually')
     # TODO: https://dilfridge.blogspot.com/2021/09/experimental-binary-gentoo-package.html
-    parser.add_argument('-b', '--prefer-binary',
-                        action='store_true',
-                        help='prefer binary packages to source')
-    parser.add_argument('-v', '--verbose',
-                        action='store_true',
-                        help='enable debug logging')
-    parser.add_argument('-c', '--cpu',
-                        const='amd64',
-                        nargs='?',
-                        help='cpu architecture')
-    parser.add_argument('-i', '--init',
-                        const='openrc',
-                        nargs='?',
-                        help='init system')
-    parser.add_argument('-u', '--use-flags',
-                        default=[],
-                        nargs='+',
-                        help='system-wide use flags')
-    parser.add_argument('-t', '--no-gui',
-                        action='store_true',
-                        help='install only terminal packages')
-    parser.add_argument('-T', '--no-wm',
-                        action='store_true',
-                        help='install only terminal packages and X server')
-    parser.add_argument('-p', '--no-packages',
-                        action='store_true',
-                        help='do not install any supplied packages')
-    parser.add_argument('-H', '--hostname',
-                        default='gentoo',
-                        nargs='?',
-                        help='OS hostname')
-    parser.add_argument('-U', '--user',
-                        default='user',
-                        nargs='?',
-                        help='user name')
-    parser.add_argument('-r', '--resume',
-                        action='store_true',
-                        help='executed.actions file for installation resume')
-    parser.add_argument('-d', '--download-packages-only',
-                        help='folder for packages')
-    parser.add_argument('-w', '--tweak-performance-after-install',
-                        action='store_true',
-                        help='tweak portage performance after package install')
+    install_parser.add_argument('-b', '--prefer-binary',
+                                action='store_true',
+                                help='prefer binary packages to source')
+    install_parser.add_argument('-v', '--verbose',
+                                action='store_true',
+                                help='enable debug logging')
+    install_parser.add_argument('-c', '--cpu',
+                                const='amd64',
+                                nargs='?',
+                                help='cpu architecture')
+    install_parser.add_argument('-i', '--init',
+                                const='openrc',
+                                nargs='?',
+                                help='init system')
+    install_parser.add_argument('-u', '--use-flags',
+                                default=[],
+                                nargs='+',
+                                help='system-wide use flags')
+    install_parser.add_argument('-t', '--no-gui',
+                                action='store_true',
+                                help='install only terminal packages')
+    install_parser.add_argument('-T', '--no-wm',
+                                action='store_true',
+                                help='install only terminal packages and X server')
+    install_parser.add_argument('-p', '--no-packages',
+                                action='store_true',
+                                help='do not install any supplied packages')
+    install_parser.add_argument('-H', '--hostname',
+                                default='gentoo',
+                                nargs='?',
+                                help='OS hostname')
+    install_parser.add_argument('-U', '--user',
+                                default='user',
+                                nargs='?',
+                                help='user name')
+    install_parser.add_argument('-r', '--resume',
+                                action='store_true',
+                                help='executed.actions file for installation resume')
+    install_parser.add_argument('-d', '--download-packages-only',
+                                help='folder for packages')
+    install_parser.add_argument('-q', '--quirks',
+                                default=[],
+                                nargs='+',
+                                help='install quirks')
+
+
+    info_parser = subparsers.add_parser('info', help='information')
+
+    info_parser.add_argument('--list-quirks',
+                             action='store_true',
+                             help='list awailable install quirks')
 
     install_args = parser.parse_args()
 
-    common.DRY_RUN = install_args.dry_run
-    if install_args.verbose:
-        common.LOGGER_LEVEL = logging.DEBUG
+    if install_args.subparser_name == 'info':
+        if install_args.list_quirks:
+            for q in common.QUIRKS:
+                print('{} : {}'.format(*q))
+            exit(0)
 
-    if not install_args.no_gui or install_args.no_wm:
-        install_args.use_flags.append('X')
-        if install_args.no_wm:
-            pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST + pkg.X_PACKAGE_LIST
-        else:
-            pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST \
-                                + pkg.X_WM_PACKAGE_LIST \
-                                + pkg.X_PACKAGE_LIST
+    if install_args.subparser_name == 'install':
+        common.DRY_RUN = install_args.dry_run
+        if install_args.verbose:
+            common.LOGGER_LEVEL = logging.DEBUG
+
+        if not install_args.no_gui or install_args.no_wm:
+            install_args.use_flags.append('X')
+            if install_args.no_wm:
+                pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST + pkg.X_PACKAGE_LIST
+            else:
+                pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST \
+                                    + pkg.X_WM_PACKAGE_LIST \
+                                    + pkg.X_PACKAGE_LIST
+
+        quirks = {}
+        for q, _ in common.QUIRKS:
+            quirks[q] = q in set(install_args.quirks)
 
 
-    if install_args.resume:
-        common.RESUME = True
-        common.EXECUTED_ACTIONS_FILENAME = install_args.resume
-    return install_args
+        if install_args.resume:
+            common.RESUME = True
+            common.EXECUTED_ACTIONS_FILENAME = install_args.resume
+    return install_args, quirks
 
 
 def partition_disk(disk):
@@ -87,7 +110,7 @@ def partition_disk(disk):
     p.prepare_for_os_install()
 
 
-args = parse_args()
+args, quirks = parse_args()
 
 import install_logger
 import partitioning as p
@@ -105,7 +128,7 @@ b.bootstrap(processor=args.cpu, init=args.init)
 l.checkpoint(f'Bootstrapped for further install')
 si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
                                  prefer_binary=args.prefer_binary,
-                                 move_performance_tweaks_to_post_inst=args.tweak_performance_after_install)
+                                 delay_performance_tweaks=quirks['delay-performance'])
 si.setup_portage()
 l.checkpoint(f'Set up portage')
 si.system_boot_configuration()

@@ -27,6 +27,8 @@ BIN_CONF_PATH = '/etc/portage/binrepos.conf'
 DEFAULT_GENTOO_PROFILE = 6
 RESUME = False
 EXECUTED_ACTIONS_FILENAME = 'executed.actions'
+QUIRKS = [('delay-performance', 'Delay portage performance tweaks to after install stage'),
+          ('linker-tradeoff', 'GNU linker can use less memory at the expense of IO')]
 
 
 def add_value_to_string_variable(filename, variable_name, value, quot='"', delim=' '):

@@ -12,7 +12,7 @@ from packages import (PACKAGE_LIST,
 
 def add_common_flags_to_make_conf(additional_use_flags='',
                                   prefer_binary=False,
-                                  move_performance_tweaks_to_post_inst=False):
+                                  delay_performance_tweaks=False):
     if type(additional_use_flags) != str:
         additional_use_flags = ' '.join(additional_use_flags)
 
@@ -25,7 +25,7 @@ def add_common_flags_to_make_conf(additional_use_flags='',
                                  'priority = 9999',
                                  'sync-uri = https://gentoo.osuosl.org/experimental/amd64/binpkg/default/linux/17.1/x86-64/'])
 
-    if move_performance_tweaks_to_post_inst:
+    if delay_performance_tweaks:
         # to save RAM
         POST_INSTALL_CALLBACKS.append(lambda: common.add_variable_to_file(common.MAKE_CONF_PATH,
                                                                           'EMERGE_DEFAULT_OPTS',
