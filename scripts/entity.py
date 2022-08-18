@@ -89,7 +89,7 @@ class Package(Action):
         l = logging.getLogger(__name__)
         if possible_quirks:
             for q in possible_quirks:
-                if q not in ENABLED_QUIRKS:
+                if q not in common.ENABLED_QUIRKS:
                     continue
                 l.debug(f'Quirk {q} enabled for {package}')
                 with open('/etc/portage/package.env', 'a') as f:
