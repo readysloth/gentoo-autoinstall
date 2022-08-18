@@ -81,20 +81,11 @@ class Package(Action):
             if type(use_flags) == list:
                 use_flags = ' '.join(use_flags)
         self.use_flags = use_flags
+        self.possible_quirks = possible_quirks if possible_quirks else []
         super().__init__(f'emerge {options} {package}',
                          name=f'{package.replace("/", "_")}',
                          nondestructive=False,
                          **kwargs)
-
-        l = logging.getLogger(__name__)
-        l.debug(f'Possible quirks: [{possible_quirks}]')
-        if possible_quirks:
-            for q in possible_quirks:
-                if q not in common.ENABLED_QUIRKS:
-                    continue
-                l.debug(f'Quirk {q} enabled for {package}')
-                with open('/etc/portage/package.env', 'a') as f:
-                    f.write(f'{package} {q}.conf\n')
 
 
     def __call__(self, *append):
@@ -102,6 +93,15 @@ class Package(Action):
         use_file_name = self.package.replace('/', '.')
         with open(f'/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
             use_flags_file.write(f'{self.package} {self.use_flags}')
+
+        l.debug(f'Possible quirks: [{self.possible_quirks}]')
+        for q in self.possible_quirks:
+            if q not in common.ENABLED_QUIRKS:
+                continue
+            l.debug(f'Quirk {q} enabled for {self.package}')
+            with open('/etc/portage/package.env', 'a') as f:
+                f.write(f'{self.package} {q}.conf\n')
+
         l.debug(f'Installing {self.package}, USE="{self.use_flags}"')
         super().__call__(*append)
         if not self.succeded:
