@@ -70,7 +70,12 @@ class Action:
 
 
 class Package(Action):
-    def __init__(self, package, options='', use_flags='', **kwargs):
+    def __init__(self,
+                 package,
+                 options='',
+                 use_flags='',
+                 possible_quirks=None,
+                 **kwargs):
         self.package = package
         if use_flags is not None:
             if type(use_flags) == list:
@@ -80,6 +85,15 @@ class Package(Action):
                          name=f'{package.replace("/", "_")}',
                          nondestructive=False,
                          **kwargs)
+
+        l = logging.getLogger(__name__)
+        if possible_quirks:
+            for q in possible_quirks:
+                if q not in ENABLED_QUIRKS:
+                    continue
+                l.debug(f'Quirk {q} enabled for {package}')
+                with open('/etc/portage/package.env', 'a') as f:
+                    f.write(f'{package} {q}.conf\n')
 
 
     def __call__(self, *append):

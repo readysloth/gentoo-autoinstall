@@ -47,13 +47,14 @@ def add_common_flags_to_make_conf(additional_use_flags='',
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'GRUB_PLATFORMS', 'emu efi-32 efi-64 pc')
 
 
-def create_package_env(linker_tradeoff=False):
+def process_quirks(quirks):
     os.makedirs('/etc/portage/env', exist_ok=True)
-    if linker_tradeoff:
-        with open('/etc/portage/env/gcc.conf', 'w') as f:
+    if quirks['linker-tradeoff']:
+        with open('/etc/portage/env/linker-tradeoff.conf', 'w') as f:
             f.writelines([r'LDFLAGS="${LDFLAGS} -Wl,--no-keep-memory"'])
-        with open('/etc/portage/package.env', 'a') as f:
-            f.write('sys-devel/gcc gcc.conf')
+    if quirks['half-nproc']:
+        with open('/etc/portage/env/half-nproc.conf', 'w') as f:
+            f.writelines([f'MAKEOPTS="-j{mp.cpu_count() // 2}"'])
 
 
 def setup_portage():

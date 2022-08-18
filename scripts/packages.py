@@ -8,7 +8,9 @@ from entity import Package, Action, MetaAction, Executor
 
 
 ESSENTIAL_PACKAGE_LIST = [
-    Package('sys-devel/gcc', use_flags='go sanitize graphite'),
+    Package('sys-devel/gcc',
+            use_flags='go sanitize graphite',
+            possible_quirks=['half-nproc', 'linker-tradeoff']),
     Package('app-shells/dash'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
@@ -68,7 +70,8 @@ DEV_PACKAGE_LIST = [
     Package('dev-python/bpython', use_flags='jedi'),
     Package('dev-util/android-tools'),
     Package('dev-util/rr'),
-    Package('dev-lang/rust'),
+    Package('dev-lang/rust',
+            possible_quirks=['half-nproc', 'linker-tradeoff']),
 ]
 
 
@@ -171,8 +174,11 @@ X_PACKAGE_LIST = [
     Package('www-client/firefox',
             use_flags=['system-harfbuzz', 'system-icu', 'system-jpeg',
                        'system-libevent', 'system-png', 'system-python-libs',
-                       'system-webp', 'geckodriver', 'screencast']),
-    Package('app-office/libreoffice', use_flags='pdfimport'),
+                       'system-webp', 'geckodriver', 'screencast'],
+            possible_quirks=['half-nproc', 'linker-tradeoff']),
+    Package('app-office/libreoffice',
+            use_flags='pdfimport',
+            possible_quirks=['half-nproc', 'linker-tradeoff']),
     Package('net-im/telegram-desktop', use_flags='screencast hunspell'),
     Package('media-gfx/feh', use_flags='xinerama'),
     Package('media-gfx/gimp', use_flags='webp lua'),

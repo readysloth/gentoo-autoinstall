@@ -28,7 +28,10 @@ DEFAULT_GENTOO_PROFILE = 6
 RESUME = False
 EXECUTED_ACTIONS_FILENAME = 'executed.actions'
 QUIRKS = [('delay-performance', 'Delay portage performance tweaks to after install stage'),
-          ('linker-tradeoff', 'GNU linker can use less memory at the expense of IO')]
+          ('linker-tradeoff', 'GNU linker can use less memory at the expense of IO'),
+          ('half-nproc', 'Use only half of process cores in case of insufficient RAM'),
+          ]
+ENABLED_QUIRKS = set()
 
 
 def add_value_to_string_variable(filename, variable_name, value, quot='"', delim=' '):
