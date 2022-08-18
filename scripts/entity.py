@@ -87,6 +87,7 @@ class Package(Action):
                          **kwargs)
 
         l = logging.getLogger(__name__)
+        l.debug(f'Possible quirks: [{possible_quirks}]')
         if possible_quirks:
             for q in possible_quirks:
                 if q not in common.ENABLED_QUIRKS:
