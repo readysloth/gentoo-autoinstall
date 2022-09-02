@@ -10,7 +10,9 @@ from entity import Package, Action, MetaAction, Executor
 ESSENTIAL_PACKAGE_LIST = [
     Package('sys-devel/gcc',
             use_flags='go sanitize graphite',
-            possible_quirks=['half-nproc', 'linker-tradeoff']),
+            possible_quirks=['half-nproc',
+                             'linker-tradeoff',
+                             'notmpfs']),
     Package('app-shells/dash'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
@@ -71,7 +73,9 @@ DEV_PACKAGE_LIST = [
     Package('dev-util/android-tools'),
     Package('dev-util/rr'),
     Package('dev-lang/rust',
-            possible_quirks=['half-nproc', 'linker-tradeoff']),
+            possible_quirks=['half-nproc',
+                             'linker-tradeoff',
+                             'notmpfs']),
 ]
 
 
@@ -175,10 +179,14 @@ X_PACKAGE_LIST = [
             use_flags=['system-harfbuzz', 'system-icu', 'system-jpeg',
                        'system-libevent', 'system-png', 'system-python-libs',
                        'system-webp', 'geckodriver', 'screencast'],
-            possible_quirks=['half-nproc', 'linker-tradeoff']),
+            possible_quirks=['half-nproc',
+                             'linker-tradeoff',
+                             'notmpfs']),
     Package('app-office/libreoffice',
             use_flags='pdfimport',
-            possible_quirks=['half-nproc', 'linker-tradeoff']),
+            possible_quirks=['half-nproc',
+                             'linker-tradeoff',
+                             'notmpfs']),
     Package('net-im/telegram-desktop', use_flags='screencast hunspell'),
     Package('media-gfx/feh', use_flags='xinerama'),
     Package('media-gfx/gimp', use_flags='webp lua'),
@@ -238,6 +246,11 @@ def pre_install():
                                name='activating swap file')
         for a in [dd_action, mkswap_action, swapon_action]:
             Executor.exec(a)
+
+
+    if common.TMPFS_SIZE:
+        tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs /var/tmp/portage',
+                              name='tmpfs mount')
 
     Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
 

@@ -26,10 +26,12 @@ MAKE_CONF_PATH = '/etc/portage/make.conf'
 BIN_CONF_PATH = '/etc/portage/binrepos.conf'
 DEFAULT_GENTOO_PROFILE = 6
 RESUME = False
+TMPFS_SIZE = None
 EXECUTED_ACTIONS_FILENAME = 'executed.actions'
 QUIRKS = [('delay-performance', 'Delay portage performance tweaks to after install stage'),
           ('linker-tradeoff', 'GNU linker can use less memory at the expense of IO'),
           ('half-nproc', 'Use only half of process cores in case of insufficient RAM'),
+          ('notmpfs', 'Do not build large packages in tmpfs'),
           ]
 ENABLED_QUIRKS = set()
 

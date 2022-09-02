@@ -58,6 +58,8 @@ def parse_args():
                                 help='executed.actions file for installation resume')
     install_parser.add_argument('-d', '--download-packages-only',
                                 help='folder for packages')
+    install_parser.add_argument('-f', '--tmpfs',
+                                help='tmpfs size for faster installation')
     install_parser.add_argument('-q', '--quirks',
                                 default=[],
                                 nargs='+',
@@ -101,6 +103,8 @@ def parse_args():
         if install_args.resume:
             common.RESUME = True
             common.EXECUTED_ACTIONS_FILENAME = install_args.resume
+        if install_args.tmpfs:
+            common.TMPFS_SIZE = install_args.tmpfs
     return install_args, quirks
 
 

@@ -49,6 +49,11 @@ def add_common_flags_to_make_conf(additional_use_flags='',
 
 def process_quirks(quirks):
     os.makedirs('/etc/portage/env', exist_ok=True)
+    if quirks['notmpfs']:
+        os.makedirs('/var/tmp/notmpfs', exist_ok=True)
+        with open('/etc/portage/env/notmpfs.conf', 'w') as f:
+            f.writelines([f'PORTAGE_TMPDIR="/var/tmp/notmpfs"'])
+
     if quirks['linker-tradeoff']:
         with open('/etc/portage/env/linker-tradeoff.conf', 'w') as f:
             f.writelines([r'LDFLAGS="${LDFLAGS} -Wl,--no-keep-memory"'])
