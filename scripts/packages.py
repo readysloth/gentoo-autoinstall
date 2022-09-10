@@ -2,6 +2,7 @@ import os
 import logging
 import urllib.request as ur
 
+import common
 import install_logger
 
 from entity import Package, Action, MetaAction, Executor
