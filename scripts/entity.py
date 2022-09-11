@@ -91,8 +91,9 @@ class Package(Action):
     def __call__(self, *append):
         l = logging.getLogger(__name__)
         use_file_name = self.package.replace('/', '.')
-        with open(f'/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
-            use_flags_file.write(f'{self.package} {self.use_flags}')
+        if self.use_flags:
+            with open(f'/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
+                use_flags_file.write(f'{self.package} {self.use_flags}')
 
         l.debug(f'Possible quirks: [{self.possible_quirks}]')
         for q in self.possible_quirks:
