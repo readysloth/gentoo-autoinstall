@@ -259,6 +259,7 @@ def pre_install():
     if common.TMPFS_SIZE:
         tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs /var/tmp/portage',
                               name='tmpfs mount')
+        Executor.exec(tmpfs_action)
 
     Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
 
