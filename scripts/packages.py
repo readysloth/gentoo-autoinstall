@@ -8,6 +8,11 @@ import install_logger
 from entity import Package, Action, MetaAction, Executor
 
 
+MASKS = [
+    '>sys-libs/compiler-rt-14.0.6'
+]
+
+
 ESSENTIAL_PACKAGE_LIST = [
     Package('sys-devel/gcc',
             use_flags='go sanitize graphite',
@@ -25,7 +30,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
 
-    Package('sys-boot/grub', use_flags='device-mapper'),
+    Package('sys-boot/grub', use_flags='device-mapper mount'),
     Package('sys-boot/os-prober'),
     Package('sys-apps/lm-sensors'),
     Package('sys-power/acpi'),
@@ -247,6 +252,8 @@ def pre_install():
                                name='activating swap file')
         for a in [dd_action, mkswap_action, swapon_action]:
             Executor.exec(a)
+    with open('/etc/portage/package.mask/install.mask', 'w') as f:
+        f.writelines(MASKS)
 
 
     if common.TMPFS_SIZE:
