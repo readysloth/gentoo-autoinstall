@@ -9,7 +9,7 @@ from entity import Package, Action, MetaAction, Executor
 
 
 MASKS = [
-    '>sys-libs/compiler-rt-14.0.6'
+    '<sys-libs/compiler-rt-15.0.0'
 ]
 
 
