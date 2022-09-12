@@ -118,6 +118,7 @@ class MetaAction(Action):
                                nondestructive,
                                pre) for cmd, i in enumerate(cmds)]
         self.succeded = True
+        self.name = name
 
 
     def __call__(self, *append):
