@@ -45,10 +45,14 @@ class Action:
                                  stderr=stderr_file)
             print_len = 70
             while self.proc.poll() is None:
-                cpu_utilization = sp.check_output(f'ps --no-headers -p {self.proc.pid} -o %cpu,%mem,etime,cmd',
-                                                  shell=True).decode().strip()
-                message = f'<cpu> <mem> <time> <cmd>: {" ".join(cpu_utilization.split())}'[0:print_len] + '...'
-                print(message, end='\r')
+                try:
+                    cpu_utilization = sp.check_output(f'ps --no-headers -p {self.proc.pid} -o %cpu,%mem,etime,cmd',
+                                                      shell=True).decode().strip()
+                    message = f'<cpu> <mem> <time> <cmd>: {" ".join(cpu_utilization.split())}'[0:print_len] + '...'
+                    print(message, end='\r')
+                except Exception:
+                    # diagnostic message could not be fetched and it's okay
+                    pass
             print(' '*(print_len+3), end='\r')
             self.proc.wait()
             self.succeded = self.proc.returncode == 0
