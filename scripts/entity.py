@@ -136,7 +136,7 @@ class MetaAction(Action):
 
 
     def __str__(self):
-        return f"{self.env} [{self.name}]"
+        return f"[{self.name}]"
 
 
 class Executor(ABC):
