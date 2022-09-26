@@ -77,7 +77,6 @@ DEV_PACKAGE_LIST = [
     Package('dev-lang/clojure'),
     Package('dev-python/bpython', use_flags='jedi'),
     Package('dev-util/android-tools'),
-    Package('dev-util/rr'),
     Package('dev-lang/rust',
             possible_quirks=['half-nproc',
                              'linker-tradeoff',
@@ -227,7 +226,8 @@ ACTION_LIST = [
            name='service update'),
     Action('bash create_configs.sh',
            name='configuration file creation')
-]
+] + [Package('dev-util/rr')] # should be installed after kernel
+
 
 POST_INSTALL_CALLBACKS = []
 
