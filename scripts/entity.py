@@ -86,7 +86,9 @@ class Package(Action):
                 use_flags = ' '.join(use_flags)
         self.use_flags = use_flags
         self.possible_quirks = possible_quirks if possible_quirks else []
-        super().__init__(f'emerge {options} {package}',
+        super().__init__(' && '.join([f'emerge --autounmask-write {options} {package}',
+                                      'echo -5 | etc-update',
+                                      f'emerge {options} {package}']),
                          name=f'{package.replace("/", "_")}',
                          nondestructive=False,
                          **kwargs)
