@@ -15,7 +15,7 @@ MASKS = [
 
 ESSENTIAL_PACKAGE_LIST = [
     Package('sys-devel/gcc',
-            use_flags='go sanitize graphite',
+            use_flags='-ada -objc -objc-gc sanitize graphite',
             possible_quirks=['half-nproc',
                              'linker-tradeoff',
                              'notmpfs']),
