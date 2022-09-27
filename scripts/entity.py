@@ -121,7 +121,7 @@ class MetaAction(Action):
                                f'{name}-{i}',
                                env,
                                nondestructive,
-                               pre) for cmd, i in enumerate(cmds)]
+                               pre) for i, cmd in enumerate(cmds)]
         self.succeded = True
         self.name = name
 
