@@ -25,18 +25,22 @@ def add_common_flags_to_make_conf(additional_use_flags='',
                                  'priority = 9999',
                                  'sync-uri = https://gentoo.osuosl.org/experimental/amd64/binpkg/default/linux/17.1/x86-64/'])
 
+    def set_parallel_emerge():
+        common.add_variable_to_file(common.MAKE_CONF_PATH,
+                                    'EMERGE_DEFAULT_OPTS',
+                                    f'--jobs={mp.cpu_count() // 3 + 1} {emerge_binary_opt}')
+        common.add_variable_to_file(common.MAKE_CONF_PATH,
+                                    'FEATURES',
+                                    'parallel-install parallel-fetch')
     if delay_performance_tweaks:
         # to save RAM
-        POST_INSTALL_CALLBACKS.append(lambda: common.add_variable_to_file(common.MAKE_CONF_PATH,
-                                                                          'EMERGE_DEFAULT_OPTS',
-                                                                          f'--jobs={mp.cpu_count() // 3 + 1} {emerge_binary_opt}'))
-        POST_INSTALL_CALLBACKS.append(lambda: common.add_variable_to_file(common.MAKE_CONF_PATH,
-                                                                          'FEATURES',
-                                                                          'parallel-install parallel-fetch'))
+        POST_INSTALL_CALLBACKS.append(set_parallel_emerge)
         common.remove_variable_value(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-pipe')
         POST_INSTALL_CALLBACKS.append(lambda: common.add_variable_to_file(common.MAKE_CONF_PATH,
                                                                           'COMMON_FLAGS',
                                                                           '-pipe'))
+    else:
+        set_parallel_emerge()
 
     common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-march=native')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_LICENSE', '*')
