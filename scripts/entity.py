@@ -138,6 +138,10 @@ class MetaAction(Action):
         return f"{self.name} -> {self.actions}"
 
 
+    def __hash__(self):
+        return int(hashlib.md5((str(self) + str(Action.exec_counter)).encode()).hexdigest(), 16)
+
+
 class Executor(ABC):
     executed_actions_set = None
     executed_actions_file = None
