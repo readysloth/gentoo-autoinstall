@@ -171,7 +171,7 @@ def download_patches_for_st():
     base_url = 'https://st.suckless.org/patches/'
     patches = ['alpha/st-alpha-20220206-0.8.5.diff',
                'dynamic-cursor-color/st-dynamic-cursor-color-0.8.4.diff']
-    os.makedirs(folder, exist_ok=True)
+    os.makedirs(patch_folder_path, exist_ok=True)
     for p in patches:
         l.info('Downloading patch for st')
         patchname = p.split('/')[1]
