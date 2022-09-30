@@ -85,8 +85,9 @@ class Package(Action):
             if type(use_flags) == list:
                 use_flags = ' '.join(use_flags)
         self.use_flags = use_flags
+        self.options = options
         self.possible_quirks = possible_quirks if possible_quirks else []
-        self.cmd = f'emerge --autounmask-write {options} {package} || (echo -5 | etc-update && emerge {options} {package})'
+        self.cmd = f'emerge --autounmask-write {self.options} {package} || (echo -5 | etc-update && emerge {self.options} {package})'
         super().__init__(self.cmd,
                          name=f'{package.replace("/", "_")}',
                          nondestructive=False,

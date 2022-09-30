@@ -8,6 +8,19 @@ import install_logger
 from entity import Package, Action, MetaAction, Executor
 
 
+def combine_package_install(pkg_list):
+    def is_raw_package(pkg):
+        return not type(pkg) == MetaAction and \
+               not pkg.use_flags and \
+               not pkg.possible_quirks and \
+               not pkg.options
+
+    raw_package_names = [p.package for p in pkg_list if is_raw_package(p)]
+    non_raw_packages = [p for p in pkg_list if not is_raw_package(p)]
+    big_package = Package(' '.join(raw_package_names))
+    return non_raw_packages + [big_package]
+
+
 MASKS = [
     '<sys-libs/compiler-rt-15.0.0'
 ]
@@ -288,3 +301,5 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + EXTRA_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
+
+PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
