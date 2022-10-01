@@ -16,7 +16,7 @@ class Action:
     def __init__(self, cmd, name='-unnamed-', env=None, nondestructive=False, pre=None):
         self.cmd = cmd
         self.env = env or {}
-        self.name = name
+        self.name = name[:100]
         self.nondestructive = nondestructive
         self.proc = None
         self.succeded = False
