@@ -87,11 +87,21 @@ class Package(Action):
         self.use_flags = use_flags
         self.options = options
         self.possible_quirks = possible_quirks if possible_quirks else []
-        self.cmd = f'emerge --autounmask-write {self.options} {package} || (echo -5 | etc-update && emerge {self.options} {package})'
+        self.cmd_template = 'emerge --autounmask-write {opts} {pkg} || (echo -5 | etc-update && emerge {opts} {pkg})'
+        self.cmd = self.cmd_template.format(opts=self.options, pkg=self.package)
         super().__init__(self.cmd,
                          name=f'{package.replace("/", "_")}',
                          nondestructive=False,
                          **kwargs)
+
+
+    def download(self):
+        cmd = self.cmd_template.format(opts=f'--fetchonly {self.options}',
+                                       pkg=self.package)
+        download_action = Action(cmd,
+                                 name=f'prefetch of {self.package.replace("/", "_")},
+                                 nondestructive=False)
+        Executor.exec(download_action)
 
 
     def __call__(self, *append):

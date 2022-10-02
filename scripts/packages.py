@@ -1,5 +1,6 @@
 import os
 import logging
+import threading as t
 import urllib.request as ur
 
 import common
@@ -277,8 +278,16 @@ def pre_install():
     Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
 
 
+def predownload(package_container):
+    for pkg in package_container:
+        pkg.download()
+
+
 def execute_each_in(action_container, *args):
     failed_count = 0
+    prefetch_thread = t.Thread(predownload,
+                               args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
+    prefetch_thread.start()
     for a in action_container:
         if type(a) == tuple:
             Executor.exec(a[0], *args, fallbacks=a[1], do_crash=True)
@@ -302,4 +311,4 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
 
-PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
+#PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
