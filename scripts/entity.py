@@ -99,7 +99,7 @@ class Package(Action):
         cmd = self.cmd_template.format(opts=f'--fetchonly {self.options}',
                                        pkg=self.package)
         download_action = Action(cmd,
-                                 name=f'prefetch of {self.package.replace("/", "_")},
+                                 name=f'prefetch of {self.package.replace("/", "_")}',
                                  nondestructive=False)
         Executor.exec(download_action)
 
