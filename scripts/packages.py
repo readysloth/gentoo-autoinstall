@@ -36,11 +36,13 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('app-shells/dash'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
-    Package('sys-libs/ncurses', use_flags='-gpm'),
+    Package('sys-libs/ncurses sys-libs/gpm'), # should solve circular dep
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/genkernel'),
     Package('sys-kernel/linux-firmware'),
+    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install all',
+           name='genkernel'),
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
 
@@ -74,7 +76,6 @@ FS_PACKAGE_LIST = [
     Package('sys-fs/mtools'),
     Package('sys-fs/ncdu'),
     Package('net-fs/sshfs'),
-
     Package('net-fs/samba'),
     Package('net-fs/cifs-utils'),
 ]
@@ -86,11 +87,11 @@ DEV_PACKAGE_LIST = [
     Package('dev-lang/python', use_flags='gdbm readline sqlite tk'),
     Package('dev-python/pypy3', use_flags='gdbm jit sqlite tk'),
     Package('sys-devel/gdb', use_flags='server source-highlight xml xxhash'),
-
     Package('dev-scheme/racket', use_flags='futures chez'),
     Package('dev-lang/clojure'),
     Package('dev-python/bpython', use_flags='jedi'),
     Package('dev-util/android-tools'),
+    Package('dev-util/rr'),
     Package('dev-lang/rust',
             possible_quirks=['half-nproc',
                              'linker-tradeoff',
@@ -101,8 +102,10 @@ DEV_PACKAGE_LIST = [
 EXTRA_PACKAGE_LIST = [
     Package('media-fonts/noto', use_flags='cjk'),
     Package('media-fonts/noto-emoji'),
+    Package('dev-util/glslang'), # for mesa build
     Package('media-libs/mesa', use_flags=['classic', 'd3d9', 'lm-sensors',
                                           'osmesa', 'vdpau', 'vulkan']),
+    Package('media-sound/pulseaudio', use_flags='daemon glib'),
     Package('media-sound/alsa-utils', use_flags='bat'),
     Package('media-libs/libmpd'),
     Package('media-sound/mpd'),
@@ -197,7 +200,7 @@ X_PACKAGE_LIST = [
     Package('www-client/firefox',
             use_flags=['system-harfbuzz', 'system-icu', 'system-jpeg',
                        'system-libevent', 'system-png', 'system-python-libs',
-                       'system-webp', 'geckodriver', 'screencast'],
+                       'system-webp', 'geckodriver'],
             possible_quirks=['half-nproc',
                              'linker-tradeoff',
                              'notmpfs']),
@@ -216,8 +219,6 @@ X_PACKAGE_LIST = [
 
 
 ACTION_LIST = [
-    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install all',
-           name='genkernel'),
     Action('grub-mkconfig -o /boot/grub/grub.cfg',
            name='grub config creation'),
     Action("grub-install --target=$(lscpu | awk '/Architecture/ {print $2}')-efi --efi-directory=/boot --removable",
@@ -240,7 +241,7 @@ ACTION_LIST = [
            name='service update'),
     Action('bash create_configs.sh',
            name='configuration file creation')
-] + [Package('dev-util/rr')] # should be installed after kernel
+]
 
 
 POST_INSTALL_CALLBACKS = []
