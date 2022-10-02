@@ -56,9 +56,12 @@ class Action:
             print(' '*(print_len+3), end='\r')
             self.proc.wait()
             self.succeded = self.proc.returncode == 0
-        with open(f'{self.name}_{Action.exec_counter}.stdout', 'r') as stdout_file:
-            self.value = stdout_file.read().strip()
-            l.debug(f'[{self.name}] value = "{self.value}"')
+        try:
+            with open(f'{self.name}_{Action.exec_counter}.stdout', 'r') as stdout_file:
+                self.value = stdout_file.read().strip()
+                l.debug(f'[{self.name}] value = "{self.value}"')
+        except FileNotFoundError as e:
+            l.warn(f"Couldn't openen stdout file for [{self.name}], $PWD='{os.getcwd()}': {e}")
         return self
 
 
@@ -99,7 +102,7 @@ class Package(Action):
         cmd = self.cmd_template.format(opts=f'--fetchonly {self.options}',
                                        pkg=self.package)
         download_action = Action(cmd,
-                                 name=f'prefetch of {self.package.replace("/", "_")}',
+                                 name=f'prefetch-{self.package.replace("/", "_")}',
                                  nondestructive=False)
         Executor.exec(download_action)
 
