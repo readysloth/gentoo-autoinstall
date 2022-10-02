@@ -286,7 +286,7 @@ def predownload(package_container):
 
 def execute_each_in(action_container, *args):
     failed_count = 0
-    prefetch_thread = t.Thread(predownload,
+    prefetch_thread = t.Thread(target=predownload,
                                args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
     prefetch_thread.start()
     for a in action_container:
