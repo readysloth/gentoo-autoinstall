@@ -29,14 +29,14 @@ MASKS = [
 
 ESSENTIAL_PACKAGE_LIST = [
     Package('sys-devel/gcc',
-            use_flags='-ada -objc -objc-gc sanitize graphite',
+            use_flags='-ada -objc -objc-gc -fortran sanitize graphite',
             possible_quirks=['half-nproc',
                              'linker-tradeoff',
                              'notmpfs']),
     Package('app-shells/dash'),
+    Package('sys-libs/ncurses sys-libs/gpm'), # should solve circular dep
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
-    Package('sys-libs/ncurses sys-libs/gpm'), # should solve circular dep
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/genkernel'),
