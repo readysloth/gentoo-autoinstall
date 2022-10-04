@@ -26,6 +26,12 @@ MASKS = [
     '<sys-libs/compiler-rt-15.0.0'
 ]
 
+QUIRKED_PACKAGES = [
+    Package('sys-libs/ncurses', '--oneshot', use_flags='-gpm'), # should solve circular dep
+    Package('sys-libs/gpm'), # should solve circular dep
+    Package('sys-libs/ncurses', '--oneshot'), # should solve circular dep
+]
+
 
 ESSENTIAL_PACKAGE_LIST = [
     Package('sys-devel/gcc',
@@ -34,9 +40,6 @@ ESSENTIAL_PACKAGE_LIST = [
                              'linker-tradeoff',
                              'notmpfs']),
     Package('app-shells/dash'),
-    Package('sys-libs/ncurses', '--oneshot', use_flags='-gpm'), # should solve circular dep
-    Package('sys-libs/gpm'), # should solve circular dep
-    Package('sys-libs/ncurses', '--oneshot'), # should solve circular dep
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
@@ -279,6 +282,10 @@ def pre_install():
         Executor.exec(tmpfs_action)
 
     Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
+    execute_each_in(QUIRKED_PACKAGES)
+    prefetch_thread = t.Thread(target=predownload,
+                               args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
+    prefetch_thread.start()
 
 
 def predownload(package_container):
@@ -288,9 +295,6 @@ def predownload(package_container):
 
 def execute_each_in(action_container, *args):
     failed_count = 0
-    prefetch_thread = t.Thread(target=predownload,
-                               args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
-    prefetch_thread.start()
     for a in action_container:
         if type(a) == tuple:
             Executor.exec(a[0], *args, fallbacks=a[1], do_crash=True)
