@@ -34,7 +34,9 @@ ESSENTIAL_PACKAGE_LIST = [
                              'linker-tradeoff',
                              'notmpfs']),
     Package('app-shells/dash'),
-    Package('sys-libs/ncurses sys-libs/gpm'), # should solve circular dep
+    Package('sys-libs/ncurses', '--oneshot', use_flags='-gpm'), # should solve circular dep
+    Package('sys-libs/gpm'), # should solve circular dep
+    Package('sys-libs/ncurses', '--oneshot'), # should solve circular dep
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
