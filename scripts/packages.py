@@ -27,8 +27,6 @@ MASKS = [
 ]
 
 QUIRKED_PACKAGES = [
-    # should solve circular dep later
-    Package('sys-libs/ncurses', env={'USE': '-gpm'}),
 ]
 
 
@@ -40,7 +38,6 @@ ESSENTIAL_PACKAGE_LIST = [
                              'notmpfs']),
     Package('app-shells/dash'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
-    Package('sys-libs/ncurses sys-libs/gpm'), # should solve circular dep
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
