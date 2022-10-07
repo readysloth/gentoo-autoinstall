@@ -133,10 +133,9 @@ EXTRA_PACKAGE_LIST = [
                        'raw', 'svg', 'webp']),
 
     Package('www-client/links',
-            use_flags=['freetype', 'libevent', 'fbcon',
+            use_flags=['freetype', 'libevent', 'unicode',
                        'ipv6', 'jpeg', 'lzma',
-                       'ssl', 'svga', 'tiff',
-                       'unicode']),
+                       'ssl', 'svga', 'tiff']),
 
     Package('app-text/html-xml-utils'),
 ]
