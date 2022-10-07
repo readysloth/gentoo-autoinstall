@@ -27,6 +27,7 @@ MASKS = [
 ]
 
 QUIRKED_PACKAGES = [
+    Package('media-libs/libsndfile', use_flags='minimal')
 ]
 
 
