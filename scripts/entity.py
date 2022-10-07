@@ -126,6 +126,8 @@ class Package(Action):
         super().__call__(*append)
         if not self.succeded:
             l.warning(f'{self.package} install failed')
+            with open('reinstall-failed.sh', 'a') as f:
+                f.write(f'{self.cmd}\n')
         return self
 
 
