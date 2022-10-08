@@ -28,7 +28,7 @@ MASKS = [
 
 QUIRKED_PACKAGES = [
     Package('media-libs/libsndfile', use_flags='minimal'),
-    Package('net-misc/aria2', use_flags='bittorent libuv metalink ssh')
+    Package('net-misc/aria2', use_flags='bittorent libuv ssh')
 ]
 
 
