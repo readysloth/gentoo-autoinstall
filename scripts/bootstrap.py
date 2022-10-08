@@ -57,7 +57,7 @@ def _unpack(stage3_archive):
 
 
 def _mirrorselect():
-    Executor.exec(Action(f'mirrorselect -4 -D', name='mirrorselect'), do_crash=True)
+    Executor.exec(Action(f'mirrorselect -s{common.MIRROR_COUNT} -4 -D', name='mirrorselect'), do_crash=True)
 
 
 def _final_bootstrap_configuration():
