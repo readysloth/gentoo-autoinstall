@@ -27,7 +27,8 @@ MASKS = [
 ]
 
 QUIRKED_PACKAGES = [
-    Package('media-libs/libsndfile', use_flags='minimal')
+    Package('media-libs/libsndfile', use_flags='minimal'),
+    Package('net-misc/aria2', use_flags='bittorent libuv metalink ssh')
 ]
 
 
@@ -280,6 +281,23 @@ def pre_install():
 
     Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
     execute_each_in(QUIRKED_PACKAGES)
+    if common.USE_ARIA2:
+        aria_cmd = [r"/usr/bin/aria2c",
+                    r"--dir=\${DISTDIR}",
+                    r"--out=\${FILE}",
+                    r"--allow-overwrite=true",
+                    r"--max-tries=5",
+                    r"--max-file-not-found=2",
+                    r"--user-agent=Wget/1.19.1",
+                    r"--connect-timeout=5",
+                    r"--timeout=5",
+                    r"--min-split-size=2M",
+                    r"--max-connection-per-server=2",
+                    r"--uri-selector=inorder \${URI}"]
+        common.add_variable_to_file(common.MAKE_CONF_PATH,
+                                    'FETCHCOMMAND',
+                                    ' '.join(aria_cmd))
+
     prefetch_thread = t.Thread(target=predownload,
                                args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
     prefetch_thread.start()

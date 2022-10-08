@@ -60,6 +60,9 @@ def parse_args():
                                 help='folder for packages')
     install_parser.add_argument('-f', '--tmpfs',
                                 help='tmpfs size for faster installation')
+    install_parser.add_argument('-a', '--aria2',
+                                action='store_true',
+                                help='use aria2 as FETCHCOMMAND instead of wget')
     install_parser.add_argument('-q', '--quirks',
                                 default=[],
                                 nargs='+',
@@ -105,6 +108,8 @@ def parse_args():
             common.EXECUTED_ACTIONS_FILENAME = install_args.resume
         if install_args.tmpfs:
             common.TMPFS_SIZE = install_args.tmpfs
+        common.USE_ARIA2 = install_args.aria2
+
     return install_args, quirks
 
 

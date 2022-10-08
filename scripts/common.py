@@ -34,6 +34,8 @@ QUIRKS = [('delay-performance', 'Delay portage performance tweaks to after insta
           ('notmpfs', 'Do not build large packages in tmpfs'),
           ]
 ENABLED_QUIRKS = set()
+USE_ARIA2 = None
+MIRROR_COUNT = 5
 
 
 def add_value_to_string_variable(filename, variable_name, value, quot='"', delim=' '):
