@@ -107,6 +107,12 @@ def system_boot_configuration():
     Executor.exec(fstab_rootfs_action)
 
 
+def enable_zswap():
+    text = '\n'.join(["echo lz4 > /sys/module/zswap/parameters/compressor"
+                      "echo 1 > /sys/module/zswap/parameters/enabled"])
+    with open('/etc/local.d/50-zswap.start', 'w') as f:
+        f.write(text)
+
 
 def install_packages(download_only_folder=None):
     pre_install()

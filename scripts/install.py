@@ -144,6 +144,7 @@ si.setup_portage()
 l.checkpoint(f'Set up portage')
 si.system_boot_configuration()
 l.checkpoint(f'Set up boot configuration')
+si.enable_zswap()
 
 if not args.no_packages:
     l.checkpoint(f'Package install started')
