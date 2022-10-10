@@ -280,6 +280,10 @@ def pre_install():
         Executor.exec(tmpfs_action)
 
     Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
+    Executor.exec(Package('app-portage/mirrorselect'))
+    Executor.exec(Action(f'mirrorselect -s{common.MIRROR_COUNT} -4 -D', name='mirrorselect'))
+
+
     execute_each_in(QUIRKED_PACKAGES)
     if common.USE_ARIA2:
         aria_cmd = [r"/usr/bin/aria2c",
