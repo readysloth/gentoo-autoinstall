@@ -316,6 +316,7 @@ def pre_install():
     common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'cache_dir_levels', '3', quot='')
     common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compression', 'true', quot='')
     common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compression_level', '1', quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'cache_dir', '/var/cache/ccache/cache', quot='')
 
     prefetch_thread = t.Thread(target=predownload,
                                args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
