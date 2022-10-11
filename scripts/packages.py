@@ -296,6 +296,7 @@ def pre_install():
                     r"--user-agent=Wget/1.19.1",
                     r"--connect-timeout=5",
                     r"--timeout=5",
+                    f"--split={common.MIRROR_COUNT}",
                     r"--min-split-size=2M",
                     r"--max-connection-per-server=2",
                     r"--uri-selector=inorder \${URI}"]

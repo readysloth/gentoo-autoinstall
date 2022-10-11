@@ -35,7 +35,7 @@ QUIRKS = [('delay-performance', 'Delay portage performance tweaks to after insta
           ]
 ENABLED_QUIRKS = set()
 USE_ARIA2 = None
-MIRROR_COUNT = 5
+MIRROR_COUNT = 20
 
 
 def add_value_to_string_variable(filename, variable_name, value, quot='"', delim=' '):
