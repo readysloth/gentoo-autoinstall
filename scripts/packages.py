@@ -28,7 +28,8 @@ MASKS = [
 
 QUIRKED_PACKAGES = [
     Package('media-libs/libsndfile', use_flags='minimal'),
-    Package('net-misc/aria2', use_flags='bittorent libuv ssh')
+    Package('net-misc/aria2', use_flags='bittorent libuv ssh'),
+    Package('dev-util/ccache'),
 ]
 
 
@@ -301,6 +302,19 @@ def pre_install():
         common.add_variable_to_file(common.MAKE_CONF_PATH,
                                     'FETCHCOMMAND',
                                     ' '.join(aria_cmd))
+
+
+    common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'FEATURES', 'ccache')
+    common.add_variable_to_file(common.MAKE_CONF_PATH, 'CCACHE_DIR', '/var/cache/ccache')
+
+
+    os.makedirs('/var/cache/ccache/', exist_ok=True)
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'max_size', '15.0G', quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'hash_dir', 'false', quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compiler_check', r'%compiler% -dumpversion', quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'cache_dir_levels', '3', quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compression', 'true', quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compression_level', '1', quot='')
 
     prefetch_thread = t.Thread(target=predownload,
                                args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
