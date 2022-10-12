@@ -11,15 +11,31 @@ from entity import Package, Action, MetaAction, Executor
 
 def combine_package_install(pkg_list):
     def is_raw_package(pkg):
-        return not type(pkg) == MetaAction and \
+        return not type(pkg) == Package and \
                not pkg.use_flags and \
                not pkg.possible_quirks and \
                not pkg.options
+
 
     raw_package_names = [p.package for p in pkg_list if is_raw_package(p)]
     non_raw_packages = [p for p in pkg_list if not is_raw_package(p)]
     big_package = Package(' '.join(raw_package_names))
     return non_raw_packages + [big_package]
+
+
+def exclude_from_world_rebuild(pkg_list):
+    package_names = []
+    world_rebuild_pkg = None
+
+    for pkg in filter(lambda p: type(p) == Package, pkg_list):
+        if pkg.package == '@world':
+            world_rebuild_pkg = pkg
+        else:
+            package_names.append(pkg.package)
+
+    world_rebuild_pkg.options = f'{world_rebuild_pkg.options} --exclude "{" ".join(package_names)}"'
+    world_rebuild_pkg.cmd = world_rebuild_pkg.cmd_template.format(opts=world_rebuild_pkg.options,
+                                                                  pkg=world_rebuild_pkg.package)
 
 
 MASKS = [
@@ -46,7 +62,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install all',
            name='genkernel'),
 
-    Package('@world', '-uDNv --with-bdeps=y --backtrack=100 --exclude "sys-devel/gcc"'),
+    Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
     Package('app-admin/sysklogd', use_flags='logger'),
@@ -353,5 +369,7 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + EXTRA_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
+
+exclude_from_world_rebuild(PACKAGE_LIST)
 
 #PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
