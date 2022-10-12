@@ -40,14 +40,15 @@ ESSENTIAL_PACKAGE_LIST = [
                              'linker-tradeoff',
                              'notmpfs']),
     Package('app-shells/dash'),
-    Package('@world', '-uDNv --with-bdeps=y --backtrack=100 --exclude "sys-devel/gcc"'),
-    Package('media-libs/libpng', use_flags='apng'),
-    Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/genkernel'),
     Package('sys-kernel/linux-firmware'),
     Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install all',
            name='genkernel'),
+
+    Package('@world', '-uDNv --with-bdeps=y --backtrack=100 --exclude "sys-devel/gcc"'),
+    Package('media-libs/libpng', use_flags='apng'),
+    Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
 
