@@ -89,7 +89,7 @@ class Package(Action):
                 use_flags = ' '.join(use_flags)
         self.use_flags = use_flags
         self.options = options
-        self.possible_quirks = possible_quirks if possible_quirks else []
+        self.possible_quirks = possible_quirks or []
         self.cmd_template = 'emerge --autounmask-write {opts} {pkg} || (echo -5 | etc-update && emerge {opts} {pkg})'
         self.cmd = self.cmd_template.format(opts=self.options, pkg=self.package)
         super().__init__(self.cmd,
