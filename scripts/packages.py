@@ -370,6 +370,5 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
 
-exclude_from_world_rebuild(PACKAGE_LIST)
-
+#exclude_from_world_rebuild(PACKAGE_LIST)
 #PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
