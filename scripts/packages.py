@@ -30,7 +30,7 @@ def exclude_from_world_rebuild(pkg_list):
     for pkg in filter(lambda p: type(p) == Package, pkg_list):
         if pkg.package == '@world':
             world_rebuild_pkg = pkg
-        else:
+        elif pkg.package.startswith('sys-'):
             package_names.append(pkg.package)
 
     world_rebuild_pkg.options = f'{world_rebuild_pkg.options} --exclude "{" ".join(package_names)}"'
@@ -373,5 +373,5 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
 
-#exclude_from_world_rebuild(PACKAGE_LIST)
+exclude_from_world_rebuild(PACKAGE_LIST)
 #PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
