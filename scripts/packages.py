@@ -58,6 +58,15 @@ ESSENTIAL_PACKAGE_LIST = [
             possible_quirks=['half-nproc',
                              'linker-tradeoff',
                              'notmpfs']),
+
+    # for portage speedup
+    Package('dev-python/pypy3', use_flags='gdbm jit sqlite tk'),
+    Action('echo "*/* PYTHON_TARGETS: pypy3" >> /etc/portage/package.use/global',
+           name='system-wide pypy3'),
+    Action('echo "pypy3" >> /etc/python-exec/emerge.conf',
+           name='system-wide pypy3'),
+    Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
+
     Package('app-shells/dash'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/genkernel'),
@@ -110,7 +119,6 @@ DEV_PACKAGE_LIST = [
     Package('dev-util/cmake'),
     Package('dev-vcs/git', use_flags='cgi gpg highlight webdav'),
     Package('dev-lang/python', use_flags='gdbm readline sqlite tk'),
-    Package('dev-python/pypy3', use_flags='gdbm jit sqlite tk'),
     Package('sys-devel/gdb', use_flags='server source-highlight xml xxhash'),
     Package('dev-scheme/racket', use_flags='futures chez'),
     Package('dev-lang/clojure'),
