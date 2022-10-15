@@ -13,7 +13,13 @@ import install_logger
 class Action:
     exec_counter = 0
 
-    def __init__(self, cmd, name='-unnamed-', env=None, nondestructive=False, pre=None):
+    def __init__(self,
+                 cmd,
+                 name='-unnamed-',
+                 env=None,
+                 nondestructive=False,
+                 pre=None,
+                 post=None):
         self.cmd = cmd
         self.env = env or {}
         self.name = name[:100]
@@ -22,6 +28,7 @@ class Action:
         self.succeded = False
         self.value = ''
         self.pre = pre
+        self.post = post
 
 
     def __call__(self, *append):
@@ -56,6 +63,10 @@ class Action:
             print(' '*(print_len+3), end='\r')
             self.proc.wait()
             self.succeded = self.proc.returncode == 0
+        if self.succeded and self.post:
+            l.debug('Executing post-function')
+            self.post()
+
         try:
             with open(f'{self.name}_{Action.exec_counter}.stdout', 'r') as stdout_file:
                 self.value = stdout_file.read().strip()
