@@ -26,9 +26,13 @@ def add_common_flags_to_make_conf(additional_use_flags='',
                                  'sync-uri = https://gentoo.osuosl.org/experimental/amd64/binpkg/default/linux/17.1/x86-64/'])
 
     def set_parallel_emerge():
+        mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
+        mem_gib = mem_bytes//(1024**3)
+        emerge_jobs = int(mem_gib // 1.5) # concurrent emerge jobs heuristics
+
         common.add_variable_to_file(common.MAKE_CONF_PATH,
                                     'EMERGE_DEFAULT_OPTS',
-                                    f'--jobs={mp.cpu_count() // 3 + 1} {emerge_binary_opt}')
+                                    f'--jobs={emerge_jobs} {emerge_binary_opt}')
         common.add_variable_to_file(common.MAKE_CONF_PATH,
                                     'FEATURES',
                                     'parallel-install parallel-fetch')
