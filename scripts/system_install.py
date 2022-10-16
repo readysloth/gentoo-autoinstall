@@ -44,7 +44,8 @@ def add_common_flags_to_make_conf(additional_use_flags='',
 
     common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-march=native')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_LICENSE', '*')
-    common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'python alsa opencl inotify lto pgo openmp zstd {additional_use_flags}')
+    default_useflags = 'python alsa opencl inotify lto pgo openmp zstd jumbo-build'
+    common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'{default_useflags} {additional_use_flags}')
 
     llvm_targets = ' '.join(['-AArch64', '-AMDGPU', '-ARM', '-AVR',
                              '-BPF', '-Hexagon', '-Lanai', '-Mips',
