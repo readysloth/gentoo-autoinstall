@@ -52,7 +52,9 @@ def add_common_flags_to_make_conf(additional_use_flags='',
                              '-Sparc', '-SystemZ', '-VE', '-XCore',
                              '-ARC', '-CSKY', '-LoongArch', '-M68k'
                              'WebAssembly', 'X86'])
-    common.add_variable_to_file(common.MAKE_CONF_PATH, 'LLVM_TARGETS', llvm_targets)
+
+    Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/package.use/global',
+                         name='setting llvm targets'))
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'PORTAGE_IONICE_COMMAND', r'ionice -c 3 -p \${PID}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_KEYWORDS', '~amd64 amd64 x86')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'INPUT_DEVICES', 'synaptics libinput')
@@ -101,7 +103,7 @@ def setup_portage():
     Executor.exec(Action(f'eselect profile set --force {selected_profile}', name='setting gentoo profile'))
 
     Executor.exec(Action('emerge app-portage/cpuid2cpuflags', name='emerging cpuid2cpuflags'))
-    Executor.exec(Action('echo "*/* $(cpuid2cpuflags)" > /etc/portage/package.use/00cpu-flags', name='setting cpu-flags'))
+    Executor.exec(Action('echo "*/* $(cpuid2cpuflags)" >> /etc/portage/package.use/global', name='setting cpu-flags'))
 
 
 def system_boot_configuration():
