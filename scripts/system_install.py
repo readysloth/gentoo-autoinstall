@@ -45,7 +45,14 @@ def add_common_flags_to_make_conf(additional_use_flags='',
     common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-march=native')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_LICENSE', '*')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'python alsa opencl inotify lto pgo openmp zstd {additional_use_flags}')
-    common.add_variable_to_file(common.MAKE_CONF_PATH, 'LLVM_TARGETS', 'WebAssembly X86')
+
+    llvm_targets = ' '.join(['-AArch64', '-AMDGPU', '-ARM', '-AVR',
+                             '-BPF', '-Hexagon', '-Lanai', '-Mips',
+                             '-MSP430', '-NVPTX', '-PowerPC', '-RISCV',
+                             '-Sparc', '-SystemZ', '-VE', '-XCore',
+                             '-ARC', '-CSKY', '-LoongArch', '-M68k'
+                             'WebAssembly', 'X86'])
+    common.add_variable_to_file(common.MAKE_CONF_PATH, 'LLVM_TARGETS', llvm_targets)
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'PORTAGE_IONICE_COMMAND', r'ionice -c 3 -p \${PID}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_KEYWORDS', '~amd64 amd64 x86')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'INPUT_DEVICES', 'synaptics libinput')
