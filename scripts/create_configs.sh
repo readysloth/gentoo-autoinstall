@@ -43,9 +43,9 @@ chmod +x ~/.scripts/make_screenshot.sh
 # bashrc
 echo "bind 'set completion-ignore-case on'"       > ~/.bashrc
 echo 'export EDITOR=vim'                         >> ~/.bashrc
-echo 'alias ls=exa'                              >> ~/.bashrc
-echo 'alias l=exa'                               >> ~/.bashrc
-echo 'alias cat=bat'                             >> ~/.bashrc
+#echo 'alias ls=exa'                              >> ~/.bashrc
+#echo 'alias l=exa'                               >> ~/.bashrc
+#echo 'alias cat=bat'                             >> ~/.bashrc
 echo 'export PATH=$PATH:~/.cargo/bin:~/.scripts' >> ~/.bashrc
 
 # fishrc
