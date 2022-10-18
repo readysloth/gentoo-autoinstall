@@ -263,6 +263,47 @@ touch ~/.config/polybar/config
 sed -i '/font-1.*=.*"/ s/"[^"]*"/"Wuncon Siji:size=11"/' ~/.config/polybar/config.ini
 
 
+#warpd
+echo 'activation_key: M-/'             >> ~/.config/warpd/config
+echo 'hint: C'                         >> ~/.config/warpd/config
+echo 'hint2: c'                        >> ~/.config/warpd/config
+echo 'exit: esc'                       >> ~/.config/warpd/config
+echo 'drag: v'                         >> ~/.config/warpd/config
+echo 'copy_and_exit: y'                >> ~/.config/warpd/config
+echo 'accelerator: space'              >> ~/.config/warpd/config
+echo 'buttons: Alt_L underscore Alt_R' >> ~/.config/warpd/config
+echo 'history: colon'                  >> ~/.config/warpd/config
+echo 'grid: g'                         >> ~/.config/warpd/config
+echo 'screen: s'                       >> ~/.config/warpd/config
+echo 'left: h'                         >> ~/.config/warpd/config
+echo 'down: j'                         >> ~/.config/warpd/config
+echo 'up: k'                           >> ~/.config/warpd/config
+echo 'right: l'                        >> ~/.config/warpd/config
+echo 'top: H'                          >> ~/.config/warpd/config
+echo 'middle: M'                       >> ~/.config/warpd/config
+echo 'bottom: L'                       >> ~/.config/warpd/config
+echo 'start: 0'                        >> ~/.config/warpd/config
+echo 'end: $'                          >> ~/.config/warpd/config
+echo 'scroll_down: C-d'                >> ~/.config/warpd/config
+echo 'scroll_up: C-u'                  >> ~/.config/warpd/config
+echo 'cursor_color: FF4500'            >> ~/.config/warpd/config
+echo 'cursor_size: 7'                  >> ~/.config/warpd/config
+echo 'repeat_interval: 20'             >> ~/.config/warpd/config
+echo 'speed: 220'                      >> ~/.config/warpd/config
+echo 'max_speed: 1600'                 >> ~/.config/warpd/config
+echo 'acceleration: 700'               >> ~/.config/warpd/config
+echo                                   >> ~/.config/warpd/config
+echo 'hint_bgcolor: 00ff00'            >> ~/.config/warpd/config
+echo 'hint_fgcolor: 000000'            >> ~/.config/warpd/config
+echo 'hint_undo: u'                    >> ~/.config/warpd/config
+echo 'scroll_speed: 300'               >> ~/.config/warpd/config
+echo 'scroll_max_speed: 9000'          >> ~/.config/warpd/config
+echo 'scroll_acceleration: 2600'       >> ~/.config/warpd/config
+echo 'indicator: topleft'              >> ~/.config/warpd/config
+echo 'indicator_color: 00ff00'         >> ~/.config/warpd/config
+echo 'indicator_size: 22'              >> ~/.config/warpd/config
+
+
 # bspwm
 mkdir -p ~/.config/bspwm
 touch ~/.config/bspwm/bspwmrc
