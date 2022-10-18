@@ -127,79 +127,80 @@ echo '        Option "TapButton3"            "2"'    >> /etc/X11/xorg.conf.d/50-
 echo 'EndSection'                                    >> /etc/X11/xorg.conf.d/50-synaptics.conf
 
 # Vim
-echo 'set number'          > ~/.vimrc
-echo 'set relativenumber' >> ~/.vimrc
-echo                      >> ~/.vimrc
-echo 'set hlsearch'       >> ~/.vimrc
-echo 'set incsearch'      >> ~/.vimrc
-echo                      >> ~/.vimrc
-echo 'set wildmenu'       >> ~/.vimrc
-echo 'set nocompatible'   >> ~/.vimrc
-echo                      >> ~/.vimrc
-echo 'set tabstop=8'      >> ~/.vimrc
-echo 'set softtabstop=0'  >> ~/.vimrc
-echo 'set expandtab'      >> ~/.vimrc
-echo 'set shiftwidth=4'   >> ~/.vimrc
-echo 'set smarttab'       >> ~/.vimrc
-echo                      >> ~/.vimrc
-echo                      >> ~/.vimrc
-echo 'syntax on'          >> ~/.vimrc
-echo                      >> ~/.vimrc
+echo '""""""""""'         >> /etc/vim/vimrc
+echo 'set number'         >> /etc/vim/vimrc
+echo 'set relativenumber' >> /etc/vim/vimrc
+echo                      >> /etc/vim/vimrc
+echo 'set hlsearch'       >> /etc/vim/vimrc
+echo 'set incsearch'      >> /etc/vim/vimrc
+echo                      >> /etc/vim/vimrc
+echo 'set wildmenu'       >> /etc/vim/vimrc
+echo 'set nocompatible'   >> /etc/vim/vimrc
+echo                      >> /etc/vim/vimrc
+echo 'set tabstop=8'      >> /etc/vim/vimrc
+echo 'set softtabstop=0'  >> /etc/vim/vimrc
+echo 'set expandtab'      >> /etc/vim/vimrc
+echo 'set shiftwidth=4'   >> /etc/vim/vimrc
+echo 'set smarttab'       >> /etc/vim/vimrc
+echo                      >> /etc/vim/vimrc
+echo                      >> /etc/vim/vimrc
+echo 'syntax on'          >> /etc/vim/vimrc
+echo                      >> /etc/vim/vimrc
 
-echo 'nnoremap <C-j> :m .+1<CR>'          >> ~/.vimrc
-echo 'nnoremap <C-k> :m .-2<CR>'          >> ~/.vimrc
-echo                                      >> ~/.vimrc
-echo 'inoremap <C-j> <ESC>:m .+1<CR>==gi' >> ~/.vimrc
-echo 'inoremap <C-k> <ESC>:m .-2<CR>==gi' >> ~/.vimrc
-echo                                      >> ~/.vimrc
-echo "vnoremap <C-j> :m '>1<CR>gv=gv"     >> ~/.vimrc
-echo "vnoremap <C-k> :m '<2<CR>gv=gv"     >> ~/.vimrc
-echo                                      >> ~/.vimrc
+echo 'nnoremap <C-j> :m .+1<CR>'          >> /etc/vim/vimrc
+echo 'nnoremap <C-k> :m .-2<CR>'          >> /etc/vim/vimrc
+echo                                      >> /etc/vim/vimrc
+echo 'inoremap <C-j> <ESC>:m .+1<CR>==gi' >> /etc/vim/vimrc
+echo 'inoremap <C-k> <ESC>:m .-2<CR>==gi' >> /etc/vim/vimrc
+echo                                      >> /etc/vim/vimrc
+echo "vnoremap <C-j> :m '>1<CR>gv=gv"     >> /etc/vim/vimrc
+echo "vnoremap <C-k> :m '<2<CR>gv=gv"     >> /etc/vim/vimrc
+echo                                      >> /etc/vim/vimrc
 
-echo "call plug#begin('~/.vim/plugged')"      >> ~/.vimrc
-echo                                          >> ~/.vimrc
-echo "Plug 'easymotion/vim-easymotion'"       >> ~/.vimrc
-echo "Plug 'godlygeek/tabular'"               >> ~/.vimrc
-echo "Plug 'luochen1990/rainbow'"             >> ~/.vimrc
-echo "Plug 'mbbill/undotree'"                 >> ~/.vimrc
-echo "Plug 'mkitt/tabline.vim'"               >> ~/.vimrc
-echo "Plug 'nathanaelkane/vim-indent-guides'" >> ~/.vimrc
-echo "Plug 'scrooloose/nerdtree'"             >> ~/.vimrc
-echo "Plug 'sheerun/vim-polyglot'"            >> ~/.vimrc
-echo "Plug 'tpope/vim-fugitive'"              >> ~/.vimrc
-echo "Plug 'tpope/vim-surround'"              >> ~/.vimrc
-echo "Plug 'chrisbra/csv.vim'"                >> ~/.vimrc
-echo "Plug 'lyokha/vim-xkbswitch'"            >> ~/.vimrc
-echo "Plug 'kovetskiy/sxhkd-vim'"             >> ~/.vimrc
-echo "Plug 'tpope/vim-repeat'"                >> ~/.vimrc
-echo "Plug 'junegunn/fzf.vim'"                >> ~/.vimrc
-echo "Plug 'blueyed/vim-diminactive'"         >> ~/.vimrc
-echo "Plug 'unblevable/quick-scope'"          >> ~/.vimrc
-echo "Plug 'wlangstroth/vim-racket'"          >> ~/.vimrc
-echo "Plug 'calebsmith/vim-lambdify'"         >> ~/.vimrc
-echo "Plug 'ntpeters/vim-better-whitespace'"  >> ~/.vimrc
-echo "Plug 'mhinz/vim-signify'"               >> ~/.vimrc
-echo "Plug 'wsdjeg/vim-fetch'"                >> ~/.vimrc
-echo "Plug 'Galicarnax/vim-regex-syntax'"     >> ~/.vimrc
-echo                                          >> ~/.vimrc
-echo "call plug#end()"                        >> ~/.vimrc
-echo                                          >> ~/.vimrc
-echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ~/.vimrc
-echo 'map U :UndotreeToggle<CR>'                     >> ~/.vimrc
-echo 'map gG :G<CR>'                                 >> ~/.vimrc
-echo                                                 >> ~/.vimrc
-echo 'set updatetime=100'                            >> ~/.vimrc
-echo                                                 >> ~/.vimrc
-echo 'let g:rainbow_active = 1'                      >> ~/.vimrc
-echo 'let g:indent_guides_enable_on_vim_startup = 1' >> ~/.vimrc
-echo 'let g:XkbSwitchEnabled = 1'                    >> ~/.vimrc
-echo 'let g:diminactive_use_syntax = 1'              >> ~/.vimrc
-echo "let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']" >> ~/.vimrc
-echo                                                 >> ~/.vimrc
-echo 'autocmd VimEnter * DimInactiveOn'              >> ~/.vimrc
-echo                                                 >> ~/.vimrc
-echo 'let g:diminactive_use_syntax = 1'              >> ~/.vimrc
-echo 'let g:diminactive_use_colorcolumn = 0'         >> ~/.vimrc
+echo "call plug#begin('~/.vim/plugged')"      >> /etc/vim/vimrc
+echo                                          >> /etc/vim/vimrc
+echo "Plug 'easymotion/vim-easymotion'"       >> /etc/vim/vimrc
+echo "Plug 'godlygeek/tabular'"               >> /etc/vim/vimrc
+echo "Plug 'luochen1990/rainbow'"             >> /etc/vim/vimrc
+echo "Plug 'mbbill/undotree'"                 >> /etc/vim/vimrc
+echo "Plug 'mkitt/tabline.vim'"               >> /etc/vim/vimrc
+echo "Plug 'nathanaelkane/vim-indent-guides'" >> /etc/vim/vimrc
+echo "Plug 'scrooloose/nerdtree'"             >> /etc/vim/vimrc
+echo "Plug 'sheerun/vim-polyglot'"            >> /etc/vim/vimrc
+echo "Plug 'tpope/vim-fugitive'"              >> /etc/vim/vimrc
+echo "Plug 'tpope/vim-surround'"              >> /etc/vim/vimrc
+echo "Plug 'chrisbra/csv.vim'"                >> /etc/vim/vimrc
+echo "Plug 'lyokha/vim-xkbswitch'"            >> /etc/vim/vimrc
+echo "Plug 'kovetskiy/sxhkd-vim'"             >> /etc/vim/vimrc
+echo "Plug 'tpope/vim-repeat'"                >> /etc/vim/vimrc
+echo "Plug 'junegunn/fzf.vim'"                >> /etc/vim/vimrc
+echo "Plug 'blueyed/vim-diminactive'"         >> /etc/vim/vimrc
+echo "Plug 'unblevable/quick-scope'"          >> /etc/vim/vimrc
+echo "Plug 'wlangstroth/vim-racket'"          >> /etc/vim/vimrc
+echo "Plug 'calebsmith/vim-lambdify'"         >> /etc/vim/vimrc
+echo "Plug 'ntpeters/vim-better-whitespace'"  >> /etc/vim/vimrc
+echo "Plug 'mhinz/vim-signify'"               >> /etc/vim/vimrc
+echo "Plug 'wsdjeg/vim-fetch'"                >> /etc/vim/vimrc
+echo "Plug 'Galicarnax/vim-regex-syntax'"     >> /etc/vim/vimrc
+echo                                          >> /etc/vim/vimrc
+echo "call plug#end()"                        >> /etc/vim/vimrc
+echo                                          >> /etc/vim/vimrc
+echo 'map <C-n> :NERDTreeToggle<CR>'                 >> /etc/vim/vimrc
+echo 'map U :UndotreeToggle<CR>'                     >> /etc/vim/vimrc
+echo 'map gG :G<CR>'                                 >> /etc/vim/vimrc
+echo                                                 >> /etc/vim/vimrc
+echo 'set updatetime=100'                            >> /etc/vim/vimrc
+echo                                                 >> /etc/vim/vimrc
+echo 'let g:rainbow_active = 1'                      >> /etc/vim/vimrc
+echo 'let g:indent_guides_enable_on_vim_startup = 1' >> /etc/vim/vimrc
+echo 'let g:XkbSwitchEnabled = 1'                    >> /etc/vim/vimrc
+echo 'let g:diminactive_use_syntax = 1'              >> /etc/vim/vimrc
+echo "let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']" >> /etc/vim/vimrc
+echo                                                 >> /etc/vim/vimrc
+echo 'autocmd VimEnter * DimInactiveOn'              >> /etc/vim/vimrc
+echo                                                 >> /etc/vim/vimrc
+echo 'let g:diminactive_use_syntax = 1'              >> /etc/vim/vimrc
+echo 'let g:diminactive_use_colorcolumn = 0'         >> /etc/vim/vimrc
 
 
 git clone https://github.com/grwlf/xkb-switch.git;
@@ -217,6 +218,7 @@ vim +PlugInstall +qa
 
 
 # tmux
+git clone https://github.com/tmux-plugins/tpm /etc/tmux/plugins/tpm
 echo 'set -g prefix C-a'                                       > ~/.tmux.conf
 echo ''                                                       >> ~/.tmux.conf
 echo 'set-option -g default-shell /bin/fish'                  >> ~/.tmux.conf
@@ -248,6 +250,10 @@ echo 'bind -r L resize-pane -R 5'                             >> ~/.tmux.conf
 echo                                                          >> ~/.tmux.conf
 echo 'set -g default-terminal "screen-256color"'              >> ~/.tmux.conf
 echo 'set-window-option -g mode-keys vi'                      >> ~/.tmux.conf
+echo                                                          >> ~/.tmux.conf
+echo 'set -g @plugin "tmux-plugins/tpm"'                      >> ~/.tmux.conf
+echo                                                          >> ~/.tmux.conf
+echo 'run "/etc/tmux/plugins/tpm/tpm"'                        >> ~/.tmux.conf
 
 
 # polybar
