@@ -196,10 +196,10 @@ X_SERVER_PACKAGE_LIST = [
     Package('x11-apps/xev'),
     Package('x11-misc/xdo'),
     Package('x11-misc/xdotool'),
-    MetaAction(['git clone https://github.com/jordansissel/keynav.git',
-                'cd keynav; make install; cd -',
+    MetaAction(['git clone https://github.com/rvaiya/warpd.git',
+                'cd warpd; make install; cd -',
                 'rm -rf keynav'],
-               name='keynav git install'),
+               name='warpd git install'),
 ]
 
 
