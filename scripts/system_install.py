@@ -51,7 +51,8 @@ def add_common_flags_to_make_conf(additional_use_flags='',
     default_useflags = ' '.join(['python', 'alsa', 'opencl',
                                  'inotify', 'lto', 'pgo',
                                  'openmp', 'zstd', 'jumbo-build',
-                                 '-wayland', '-gnome-online-accounts', '-npm'])
+                                 '-wayland', '-gnome-online-accounts', '-npm',
+                                 'jit', 'threads'])
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'{default_useflags} {additional_use_flags}')
 
     llvm_targets = ' '.join(['-AArch64', '-AMDGPU', '-ARM', '-AVR',
