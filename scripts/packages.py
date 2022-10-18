@@ -59,12 +59,15 @@ ESSENTIAL_PACKAGE_LIST = [
                              'linker-tradeoff',
                              'notmpfs']),
 
-    # for portage speedup
     Package('dev-python/pypy3', use_flags='gdbm jit sqlite tk'),
-    Action('echo "*/* PYTHON_TARGETS: pypy3" >> /etc/portage/package.use/global',
-           name='system-wide pypy3'),
-    Action('echo "pypy3" >> /etc/python-exec/emerge.conf',
-           name='system-wide pypy3'),
+
+    ### Uncomment following lines if pypy is faster than CPython with lto+pgo
+    ### on your machine
+    ###
+    #Action('echo "*/* PYTHON_TARGETS: pypy3" >> /etc/portage/package.use/global',
+    #       name='system-wide pypy3'),
+    #Action('echo "pypy3" >> /etc/python-exec/emerge.conf',
+    #       name='system-wide pypy3'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
 
     Package('app-shells/dash'),
@@ -97,6 +100,7 @@ NETWORK_PACKAGE_LIST = [
     Package('net-vpn/tor', use_flags='tor-hardening'),
     Package('net-dns/bind-tools'),
     Package('sys-apps/net-tools'),
+    Package('net-proxy/mitmproxy'),
 ]
 
 
