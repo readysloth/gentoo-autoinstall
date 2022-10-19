@@ -68,7 +68,6 @@ ESSENTIAL_PACKAGE_LIST = [
     #       name='system-wide pypy3'),
     #Action('echo "pypy3" >> /etc/python-exec/emerge.conf',
     #       name='system-wide pypy3'),
-    Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
 
     Package('app-shells/dash'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
@@ -78,6 +77,7 @@ ESSENTIAL_PACKAGE_LIST = [
            name='genkernel'),
 
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
+    Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
     Package('app-admin/sysklogd', use_flags='logger'),
