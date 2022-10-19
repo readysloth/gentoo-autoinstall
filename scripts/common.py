@@ -32,6 +32,7 @@ QUIRKS = [('delay-performance', 'Delay portage performance tweaks to after insta
           ('linker-tradeoff', 'GNU linker can use less memory at the expense of IO'),
           ('half-nproc', 'Use only half of process cores in case of insufficient RAM'),
           ('notmpfs', 'Do not build large packages in tmpfs'),
+          ('less-llvm', 'Disable all LLVM targets that set unconditionally'),
           ]
 ENABLED_QUIRKS = set()
 USE_ARIA2 = None

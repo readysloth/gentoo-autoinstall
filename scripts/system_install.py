@@ -54,16 +54,6 @@ def add_common_flags_to_make_conf(additional_use_flags='',
                                  '-wayland', '-gnome-online-accounts', '-npm',
                                  'jit', 'threads'])
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'{default_useflags} {additional_use_flags}')
-
-    llvm_targets = ' '.join(['-AArch64', '-AMDGPU', '-ARM', '-AVR',
-                             '-BPF', '-Hexagon', '-Lanai', '-Mips',
-                             '-MSP430', '-NVPTX', '-PowerPC', '-RISCV',
-                             '-Sparc', '-SystemZ', '-VE', '-XCore',
-                             '-ARC', '-CSKY', '-LoongArch', '-M68k'
-                             'WebAssembly', 'X86'])
-
-    Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/package.use/global',
-                         name='setting llvm targets'))
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'PORTAGE_IONICE_COMMAND', r'ionice -c 3 -p \${PID}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_KEYWORDS', '~amd64 amd64 x86')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'INPUT_DEVICES', 'synaptics libinput')
@@ -72,17 +62,27 @@ def add_common_flags_to_make_conf(additional_use_flags='',
 
 def process_quirks(quirks):
     os.makedirs('/etc/portage/env', exist_ok=True)
+    os.makedirs('/etc/portage/profile/', exist_ok=True)
+
     if quirks['notmpfs']:
         os.makedirs('/var/tmp/notmpfs', exist_ok=True)
         with open('/etc/portage/env/notmpfs.conf', 'w') as f:
             f.writelines([f'PORTAGE_TMPDIR="/var/tmp/notmpfs"'])
-
     if quirks['linker-tradeoff']:
         with open('/etc/portage/env/linker-tradeoff.conf', 'w') as f:
             f.writelines([r'LDFLAGS="${LDFLAGS} -Wl,--no-keep-memory"'])
     if quirks['half-nproc']:
         with open('/etc/portage/env/half-nproc.conf', 'w') as f:
             f.writelines([f'MAKEOPTS="-j{mp.cpu_count() // 2}"'])
+    if quirks['less-llvm']:
+        llvm_targets = ' '.join(['-AArch64', '-AMDGPU', '-ARM', '-AVR',
+                                 '-BPF', '-Hexagon', '-Lanai', '-Mips',
+                                 '-MSP430', '-NVPTX', '-PowerPC', '-RISCV',
+                                 '-Sparc', '-SystemZ', '-VE', '-XCore',
+                                 '-ARC', '-CSKY', '-LoongArch', '-M68k'
+                                 'WebAssembly', 'X86'])
+        Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/profile/package.use.mask',
+                             name='setting llvm targets'))
 
 
 def setup_portage():
