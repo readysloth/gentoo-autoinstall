@@ -145,6 +145,7 @@ l.checkpoint(f'Set up portage')
 si.system_boot_configuration()
 l.checkpoint(f'Set up boot configuration')
 si.enable_zswap()
+si.create_user(args.username)
 
 if not args.no_packages:
     l.checkpoint(f'Package install started')
@@ -157,5 +158,7 @@ if not args.no_packages:
 with open('/etc/conf.d/hostname', 'w') as f:
     f.write(args.hostname)
 
+l.checkpoint('Installation is finished!')
+l.checkpoint(f'Do not forget to do `passwd {args.username}` to set user password')
 
 deinit_executor()

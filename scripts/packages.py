@@ -174,6 +174,7 @@ EXTRA_PACKAGE_LIST = [
                        'ssl', 'svga', 'tiff']),
 
     Package('app-text/html-xml-utils'),
+    Package('app-admin/doas'),
 ]
 
 

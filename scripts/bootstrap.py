@@ -54,6 +54,7 @@ def _stage3_download(processor='amd64',
 def _unpack(stage3_archive):
     Executor.exec(Action(f'tar xpf {stage3_archive} --xattrs-include="*.*" --numeric-owner -C {MOUNTPOINT}',
                          name='stage3 archive extraction'), do_crash=True)
+    Executor.exec(Action(f'rm -f {stage3_archive}', name='removal of stage3 archive'))
 
 
 def _mirrorselect():
