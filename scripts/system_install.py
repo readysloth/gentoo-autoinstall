@@ -81,7 +81,7 @@ def process_quirks(quirks):
                                  '-Sparc', '-SystemZ', '-VE', '-XCore',
                                  '-ARC', '-CSKY', '-LoongArch', '-M68k'
                                  'WebAssembly', 'X86'])
-        Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/profile/package.use.mask',
+        Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/profile/package.use.force',
                              name='setting llvm targets'))
 
 
@@ -130,6 +130,12 @@ def enable_zswap():
                       "echo 1 > /sys/module/zswap/parameters/enabled"])
     with open('/etc/local.d/50-zswap.start', 'w') as f:
         f.write(text)
+
+
+def create_user(username):
+    groups = ','.join(['users', 'wheel', 'audio', 'usb', 'video'])
+    Executor.exec(Action(f'useradd -m -G {groups} -s /bin/bash {username}',
+                         name='syncing downloaded packages'))
 
 
 def install_packages(download_only_folder=None):
