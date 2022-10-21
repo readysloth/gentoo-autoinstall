@@ -40,7 +40,7 @@ def _stage3_download(processor='amd64',
         distro_location_file += '-musl'
     distro_location_file += f'-{init}.txt'
 
-    l.info(f'Will download {distro_location_file.replace(".txt", "")}')
+    l.info(f'Downloading {distro_location_file.replace(".txt", "")}')
 
     distro_location_data = map(bytes.decode, ur.urlopen(f'{site}/{folder}/{distro_location_file}').readlines())
     distro_path_line = next((l for l in distro_location_data if not l.startswith('#')))
@@ -98,7 +98,5 @@ def bootstrap(processor='amd64', init='openrc'):
     _unpack(stage3_archive)
     #_mirrorselect()
     _final_bootstrap_configuration()
-    if not common.DRY_RUN:
-        os.remove(stage3_archive)
     _chroot_to_mnt()
     l.checkpoint(f'Chrooted to {MOUNTPOINT}')
