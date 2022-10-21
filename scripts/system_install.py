@@ -79,7 +79,7 @@ def process_quirks(quirks):
                                  '-BPF', '-Hexagon', '-Lanai', '-Mips',
                                  '-MSP430', '-NVPTX', '-PowerPC', '-RISCV',
                                  '-Sparc', '-SystemZ', '-VE', '-XCore',
-                                 '-ARC', '-CSKY', '-LoongArch', '-M68k'
+                                 '-ARC', '-CSKY', '-LoongArch', '-M68k',
                                  'WebAssembly', 'X86'])
         Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/profile/package.use.force',
                              name='setting llvm targets'))
