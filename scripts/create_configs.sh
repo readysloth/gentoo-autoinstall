@@ -182,12 +182,15 @@ echo "Plug 'ntpeters/vim-better-whitespace'"  >> ${USER_HOME}/.vimrc
 echo "Plug 'mhinz/vim-signify'"               >> ${USER_HOME}/.vimrc
 echo "Plug 'wsdjeg/vim-fetch'"                >> ${USER_HOME}/.vimrc
 echo "Plug 'Galicarnax/vim-regex-syntax'"     >> ${USER_HOME}/.vimrc
+echo "Plug 'baverman/vial'"                   >> ${USER_HOME}/.vimrc
+echo "Plug 'baverman/vial-http'"              >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
 echo "call plug#end()"                        >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
 echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
 echo 'map U :UndotreeToggle<CR>'                     >> ${USER_HOME}/.vimrc
 echo 'map gG :G<CR>'                                 >> ${USER_HOME}/.vimrc
+echo 'map <C-s> :VialHttp<CR>'                       >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
 echo 'set updatetime=100'                            >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
