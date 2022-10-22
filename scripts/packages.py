@@ -265,8 +265,6 @@ ACTION_LIST = [
            name='service update'),
     Action('rc-update add cronie default',
            name='service update'),
-    Action('mkdir ~/.config',
-           name='.config folder creation in home'),
     Action('rc-update add alsasound default',
            name='service update'),
     Action('rc-update add docker default',
@@ -277,8 +275,6 @@ ACTION_LIST = [
            name='service update'),
     Action('rc-update add lvmetad boot',
            name='service update'),
-    Action('bash create_configs.sh',
-           name='configuration file creation')
 ]
 
 

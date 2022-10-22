@@ -137,8 +137,17 @@ def enable_zswap():
 
 def create_user(username):
     groups = ','.join(['users', 'wheel', 'audio', 'usb', 'video'])
-    Executor.exec(Action(f'useradd -m -G {groups} -s /bin/bash {username}',
-                         name='syncing downloaded packages'))
+    actions = [Action(f'useradd -m -G {groups} -s /bin/bash {username}',
+                      name=f'creating user `{username}`'),
+               Action(f'mkdir /home/{username}/.config',
+                      name=f'.config folder creation in {username} home')]
+    def create_configs():
+       Executor.exec(Action(f'bash create_configs.sh {username}',
+                            name='configuration files creation')
+
+    POST_INSTALL_CALLBACKS.append(create_configs)
+    for a in actions:
+        Executor.exec(a)
 
 
 def install_packages(download_only_folder=None):
