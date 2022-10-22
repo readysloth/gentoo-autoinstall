@@ -35,6 +35,9 @@ QUIRKS = [('delay-performance', 'Delay portage performance tweaks to after insta
           ('less-llvm', 'Disable all LLVM targets that set unconditionally'),
           ]
 ENABLED_QUIRKS = set()
+FEATURES = [('no-tty-ctrl-alt-del', 'Disable machine rebooting if Ctrl-Alt-Del pressed in TTY'),
+            ]
+ENABLED_FEATURES = set()
 USE_ARIA2 = None
 MIRROR_COUNT = 20
 

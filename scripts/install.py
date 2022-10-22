@@ -67,6 +67,10 @@ def parse_args():
                                 default=[],
                                 nargs='+',
                                 help='install quirks')
+    install_parser.add_argument('-e', '--features',
+                                default=[],
+                                nargs='+',
+                                help='install features')
 
 
     info_parser = subparsers.add_parser('info', help='information')
@@ -74,6 +78,9 @@ def parse_args():
     info_parser.add_argument('--list-quirks',
                              action='store_true',
                              help='list awailable install quirks')
+    info_parser.add_argument('--list-features',
+                             action='store_true',
+                             help='list awailable install features')
 
     install_args = parser.parse_args()
 
@@ -81,7 +88,10 @@ def parse_args():
         if install_args.list_quirks:
             for q in common.QUIRKS:
                 print('{} : {}'.format(*q))
-            exit(0)
+        if install_args.list_features:
+            for q in common.FEATURES:
+                print('{} : {}'.format(*q))
+        exit(0)
 
     if install_args.subparser_name == 'install':
         common.DRY_RUN = install_args.dry_run
@@ -102,6 +112,11 @@ def parse_args():
         for q, _ in common.QUIRKS:
             quirks[q] = q in common.ENABLED_QUIRKS
 
+        features = {}
+        common.ENABLED_FEATURES = set(install_args.features)
+        for q, _ in common.FEATURES:
+            features[q] = q in common.ENABLED_FEATURES
+
 
         if install_args.resume:
             common.RESUME = True
@@ -110,7 +125,7 @@ def parse_args():
             common.TMPFS_SIZE = install_args.tmpfs
         common.USE_ARIA2 = install_args.aria2
 
-    return install_args, quirks
+    return install_args, quirks, features
 
 
 def partition_disk(disk):
@@ -120,7 +135,7 @@ def partition_disk(disk):
     p.prepare_for_os_install()
 
 
-args, quirks = parse_args()
+args, quirks, features = parse_args()
 
 import install_logger
 import partitioning as p
@@ -140,6 +155,7 @@ si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
                                  prefer_binary=args.prefer_binary,
                                  delay_performance_tweaks=quirks['delay-performance'])
 si.process_quirks(quirks)
+si.process_features(features)
 si.setup_portage()
 l.checkpoint(f'Set up portage')
 si.system_boot_configuration()

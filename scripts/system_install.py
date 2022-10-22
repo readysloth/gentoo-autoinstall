@@ -88,6 +88,12 @@ def process_quirks(quirks):
         MASKS.append('>sys-fs/ncdu-1.17')
 
 
+def process_features(features):
+    if features['no-tty-ctrl-alt-del']:
+        Executor.exec(Action('sed -i "/ctrlaltdel/ s/.*/#&/" /etc/inittab',
+                             name='removing ctrl-alt-del reboot'))
+
+
 def setup_portage():
     basic_setup_actions = [Action('emerge-webrsync', name='webrsync'),
                            Action('emerge --oneshot sys-apps/portage', name='portage update'),
