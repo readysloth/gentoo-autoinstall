@@ -127,7 +127,6 @@ DEV_PACKAGE_LIST = [
     Package('sys-devel/gdb', use_flags='server source-highlight xml xxhash'),
     Package('dev-scheme/racket', use_flags='futures chez'),
     Package('dev-lang/clojure'),
-    Package('dev-python/bpython', use_flags='jedi'),
     Package('dev-util/android-tools'),
     Package('dev-util/rr'),
     Package('dev-lang/rust',
