@@ -252,6 +252,19 @@ echo 'set -g default-terminal "screen-256color"'              >> ${USER_HOME}/.t
 echo 'set-window-option -g mode-keys vi'                      >> ${USER_HOME}/.tmux.conf
 echo                                                          >> ${USER_HOME}/.tmux.conf
 echo 'set -g @plugin "tmux-plugins/tpm"'                      >> ${USER_HOME}/.tmux.conf
+echo 'set -g @plugin "tmux-plugins/tmux-resurrect"'           >> ${USER_HOME}/.tmux.conf
+echo 'set -g @plugin "tmux-plugins/tmux-cpu"'                 >> ${USER_HOME}/.tmux.conf
+echo 'set -g @plugin "tmux-plugins/tmux-sidebar"'             >> ${USER_HOME}/.tmux.conf
+echo 'set -g @sidebar-tree-command "tree -C"'                 >> ${USER_HOME}/.tmux.conf
+echo                                                          >> ${USER_HOME}/.tmux.conf
+echo 'set -g @plugin "tmux-plugins/tmux-prefix-highlight"'    >> ${USER_HOME}/.tmux.conf
+
+TMUX_CPU="#{cpu_bg_color} CPU: #{cpu_icon} #{cpu_percentage}"
+TMUX_BAT="#{battery_status_bg} Batt: #{battery_icon} #{battery_percentage} #{battery_remain}"
+TMUX_PREFIX="#{prefix_highlight}"
+
+echo "set -g status-right \"$TMUX_PREFIX | $TMUX_CPU | $TMUX_BAT | %a %h-%d %H:%M\"" >> ${USER_HOME}/.tmux.conf
+echo 'set -g status-right-length "150"'                       >> ${USER_HOME}/.tmux.conf
 echo                                                          >> ${USER_HOME}/.tmux.conf
 echo 'run "/etc/tmux/plugins/tpm/tpm"'                        >> ${USER_HOME}/.tmux.conf
 
