@@ -275,6 +275,8 @@ ACTION_LIST = [
            name='service update'),
     Action('rc-update add lvmetad boot',
            name='service update'),
+    Action('rc-update add consolefont boot',
+           name='service update'),
 ]
 
 
