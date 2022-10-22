@@ -1,7 +1,9 @@
 import os
 import time
+import asyncio
 import logging
 import hashlib
+import functools as ft
 import subprocess as sp
 
 from abc import ABC
@@ -163,6 +165,29 @@ class MetaAction(Action):
 
     def __str__(self):
         return f"{self.name} -> {self.actions}"
+
+
+    def __hash__(self):
+        return int(hashlib.md5((str(self) + str(Action.exec_counter)).encode()).hexdigest(), 16)
+
+
+class ParallelActions:
+    def __init__(self, *actions, name='-unnamed-parallel-action-'):
+        self.actions = actions
+        self.name = name
+
+
+    def __call__(self, *append):
+        async def schedule():
+            loop = asyncio.get_running_loop()
+            tasks = [loop.run_in_executor(None, ft.partial(a, *append)) for a in self.actions]
+            await asyncio.gather(tasks)
+
+        asyncio.run(schedule())
+
+
+    def __str__(self):
+        return f"{self.name} || {self.actions}"
 
 
     def __hash__(self):

@@ -1,12 +1,13 @@
 import os
 import logging
 import threading as t
+import itertools as it
 import urllib.request as ur
 
 import common
 import install_logger
 
-from entity import Package, Action, MetaAction, Executor
+from entity import Package, Action, MetaAction, Executor, ParallelActions
 
 
 def combine_package_install(pkg_list):
@@ -27,7 +28,15 @@ def exclude_from_world_rebuild(pkg_list):
     package_names = []
     world_rebuild_pkg = None
 
-    for pkg in filter(lambda p: type(p) == Package, pkg_list):
+    is_parallel_action = lambda p: type(p) == ParallelActions
+    is_not_parallel_action = lambda p: type(p) != ParallelActions
+
+    parallel_action_containers = filter(is_parallel_action, pkg_list)
+    normal_pkgs = filter(is_not_parallel_action, pkg_list)
+
+    parallel_actions = it.chain.from_iterable((pa.actions for pa in parallel_action_containers))
+
+    for pkg in it.chain(normal_pkgs, filter(lambda p: type(p) == Package, parallel_actions)):
         if pkg.package == '@world':
             world_rebuild_pkg = pkg
         elif pkg.package.startswith('sys-'):
@@ -73,10 +82,10 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/genkernel'),
     Package('sys-kernel/linux-firmware'),
-    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install all',
-           name='genkernel'),
-
-    Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
+    ParallelActions(Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install all',
+                           name='genkernel'),
+                    Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
+                    name='kernel+@world in parallel'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
