@@ -149,7 +149,7 @@ def create_user(username):
                       name=f'.config folder creation in {username} home')]
     def create_configs():
        Executor.exec(Action(f'bash create_configs.sh {username}',
-                            name='configuration files creation')
+                            name='configuration files creation'))
 
     POST_INSTALL_CALLBACKS.append(create_configs)
     for a in actions:
