@@ -5,6 +5,7 @@ import common
 from entity import Action, Executor
 from packages import (PACKAGE_LIST,
                       POST_INSTALL_CALLBACKS,
+                      MASKS,
                       pre_install,
                       post_install,
                       execute_each_in)
@@ -83,6 +84,8 @@ def process_quirks(quirks):
                                  'WebAssembly', 'X86'])
         Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/profile/package.use.force',
                              name='setting llvm targets'))
+        # upstream version based on zig, which fails to compile with use flags above
+        MASKS.append('>sys-fs/ncdu-1.17')
 
 
 def setup_portage():
