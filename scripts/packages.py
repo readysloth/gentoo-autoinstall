@@ -82,7 +82,9 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/genkernel'),
     Package('sys-kernel/linux-firmware'),
-    ParallelActions(Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install all',
+
+    # there can be tmpfs, so switch tmpdir to it
+    ParallelActions(Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --tmpdir=/var/tmp/portage/genkernel all',
                            name='genkernel'),
                     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
                     name='kernel+@world in parallel'),
