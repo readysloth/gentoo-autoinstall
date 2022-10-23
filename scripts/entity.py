@@ -184,7 +184,7 @@ class ParallelActions:
         async def schedule():
             loop = asyncio.get_running_loop()
             tasks = [loop.run_in_executor(None, ft.partial(a, *append)) for a in self.actions]
-            await asyncio.gather(tasks)
+            await asyncio.gather(*tasks)
 
         asyncio.run(schedule())
 
