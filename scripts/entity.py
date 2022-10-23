@@ -22,6 +22,8 @@ class Action:
                  nondestructive=False,
                  pre=None,
                  post=None):
+        Action.exec_counter += 1
+
         self.cmd = cmd
         self.env = env or {}
         self.name = name[:100]
@@ -31,11 +33,10 @@ class Action:
         self.value = ''
         self.pre = pre
         self.post = post
+        self.action_id = Action.exec_counter
 
 
     def __call__(self, *append):
-        Action.exec_counter += 1
-
         if common.DRY_RUN and not self.nondestructive:
             self.succeded = True
             return self
@@ -45,8 +46,8 @@ class Action:
         if self.pre:
             l.debug('Executing pre-function')
             self.pre()
-        with open(f'{self.name}_{Action.exec_counter}.stdout', 'ab') as stdout_file, \
-             open(f'{self.name}_{Action.exec_counter}.stderr', 'ab') as stderr_file:
+        with open(f'{self.name}_{self.action_id}.stdout', 'ab') as stdout_file, \
+             open(f'{self.name}_{self.action_id}.stderr', 'ab') as stderr_file:
             self.proc = sp.Popen(f'{self.cmd} {" ".join(append)}',
                                  shell=True,
                                  env={**os.environ, **self.env},
@@ -70,7 +71,7 @@ class Action:
             self.post()
 
         try:
-            with open(f'{self.name}_{Action.exec_counter}.stdout', 'r') as stdout_file:
+            with open(f'{self.name}_{self.action_id}.stdout', 'r') as stdout_file:
                 self.value = stdout_file.read().strip()
                 l.debug(f'[{self.name}] value = "{self.value}"')
         except FileNotFoundError as e:
@@ -86,7 +87,7 @@ class Action:
 
 
     def __hash__(self):
-        return int(hashlib.md5((self.name + self.cmd + str(Action.exec_counter)).encode()).hexdigest(), 16)
+        return int(hashlib.md5((self.name + self.cmd + str(self.action_id)).encode()).hexdigest(), 16)
 
 
 class Package(Action):
@@ -153,6 +154,7 @@ class MetaAction(Action):
                                pre) for i, cmd in enumerate(cmds)]
         self.succeded = True
         self.name = name
+        super().__init__('')
 
 
     def __call__(self, *append):
@@ -168,13 +170,14 @@ class MetaAction(Action):
 
 
     def __hash__(self):
-        return int(hashlib.md5((str(self) + str(Action.exec_counter)).encode()).hexdigest(), 16)
+        return int(hashlib.md5((str(self) + str(self.action_id)).encode()).hexdigest(), 16)
 
 
 class ParallelActions:
     def __init__(self, *actions, name='-unnamed-parallel-action-'):
         self.actions = actions
         self.name = name
+        super().__init__('')
 
 
     def __call__(self, *append):
@@ -191,7 +194,7 @@ class ParallelActions:
 
 
     def __hash__(self):
-        return int(hashlib.md5((str(self) + str(Action.exec_counter)).encode()).hexdigest(), 16)
+        return int(hashlib.md5((str(self) + str(self.action_id)).encode()).hexdigest(), 16)
 
 
 class Executor(ABC):
@@ -210,7 +213,6 @@ class Executor(ABC):
         l = logging.getLogger(__name__)
         if common.RESUME and hash(action) in Executor.executed_actions_set:
             l.info(f'Skipping "{action.name}"')
-            Action.exec_counter += 1
             return
 
         l.info(f'Executing "{action.name}"')
