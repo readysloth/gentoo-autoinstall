@@ -173,7 +173,7 @@ class MetaAction(Action):
         return int(hashlib.md5((str(self) + str(self.action_id)).encode()).hexdigest(), 16)
 
 
-class ParallelActions:
+class ParallelActions(Action):
     def __init__(self, *actions, name='-unnamed-parallel-action-'):
         self.actions = actions
         self.name = name
