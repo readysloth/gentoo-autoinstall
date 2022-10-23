@@ -48,7 +48,6 @@ def exclude_from_world_rebuild(pkg_list):
 
 
 MASKS = [
-    '<sys-libs/compiler-rt-15.0.0'
 ]
 
 QUIRKED_PACKAGES = [
