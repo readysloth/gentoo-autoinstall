@@ -177,6 +177,7 @@ class ParallelActions(Action):
     def __init__(self, *actions, name='-unnamed-parallel-action-'):
         self.actions = actions
         self.name = name
+        self.succeded = False
         super().__init__('')
 
 
@@ -184,9 +185,11 @@ class ParallelActions(Action):
         async def schedule():
             loop = asyncio.get_running_loop()
             tasks = [loop.run_in_executor(None, ft.partial(a, *append)) for a in self.actions]
-            await asyncio.gather(*tasks)
+            finished_tasks = await asyncio.gather(*tasks)
+            return any((ft.succeded for ft in finished_tasks))
 
-        asyncio.run(schedule())
+        self.succeded = asyncio.run(schedule())
+        return self
 
 
     def __str__(self):
