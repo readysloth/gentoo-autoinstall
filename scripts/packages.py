@@ -36,7 +36,7 @@ def exclude_from_world_rebuild(pkg_list):
 
     parallel_actions = it.chain.from_iterable((pa.actions for pa in parallel_action_containers))
 
-    for pkg in it.chain(normal_pkgs, filter(lambda p: type(p) == Package, parallel_actions)):
+    for pkg in filter(lambda p: type(p) == Package, it.chain(normal_pkgs, parallel_actions)):
         if pkg.package == '@world':
             world_rebuild_pkg = pkg
         elif pkg.package.startswith('sys-'):
