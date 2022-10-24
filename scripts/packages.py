@@ -83,10 +83,9 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/linux-firmware'),
 
     # there can be tmpfs, so switch tmpdir to it
-    ParallelActions(Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --tmpdir=/var/tmp/portage/genkernel all',
-                           name='genkernel'),
-                    Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
-                    name='kernel+@world in parallel'),
+    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --tmpdir=/var/tmp/portage/genkernel all',
+           name='genkernel'),
+    Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
