@@ -217,7 +217,6 @@ pushd xkb-switch;
     popd;
 popd
 rm -rf xkb-switch
-vim +PlugInstall +qa
 
 
 # tmux
@@ -387,6 +386,14 @@ echo 'super + space'                          >> ${USER_HOME}/.config/sxhkd/sxhk
 echo ' bspc node -t {floating, tiled}'        >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 
 
+echo "permit ${USERNAME} as root"  > /etc/doas.conf
+echo "permit root as ${USERNAME}" >> /etc/doas.conf
+
 
 git config --global core.editor vim
 cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+
+
+chown -R ${USERNAME} ${USER_HOME}
+
+doas -u ${USERNAME} vim +PlugInstall +qa
