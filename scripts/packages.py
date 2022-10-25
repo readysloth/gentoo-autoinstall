@@ -89,6 +89,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
+    Package('sys-apps/util-linux', use_flags='-logger'),
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
 
