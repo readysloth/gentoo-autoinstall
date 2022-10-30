@@ -282,6 +282,8 @@ ACTION_LIST = [
            name='service update'),
     Action('rc-update add dhpcd default',
            name='service update'),
+    Action('rc-update add pulseaudio default',
+           name='service update'),
     Action('rc-update add lvmetad boot',
            name='service update'),
     Action('rc-update add consolefont boot',

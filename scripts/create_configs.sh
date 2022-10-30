@@ -60,7 +60,6 @@ echo "xset +fp $(echo ${USER_HOME}/.fonts)"              >> ${USER_HOME}/.xinitr
 echo "xset fp rehash"                                    >> ${USER_HOME}/.xinitrc
 echo 'picom &'                                           >> ${USER_HOME}/.xinitrc
 echo 'clipmenud &'                                       >> ${USER_HOME}/.xinitrc
-echo 'pulseaudio --start --disallow-exit'                >> ${USER_HOME}/.xinitrc
 echo 'setxkbmap -option grp:alt_shift_toggle dvorak,ru'  >> ${USER_HOME}/.xinitrc
 echo '${USER_HOME}/.config/polybar/launch.sh --forest &' >> ${USER_HOME}/.xinitrc
 echo '${USER_HOME}/.scripts/autochanging_wallpaper.sh &' >> ${USER_HOME}/.xinitrc
