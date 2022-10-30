@@ -208,7 +208,7 @@ X_SERVER_PACKAGE_LIST = [
     Package('x11-misc/xdotool'),
     MetaAction(['git clone https://github.com/rvaiya/warpd.git',
                 'cd warpd; make && make install; cd -',
-                'rm -rf keynav'],
+                'rm -rf warpd'],
                name='warpd git install'),
 ]
 
