@@ -89,8 +89,8 @@ def parse_args():
             for q in common.QUIRKS:
                 print('{} : {}'.format(*q))
         if install_args.list_features:
-            for q in common.FEATURES:
-                print('{} : {}'.format(*q))
+            for f in common.FEATURES:
+                print('{} : {}'.format(*f))
         exit(0)
 
     if install_args.subparser_name == 'install':
