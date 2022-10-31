@@ -77,6 +77,8 @@ ESSENTIAL_PACKAGE_LIST = [
     #Action('echo "pypy3" >> /etc/python-exec/emerge.conf',
     #       name='system-wide pypy3'),
 
+    # with global `gpm` use flag
+    Package('sys-libs/ncurses'),
     Package('app-shells/dash'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/genkernel'),
@@ -180,7 +182,7 @@ EXTRA_PACKAGE_LIST = [
     Package('www-client/links',
             use_flags=['freetype', 'libevent', 'unicode',
                        'ipv6', 'jpeg', 'lzma',
-                       'ssl', 'svga', 'tiff']),
+                       'ssl', 'tiff', 'fbcon']),
 
     Package('app-text/html-xml-utils'),
     Package('app-admin/doas'),
