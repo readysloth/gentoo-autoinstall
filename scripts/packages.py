@@ -140,6 +140,7 @@ EXTRA_PACKAGE_LIST = [
                        'ssl', 'tiff', 'fbcon']),
 
     Package('app-admin/doas'),
+    Package('sys-apps/inxi'),
 ]
 
 
