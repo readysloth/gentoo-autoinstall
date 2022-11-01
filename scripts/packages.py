@@ -53,30 +53,10 @@ MASKS = [
 QUIRKED_PACKAGES = [
     Package('media-libs/libsndfile', use_flags='minimal'),
     Package('net-misc/aria2', use_flags='bittorent libuv ssh'),
-    Package('dev-util/ccache'),
 ]
 
 
 ESSENTIAL_PACKAGE_LIST = [
-    Package('sys-devel/gcc',
-            use_flags=['-ada', '-objc', '-objc-gc',
-                       '-fortran', '-d', '-debug',
-                       'sanitize', 'graphite', 'ntpl',
-                       'jit'],
-            possible_quirks=['half-nproc',
-                             'linker-tradeoff',
-                             'notmpfs']),
-
-    Package('dev-python/pypy3', use_flags='gdbm jit sqlite tk'),
-
-    ### Uncomment following lines if pypy is faster than CPython with lto+pgo
-    ### on your machine
-    ###
-    #Action('echo "*/* PYTHON_TARGETS: pypy3" >> /etc/portage/package.use/global',
-    #       name='system-wide pypy3'),
-    #Action('echo "pypy3" >> /etc/python-exec/emerge.conf',
-    #       name='system-wide pypy3'),
-
     # with global `gpm` use flag
     Package('sys-libs/ncurses'),
     Package('app-shells/dash'),
@@ -113,7 +93,6 @@ NETWORK_PACKAGE_LIST = [
     Package('net-dns/bind-tools'),
     Package('sys-apps/net-tools'),
     Package('net-proxy/mitmproxy'),
-    Package('net-proxy/privoxy', use_flags='compression fast-redirects whitelists'),
 ]
 
 
@@ -133,18 +112,8 @@ FS_PACKAGE_LIST = [
 
 
 DEV_PACKAGE_LIST = [
-    Package('dev-util/cmake'),
     Package('dev-vcs/git', use_flags='cgi gpg highlight webdav'),
     Package('dev-lang/python', use_flags='gdbm readline sqlite tk'),
-    Package('sys-devel/gdb', use_flags='server source-highlight xml xxhash'),
-    Package('dev-scheme/racket', use_flags='futures chez'),
-    Package('dev-lang/clojure'),
-    Package('dev-util/android-tools'),
-    Package('dev-util/rr'),
-    Package('dev-lang/rust',
-            possible_quirks=['half-nproc',
-                             'linker-tradeoff',
-                             'notmpfs']),
 ]
 
 
@@ -156,24 +125,10 @@ EXTRA_PACKAGE_LIST = [
                                           'osmesa', 'vdpau', 'vulkan']),
     Package('media-sound/pulseaudio', use_flags='daemon glib'),
     Package('media-sound/alsa-utils', use_flags='bat'),
-    Package('media-libs/libmpd'),
-    Package('media-sound/mpd'),
     Package('app-arch/unrar'),
     Package('sys-apps/lshw'),
     Package('app-containers/docker'),
     Package('app-containers/docker-cli'),
-    Package('app-containers/docker-compose'),
-    Package('app-emulation/qemu',
-            use_flags=['aio', 'alsa', 'capstone', 'curl', 'fdt',
-                       'io-uring', 'plugins', 'png', 'jpeg', 'fuse',
-                       'sdl', 'sdl-image', 'spice', 'ssh', 'usb',
-                       'usbredir', 'gtk', 'vnc', 'vhost-net']),
-    Package('app-emulation/wine-staging',
-            use_flags=['dos', 'gecko', 'faudio',
-                       'mono', 'udev', 'run-exes',
-                       'netapi', 'samba', 'sdl',
-                       'vulkan']),
-    Package('app-emulation/winetricks'),
     Package('media-gfx/imagemagick',
             use_flags=['djvu', 'jpeg', 'lzma',
                        'png', 'postscript',
@@ -184,7 +139,6 @@ EXTRA_PACKAGE_LIST = [
                        'ipv6', 'jpeg', 'lzma',
                        'ssl', 'tiff', 'fbcon']),
 
-    Package('app-text/html-xml-utils'),
     Package('app-admin/doas'),
 ]
 
@@ -245,24 +199,7 @@ def download_patches_for_st():
 
 
 X_PACKAGE_LIST = [
-    Package('app-emulation/virt-manager', use_flags='gtk'),
-    Package('www-client/firefox',
-            use_flags=['system-harfbuzz', 'system-icu', 'system-jpeg',
-                       'system-libevent', 'system-png', 'system-python-libs',
-                       'system-webp', 'geckodriver'],
-            possible_quirks=['half-nproc',
-                             'linker-tradeoff',
-                             'notmpfs']),
-    Package('app-office/libreoffice',
-            use_flags='pdfimport',
-            possible_quirks=['half-nproc',
-                             'linker-tradeoff',
-                             'notmpfs']),
-    Package('net-im/telegram-desktop', use_flags='screencast hunspell'),
     Package('media-gfx/feh', use_flags='xinerama'),
-    Package('media-gfx/gimp', use_flags='webp lua'),
-    Package('media-gfx/flameshot'),
-    Package('media-video/peek'),
     Package('x11-terms/st', use_flags='savedconfig', pre=download_patches_for_st),
 ]
 
@@ -351,19 +288,6 @@ def pre_install():
                                     'FETCHCOMMAND',
                                     ' '.join(aria_cmd))
 
-
-    common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'FEATURES', 'ccache')
-    common.add_variable_to_file(common.MAKE_CONF_PATH, 'CCACHE_DIR', '/var/cache/ccache')
-
-
-    os.makedirs('/var/cache/ccache/', exist_ok=True)
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'max_size', '15.0G', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'hash_dir', 'false', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compiler_check', r'%compiler% -dumpversion', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'cache_dir_levels', '3', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compression', 'true', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compression_level', '1', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'cache_dir', '/var/cache/ccache/cache', quot='')
 
     prefetch_thread = t.Thread(target=predownload,
                                args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
