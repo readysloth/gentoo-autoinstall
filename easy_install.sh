@@ -1,6 +1,6 @@
 #!/bin/sh
 
-wget "https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/main/download_scripts.sh"
+wget "https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/minimal/download_scripts.sh"
 . download_scripts.sh
 cd $FOLDER
 
