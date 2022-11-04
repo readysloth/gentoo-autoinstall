@@ -114,6 +114,7 @@ NETWORK_PACKAGE_LIST = [
     Package('sys-apps/net-tools'),
     Package('net-proxy/mitmproxy'),
     Package('net-proxy/privoxy', use_flags='compression fast-redirects whitelists'),
+    Package('net-analyzer/tcpdump')
 ]
 
 
