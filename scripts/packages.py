@@ -182,7 +182,7 @@ EXTRA_PACKAGE_LIST = [
     Package('www-client/links',
             use_flags=['freetype', 'libevent', 'unicode',
                        'ipv6', 'jpeg', 'lzma',
-                       'ssl', 'tiff', 'fbcon']),
+                       'tiff', 'fbcon']),
 
     Package('app-text/html-xml-utils'),
     Package('app-admin/doas'),

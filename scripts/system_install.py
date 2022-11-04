@@ -53,7 +53,8 @@ def add_common_flags_to_make_conf(additional_use_flags='',
                                  'inotify', 'lto', 'pgo',
                                  'openmp', 'zstd', 'jumbo-build',
                                  '-wayland', '-gnome-online-accounts', '-npm',
-                                 'jit', 'threads', 'gpm'])
+                                 'jit', 'threads', 'gpm',
+                                 'ssl'])
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'{default_useflags} {additional_use_flags}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'PORTAGE_IONICE_COMMAND', r'ionice -c 3 -p \${PID}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_KEYWORDS', '~amd64 amd64 x86')
