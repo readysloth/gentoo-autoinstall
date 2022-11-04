@@ -187,6 +187,8 @@ EXTRA_PACKAGE_LIST = [
     Package('app-text/html-xml-utils'),
     Package('app-admin/doas'),
     Package('sys-apps/inxi'),
+    Package('app-misc/jq'),
+    Package('app-misc/yq'),
 ]
 
 
