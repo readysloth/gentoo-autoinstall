@@ -137,7 +137,7 @@ EXTRA_PACKAGE_LIST = [
     Package('www-client/links',
             use_flags=['freetype', 'libevent', 'unicode',
                        'ipv6', 'jpeg', 'lzma',
-                       'ssl', 'tiff', 'fbcon']),
+                       'tiff', 'fbcon']),
 
     Package('app-admin/doas'),
     Package('sys-apps/inxi'),
