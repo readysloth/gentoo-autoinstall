@@ -7,6 +7,8 @@ import urllib.request as ur
 import common
 import install_logger
 
+from pathlib import Path
+
 from entity import Package, Action, MetaAction, Executor, ParallelActions
 
 
@@ -47,6 +49,26 @@ def exclude_from_world_rebuild(pkg_list):
                                                                   pkg=world_rebuild_pkg.package)
 
 
+def move_kernel_src_to_tmpfs():
+    if not common.TMPFS_SIZE:
+        return
+    kernel_sources = Path('/usr/src/linux')
+    real_sources = kernel_sources.parent / kernel_sources.readlink()
+    real_sources = real_sources.rename(Path('/var/tmp/portage/') / real_sources.name)
+    kernel_sources.unlink()
+    kernel_sources.symlink_to(real_sources.absolute())
+
+
+def move_kernel_src_from_tmpfs():
+    if not common.TMPFS_SIZE:
+        return
+    kernel_sources = Path('/usr/src/linux')
+    real_sources = kernel_sources.readlink()
+    real_sources = real_sources.rename(Path('/usr/src/') / real_sources.name)
+    kernel_sources.unlink()
+    kernel_sources.symlink_to(real_sources)
+
+
 MASKS = [
 ]
 
@@ -85,7 +107,9 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/linux-firmware'),
 
     # there can be tmpfs, so switch tmpdir to it
-    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --tmpdir=/var/tmp/portage/genkernel all',
+    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --saveconfig all',
+           pre=move_kernel_src_to_tmpfs,
+           post=move_kernel_src_from_tmpfs,
            name='genkernel'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
