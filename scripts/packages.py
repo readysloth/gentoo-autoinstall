@@ -1,4 +1,5 @@
 import os
+import shutil
 import logging
 import threading as t
 import itertools as it
@@ -54,9 +55,10 @@ def move_kernel_src_to_tmpfs():
         return
     kernel_sources = Path('/usr/src/linux')
     real_sources = kernel_sources.parent / kernel_sources.readlink()
-    real_sources = real_sources.rename(Path('/var/tmp/portage/') / real_sources.name)
+    moved_sources = Path('/var/tmp/portage/') / real_sources.name
+    shutil.move(real_sources, moved_sources)
     kernel_sources.unlink()
-    kernel_sources.symlink_to(real_sources.absolute())
+    kernel_sources.symlink_to(moved_sources.absolute())
 
 
 def move_kernel_src_from_tmpfs():
@@ -64,9 +66,10 @@ def move_kernel_src_from_tmpfs():
         return
     kernel_sources = Path('/usr/src/linux')
     real_sources = kernel_sources.readlink()
-    real_sources = real_sources.rename(Path('/usr/src/') / real_sources.name)
+    moved_sources = Path('/usr/src/') / real_sources.name
+    shutil.move(real_sources, moved_sources)
     kernel_sources.unlink()
-    kernel_sources.symlink_to(real_sources)
+    kernel_sources.symlink_to(moved_sources.absolute())
 
 
 MASKS = [
