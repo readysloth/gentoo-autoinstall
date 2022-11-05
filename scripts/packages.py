@@ -108,6 +108,7 @@ FS_PACKAGE_LIST = [
     Package('net-fs/sshfs'),
     Package('net-fs/samba'),
     Package('net-fs/cifs-utils'),
+    Package('sys-apps/smartmontools'),
 ]
 
 
