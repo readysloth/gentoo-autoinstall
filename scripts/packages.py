@@ -110,7 +110,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/linux-firmware'),
 
     # there can be tmpfs, so switch tmpdir to it
-    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --saveconfig all',
+    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --save-config all',
            pre=move_kernel_src_to_tmpfs,
            post=move_kernel_src_from_tmpfs,
            name='genkernel'),
