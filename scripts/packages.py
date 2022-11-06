@@ -42,7 +42,9 @@ def exclude_from_world_rebuild(pkg_list):
     for pkg in filter(lambda p: type(p) == Package, it.chain(normal_pkgs, parallel_actions)):
         if pkg.package == '@world':
             world_rebuild_pkg = pkg
-        elif pkg.package not in ['sys-libs/ncurses', 'sys-apps/util-linux']:
+        elif pkg.package not in ['sys-libs/ncurses',
+                                 'sys-apps/util-linux',
+                                 'sys-libs/gpm']:
             # we should build @world with this packages
             continue
         elif pkg.package.startswith('sys-'):
@@ -106,6 +108,8 @@ ESSENTIAL_PACKAGE_LIST = [
     #       name='system-wide pypy3'),
 
     # with global `gpm` use flag
+    Package('sys-libs/ncurses', '--oneshot', env={'USE' : '-gpm'}),
+    Package('sys-libs/gpm', '--oneshot'),
     Package('sys-libs/ncurses'),
     Package('app-shells/dash'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
