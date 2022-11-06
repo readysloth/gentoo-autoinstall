@@ -42,6 +42,9 @@ def exclude_from_world_rebuild(pkg_list):
     for pkg in filter(lambda p: type(p) == Package, it.chain(normal_pkgs, parallel_actions)):
         if pkg.package == '@world':
             world_rebuild_pkg = pkg
+        elif pkg.package.startswith('sys-libs/ncurses'):
+            # we should build @world with ncurses
+            continue
         elif pkg.package.startswith('sys-'):
             package_names.append(pkg.package)
 
