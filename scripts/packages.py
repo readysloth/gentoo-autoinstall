@@ -93,6 +93,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --save-config all',
            pre=move_kernel_src_to_tmpfs,
            post=move_kernel_src_from_tmpfs,
+           in_background=True,
            name='genkernel'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
