@@ -3,6 +3,7 @@ import time
 import asyncio
 import logging
 import hashlib
+import threading as t
 import functools as ft
 import subprocess as sp
 
@@ -21,7 +22,8 @@ class Action:
                  env=None,
                  nondestructive=False,
                  pre=None,
-                 post=None):
+                 post=None,
+                 in_background=False):
         Action.exec_counter += 1
 
         self.cmd = cmd
@@ -33,6 +35,7 @@ class Action:
         self.value = ''
         self.pre = pre
         self.post = post
+        self.in_background = in_background
         self.action_id = Action.exec_counter
 
 
@@ -68,7 +71,10 @@ class Action:
             self.succeded = self.proc.returncode == 0
         if self.succeded and self.post:
             l.debug('Executing post-function')
-            self.post()
+            if self.in_background:
+                t.Thread(target=self.post).start()
+            else:
+                self.post()
 
         try:
             with open(f'{self.name}_{self.action_id}.stdout', 'r') as stdout_file:
