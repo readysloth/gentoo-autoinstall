@@ -84,6 +84,7 @@ QUIRKED_PACKAGES = [
     Package('media-libs/libsndfile', use_flags='minimal'),
     Package('net-misc/aria2', use_flags='bittorent libuv ssh'),
     Package('dev-util/ccache'),
+    Package('dev-util/vmtouch'),
 ]
 
 
