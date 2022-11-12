@@ -142,7 +142,6 @@ echo 'set expandtab'      >> ${USER_HOME}/.vimrc
 echo 'set shiftwidth=4'   >> ${USER_HOME}/.vimrc
 echo 'set smarttab'       >> ${USER_HOME}/.vimrc
 echo                      >> ${USER_HOME}/.vimrc
-echo                      >> ${USER_HOME}/.vimrc
 echo 'syntax on'          >> ${USER_HOME}/.vimrc
 echo                      >> ${USER_HOME}/.vimrc
 
@@ -155,6 +154,7 @@ echo                                      >> ${USER_HOME}/.vimrc
 echo "vnoremap <C-j> :m '>1<CR>gv=gv"     >> ${USER_HOME}/.vimrc
 echo "vnoremap <C-k> :m '<2<CR>gv=gv"     >> ${USER_HOME}/.vimrc
 echo                                      >> ${USER_HOME}/.vimrc
+echo "let mapleader = ' '"                >> ${USER_HOME}/.vimrc
 
 echo "call plug#begin('${USER_HOME}/.vim/plugged')"      >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
