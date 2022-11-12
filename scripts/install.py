@@ -25,7 +25,7 @@ def parse_args():
                                 action='store_true',
                                 help='enable debug logging')
     install_parser.add_argument('-c', '--cpu',
-                                const='amd64',
+                                const='arm64',
                                 nargs='?',
                                 help='cpu architecture')
     install_parser.add_argument('-i', '--init',

@@ -57,9 +57,9 @@ def add_common_flags_to_make_conf(additional_use_flags='',
                                  'minimal', 'ssl'])
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'{default_useflags} {additional_use_flags}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'PORTAGE_IONICE_COMMAND', r'ionice -c 3 -p \${PID}')
-    common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_KEYWORDS', '~amd64 amd64 x86')
+    common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_KEYWORDS', '~arm64 arm64')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'INPUT_DEVICES', 'synaptics libinput')
-    common.add_variable_to_file(common.MAKE_CONF_PATH, 'GRUB_PLATFORMS', 'emu efi-32 efi-64 pc')
+    common.add_variable_to_file(common.MAKE_CONF_PATH, 'GRUB_PLATFORMS', 'efi-32 efi-64')
 
 
 def process_quirks(quirks):

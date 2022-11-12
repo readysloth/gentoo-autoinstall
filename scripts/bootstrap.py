@@ -17,9 +17,9 @@ def _launch_ntpd():
     Executor.exec(Action('ntpd -q -g', name='time syncing'), do_crash=True)
 
 
-def _stage3_download(processor='amd64',
+def _stage3_download(processor='arm64',
                      init='openrc',
-                     desktop=True,
+                     desktop=False,
                      hardened=False,
                      nomultilib=False,
                      musl=False):
@@ -91,10 +91,10 @@ def _chroot_to_mnt():
     Executor.executed_actions_file = open(common.EXECUTED_ACTIONS_FILENAME, 'a')
 
 
-def bootstrap(processor='amd64', init='openrc'):
+def bootstrap(processor='arm64', init='openrc'):
     l = logging.getLogger(__name__)
     _launch_ntpd()
-    stage3_archive = _stage3_download(processor='amd64', init='openrc')
+    stage3_archive = _stage3_download(processor=processor, init='openrc')
     _unpack(stage3_archive)
     #_mirrorselect()
     _final_bootstrap_configuration()
