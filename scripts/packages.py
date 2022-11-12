@@ -95,9 +95,6 @@ ESSENTIAL_PACKAGE_LIST = [
 
     # there can be tmpfs, so switch tmpdir to it
     Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --save-config all',
-           pre=move_kernel_src_to_tmpfs,
-           post=move_kernel_src_from_tmpfs,
-           in_background=True,
            name='genkernel'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
@@ -151,17 +148,8 @@ DEV_PACKAGE_LIST = [
 
 
 EXTRA_PACKAGE_LIST = [
-    Package('media-fonts/noto', use_flags='cjk'),
-    Package('media-fonts/noto-emoji'),
-    Package('dev-util/glslang'), # for mesa build
-    Package('media-libs/mesa', use_flags=['classic', 'd3d9', 'lm-sensors',
-                                          'osmesa', 'vdpau', 'vulkan']),
-    Package('media-sound/pulseaudio', use_flags='daemon glib'),
-    Package('media-sound/alsa-utils', use_flags='bat'),
     Package('app-arch/unrar'),
     Package('sys-apps/lshw'),
-    Package('app-containers/docker'),
-    Package('app-containers/docker-cli'),
     Package('media-gfx/imagemagick',
             use_flags=['djvu', 'jpeg', 'lzma',
                        'png', 'postscript',
@@ -184,7 +172,6 @@ TERMINAL_PACKAGE_LIST = [
 
     Package('app-shells/fzf'),
     Package('app-misc/tmux'),
-    Package('sys-apps/ripgrep-all'),
     Package('sys-process/htop'),
 ]
 
