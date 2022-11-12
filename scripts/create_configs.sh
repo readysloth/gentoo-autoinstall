@@ -208,6 +208,29 @@ echo 'autocmd VimEnter * DimInactiveOn'              >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
 echo 'let g:diminactive_use_syntax = 1'              >> ${USER_HOME}/.vimrc
 echo 'let g:diminactive_use_colorcolumn = 0'         >> ${USER_HOME}/.vimrc
+echo                                                 >> ${USER_HOME}/.vimrc
+echo "function! s:on_lsp_buffer_enabled() abort"                                >> ${USER_HOME}/.vimrc
+echo "    setlocal omnifunc=lsp#complete"                                       >> ${USER_HOME}/.vimrc
+echo "    setlocal signcolumn=yes"                                              >> ${USER_HOME}/.vimrc
+echo "    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif"         >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> gd <plug>(lsp-definition)"                              >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> gs <plug>(lsp-document-symbol-search)"                  >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)"                 >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> gr <plug>(lsp-references)"                              >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> gi <plug>(lsp-implementation)"                          >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> <leader>r <plug>(lsp-rename)"                           >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> [g <plug>(lsp-previous-diagnostic)"                     >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> ]g <plug>(lsp-next-diagnostic)"                         >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> K <plug>(lsp-hover)"                                    >> ${USER_HOME}/.vimrc
+echo                                                                            >> ${USER_HOME}/.vimrc
+echo "    let g:lsp_format_sync_timeout = 1000"                                 >> ${USER_HOME}/.vimrc
+echo "    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')" >> ${USER_HOME}/.vimrc
+echo "endfunction"                                                              >> ${USER_HOME}/.vimrc
+
+echo "augroup lsp_install"                                                >> ${USER_HOME}/.vimrc
+echo "    au!"                                                            >> ${USER_HOME}/.vimrc
+echo "    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()" >> ${USER_HOME}/.vimrc
+echo "augroup END"                                                        >> ${USER_HOME}/.vimrc
 
 
 git clone https://github.com/grwlf/xkb-switch.git;
