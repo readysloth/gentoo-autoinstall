@@ -184,6 +184,11 @@ echo "Plug 'Galicarnax/vim-regex-syntax'"     >> ${USER_HOME}/.vimrc
 echo "Plug 'baverman/vial'"                   >> ${USER_HOME}/.vimrc
 echo "Plug 'baverman/vial-http'"              >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
+echo "Plug 'prabirshrestha/vim-lsp'"          >> ${USER_HOME}/.vimrc
+echo "Plug 'mattn/vim-lsp-settings'"          >> ${USER_HOME}/.vimrc
+echo "Plug 'Shougo/ddc.vim'"                  >> ${USER_HOME}/.vimrc
+echo "Plug 'shun/ddc-vim-lsp'"                >> ${USER_HOME}/.vimrc
+echo                                          >> ${USER_HOME}/.vimrc
 echo "call plug#end()"                        >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
 echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
