@@ -424,3 +424,17 @@ cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 chown -R ${USERNAME} ${USER_HOME}
 
 doas -u ${USERNAME} vim +PlugInstall +qa
+cd ${USER_HOME}/.vim/plugged/vim-lsp-settings/installer/
+    sh install-cmake-language-server.sh
+    sh install-bash-language-server.sh
+    sh install-clangd.sh
+    sh install-docker-langserver.sh
+    sh install-html-languageserver.sh
+    sh install-json-languageserver.sh
+    sh install-omnisharp-lsp.sh
+    sh install-powershell-languageserver.sh
+    sh install-pylsp-all.sh
+    sh install-sql-language-server.sh
+    sh install-vim-language-server.sh
+    sh install-rust-analyzer.sh
+cd -
