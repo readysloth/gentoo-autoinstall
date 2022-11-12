@@ -77,12 +77,12 @@ def process_quirks(quirks):
         with open('/etc/portage/env/half-nproc.conf', 'w') as f:
             f.writelines([f'MAKEOPTS="-j{mp.cpu_count() // 2}"'])
     if quirks['less-llvm']:
-        llvm_targets = ' '.join(['-AArch64', '-AMDGPU', '-ARM', '-AVR',
+        llvm_targets = ' '.join(['AArch64', '-AMDGPU', '-ARM', '-AVR',
                                  '-BPF', '-Hexagon', '-Lanai', '-Mips',
                                  '-MSP430', '-NVPTX', '-PowerPC', '-RISCV',
                                  '-Sparc', '-SystemZ', '-VE', '-XCore',
                                  '-ARC', '-CSKY', '-LoongArch', '-M68k',
-                                 'WebAssembly', 'X86'])
+                                 '-WebAssembly', '-X86'])
         Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/profile/package.use.force',
                              name='setting llvm targets'))
         # upstream version based on zig, which fails to compile with use flags above
