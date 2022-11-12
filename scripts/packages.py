@@ -183,6 +183,7 @@ DEV_PACKAGE_LIST = [
             possible_quirks=['half-nproc',
                              'linker-tradeoff',
                              'notmpfs']),
+    Package('dev-dotnet/dotnet-sdk-bin', use_flags='dotnet-symlink'),
 ]
 
 
