@@ -214,14 +214,15 @@ echo "    setlocal omnifunc=lsp#complete"                                       
 echo "    setlocal signcolumn=yes"                                              >> ${USER_HOME}/.vimrc
 echo "    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif"         >> ${USER_HOME}/.vimrc
 echo "    nmap <buffer> gd <plug>(lsp-definition)"                              >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> gs <plug>(lsp-document-symbol-search)"                  >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)"                 >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> g/ <plug>(lsp-document-symbol-search)"                  >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> g? <plug>(lsp-workspace-symbol-search)"                 >> ${USER_HOME}/.vimrc
 echo "    nmap <buffer> gr <plug>(lsp-references)"                              >> ${USER_HOME}/.vimrc
 echo "    nmap <buffer> gi <plug>(lsp-implementation)"                          >> ${USER_HOME}/.vimrc
 echo "    nmap <buffer> <leader>r <plug>(lsp-rename)"                           >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> [g <plug>(lsp-previous-diagnostic)"                     >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> ]g <plug>(lsp-next-diagnostic)"                         >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> <leader>i <plug>(lsp-next-diagnostic)"                  >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> <leader>I <plug>(lsp-previous-diagnostic)"              >> ${USER_HOME}/.vimrc
 echo "    nmap <buffer> K <plug>(lsp-hover)"                                    >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> <leader>d <plug>(lsp-document-diagnostics)"             >> ${USER_HOME}/.vimrc
 echo                                                                            >> ${USER_HOME}/.vimrc
 echo "    let g:lsp_format_sync_timeout = 1000"                                 >> ${USER_HOME}/.vimrc
 echo "    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')" >> ${USER_HOME}/.vimrc
