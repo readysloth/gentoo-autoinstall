@@ -34,8 +34,6 @@ def parse_args():
     build_parser.add_argument('-r', '--resume',
                               action='store_true',
                               help='executed.actions file for installation resume')
-    build_parser.add_argument('-d', '--download-packages-only',
-                              help='folder for packages')
     build_parser.add_argument('-f', '--tmpfs',
                               help='tmpfs size for faster installation')
     build_parser.add_argument('-q', '--quirks',
@@ -55,29 +53,29 @@ def parse_args():
                              action='store_true',
                              help='list awailable install features')
 
-    install_args = parser.parse_args()
+    build_args = parser.parse_args()
 
-    if install_args.subparser_name == 'info':
-        if install_args.list_quirks:
+    if build_args.subparser_name == 'info':
+        if build_args.list_quirks:
             for q in common.QUIRKS:
                 print('{} : {}'.format(*q))
-        if install_args.list_features:
+        if build_args.list_features:
             for f in common.FEATURES:
                 print('{} : {}'.format(*f))
         exit(0)
 
-    if install_args.subparser_name == 'build':
+    if build_args.subparser_name == 'build':
         common.TARGET = args.target
         common.TARGET_ROOT = f'/usr/{args.target}'
         common.MAKE_CONF_PATH = f'{common.TARGET_ROOT}/{common.MAKE_CONF_PATH}'
 
-        common.DRY_RUN = install_args.dry_run
-        if install_args.verbose:
+        common.DRY_RUN = build_args.dry_run
+        if build_args.verbose:
             common.LOGGER_LEVEL = logging.DEBUG
 
-        if not install_args.no_gui or install_args.no_wm:
-            install_args.use_flags.append('X')
-            if install_args.no_wm:
+        if not build_args.no_gui or build_args.no_wm:
+            build_args.use_flags.append('X')
+            if build_args.no_wm:
                 pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST + pkg.X_PACKAGE_LIST
             else:
                 pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST \
@@ -85,22 +83,22 @@ def parse_args():
                                     + pkg.X_PACKAGE_LIST
 
         quirks = {}
-        common.ENABLED_QUIRKS = set(install_args.quirks)
+        common.ENABLED_QUIRKS = set(build_args.quirks)
         for q, _ in common.QUIRKS:
             quirks[q] = q in common.ENABLED_QUIRKS
 
         features = {}
-        common.ENABLED_FEATURES = set(install_args.features)
+        common.ENABLED_FEATURES = set(build_args.features)
         for q, _ in common.FEATURES:
             features[q] = q in common.ENABLED_FEATURES
 
 
-        if install_args.resume:
+        if build_args.resume:
             common.RESUME = True
-            common.EXECUTED_ACTIONS_FILENAME = install_args.resume
-        if install_args.tmpfs:
-            common.TMPFS_SIZE = install_args.tmpfs
-    return install_args, quirks, features
+            common.EXECUTED_ACTIONS_FILENAME = build_args.resume
+        if build_args.tmpfs:
+            common.TMPFS_SIZE = build_args.tmpfs
+    return build_args, quirks, features
 
 
 args, quirks, features = parse_args()
