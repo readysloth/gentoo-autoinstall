@@ -276,40 +276,16 @@ def pre_install():
                                name='activating swap file')
         for a in [dd_action, mkswap_action, swapon_action]:
             Executor.exec(a)
-    with open('/etc/portage/package.mask/install.mask', 'w') as f:
+    with open(f'{common.TARGET_ROOT}/etc/portage/package.mask/install.mask', 'w') as f:
         f.writelines(MASKS)
 
 
     if common.TMPFS_SIZE:
-        tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs /var/tmp/portage',
+        tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs {common.TARGET_ROOT}/var/tmp/portage',
                               name='tmpfs mount')
         Executor.exec(tmpfs_action)
 
-    Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
-    Executor.exec(Package('app-portage/mirrorselect'))
-    Executor.exec(Action(f'mirrorselect -s{common.MIRROR_COUNT} -4 -D', name='mirrorselect'))
-
-
     execute_each_in(QUIRKED_PACKAGES)
-    if common.USE_ARIA2:
-        aria_cmd = [r"/usr/bin/aria2c",
-                    r"--dir=\${DISTDIR}",
-                    r"--out=\${FILE}",
-                    r"--allow-overwrite=true",
-                    r"--max-tries=5",
-                    r"--max-file-not-found=2",
-                    r"--user-agent=Wget/1.19.1",
-                    r"--connect-timeout=5",
-                    r"--timeout=5",
-                    f"--split={common.MIRROR_COUNT}",
-                    r"--min-split-size=2M",
-                    r"--max-connection-per-server=2",
-                    r"--uri-selector=inorder \${URI}"]
-        common.add_variable_to_file(common.MAKE_CONF_PATH,
-                                    'FETCHCOMMAND',
-                                    ' '.join(aria_cmd))
-
-
     prefetch_thread = t.Thread(target=predownload,
                                args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
     prefetch_thread.start()

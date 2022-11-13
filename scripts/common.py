@@ -22,8 +22,9 @@ if 'LOGLEVEL' in os.environ:
 
 
 DRY_RUN = False
+TARGET = ''
+TARGET_ROOT = ''
 MAKE_CONF_PATH = '/etc/portage/make.conf'
-BIN_CONF_PATH = '/etc/portage/binrepos.conf'
 DEFAULT_GENTOO_PROFILE = 6
 RESUME = False
 TMPFS_SIZE = None
@@ -38,8 +39,6 @@ ENABLED_QUIRKS = set()
 FEATURES = [('no-tty-ctrl-alt-del', 'Disable machine rebooting if Ctrl-Alt-Del pressed in TTY'),
             ]
 ENABLED_FEATURES = set()
-USE_ARIA2 = None
-MIRROR_COUNT = 20
 
 
 def add_value_to_string_variable(filename, variable_name, value, quot='"', delim=' '):

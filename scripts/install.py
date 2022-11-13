@@ -7,74 +7,47 @@ from entity import init_executor, deinit_executor
 
 import packages as pkg
 
+
 def parse_args():
-    parser = argparse.ArgumentParser(description='Gentoo workspace installer')
+    parser = argparse.ArgumentParser(description='Gentoo bin builder')
     subparsers = parser.add_subparsers(dest='subparser_name')
 
-    install_parser = subparsers.add_parser('install', help='install options')
-
-    install_parser.add_argument('disk', help='dev node to install gentoo')
-    install_parser.add_argument('-n', '--dry-run',
-                                action='store_true',
-                                help='pretend to install, do nothing actually')
+    build_parser = subparsers.add_parser('build', help='build options')
+    build_parser.add_argument('target', help='ARCHITECTURE-VENDOR-OS-LIBC target from crossdev')
+    build_parser.add_argument('-n', '--dry-run',
+                              action='store_true',
+                              help='pretend to install, do nothing actually')
     # TODO: https://dilfridge.blogspot.com/2021/09/experimental-binary-gentoo-package.html
-    install_parser.add_argument('-b', '--prefer-binary',
-                                action='store_true',
-                                help='prefer binary packages to source')
-    install_parser.add_argument('-v', '--verbose',
-                                action='store_true',
-                                help='enable debug logging')
-    install_parser.add_argument('-c', '--cpu',
-                                default='arm64',
-                                nargs='?',
-                                help='cpu architecture')
-    install_parser.add_argument('-i', '--init',
-                                default='openrc',
-                                nargs='?',
-                                help='init system')
-    install_parser.add_argument('-u', '--use-flags',
-                                default=[],
-                                nargs='+',
-                                help='system-wide use flags')
-    install_parser.add_argument('-t', '--no-gui',
-                                action='store_true',
-                                help='install only terminal packages')
-    install_parser.add_argument('-T', '--no-wm',
-                                action='store_true',
-                                help='install only terminal packages and X server')
-    install_parser.add_argument('-p', '--no-packages',
-                                action='store_true',
-                                help='do not install any supplied packages')
-    install_parser.add_argument('-H', '--hostname',
-                                default='gentoo',
-                                nargs='?',
-                                help='OS hostname')
-    install_parser.add_argument('-U', '--user',
-                                default='user',
-                                nargs='?',
-                                help='user name')
-    install_parser.add_argument('-r', '--resume',
-                                action='store_true',
-                                help='executed.actions file for installation resume')
-    install_parser.add_argument('-d', '--download-packages-only',
-                                help='folder for packages')
-    install_parser.add_argument('-f', '--tmpfs',
-                                help='tmpfs size for faster installation')
-    install_parser.add_argument('-a', '--aria2',
-                                action='store_true',
-                                help='use aria2 as FETCHCOMMAND instead of wget')
-    install_parser.add_argument('-q', '--quirks',
-                                default=[],
-                                nargs='+',
-                                help='install quirks')
-    install_parser.add_argument('-e', '--features',
-                                default=[],
-                                nargs='+',
-                                help='install features')
-
+    build_parser.add_argument('-v', '--verbose',
+                              action='store_true',
+                              help='enable debug logging')
+    build_parser.add_argument('-u', '--use-flags',
+                              default=[],
+                              nargs='+',
+                              help='system-wide use flags')
+    build_parser.add_argument('-t', '--no-gui',
+                              action='store_true',
+                              help='install only terminal packages')
+    build_parser.add_argument('-T', '--no-wm',
+                              action='store_true',
+                              help='install only terminal packages and X server')
+    build_parser.add_argument('-r', '--resume',
+                              action='store_true',
+                              help='executed.actions file for installation resume')
+    build_parser.add_argument('-d', '--download-packages-only',
+                              help='folder for packages')
+    build_parser.add_argument('-f', '--tmpfs',
+                              help='tmpfs size for faster installation')
+    build_parser.add_argument('-q', '--quirks',
+                              default=[],
+                              nargs='+',
+                              help='install quirks')
+    build_parser.add_argument('-e', '--features',
+                              default=[],
+                              nargs='+',
+                              help='install features')
 
     info_parser = subparsers.add_parser('info', help='information')
-
     info_parser.add_argument('--list-quirks',
                              action='store_true',
                              help='list awailable install quirks')
@@ -93,7 +66,11 @@ def parse_args():
                 print('{} : {}'.format(*f))
         exit(0)
 
-    if install_args.subparser_name == 'install':
+    if install_args.subparser_name == 'build':
+        common.TARGET = args.target
+        common.TARGET_ROOT = f'/usr/{args.target}'
+        common.MAKE_CONF_PATH = f'{common.TARGET_ROOT}/{common.MAKE_CONF_PATH}'
+
         common.DRY_RUN = install_args.dry_run
         if install_args.verbose:
             common.LOGGER_LEVEL = logging.DEBUG
@@ -123,23 +100,13 @@ def parse_args():
             common.EXECUTED_ACTIONS_FILENAME = install_args.resume
         if install_args.tmpfs:
             common.TMPFS_SIZE = install_args.tmpfs
-        common.USE_ARIA2 = install_args.aria2
-
     return install_args, quirks, features
-
-
-def partition_disk(disk):
-    p.prepare_for_partitioning(disk)
-    bootloader_part, lvm_part = p.part_disk(disk)
-    p.create_lvm_partition(bootloader_part, lvm_part)
-    p.prepare_for_os_install()
 
 
 args, quirks, features = parse_args()
 
+
 import install_logger
-import partitioning as p
-import bootstrap as b
 import system_install as si
 
 l = logging.getLogger(__name__)
@@ -147,34 +114,15 @@ l = logging.getLogger(__name__)
 init_executor()
 
 
-partition_disk(args.disk)
-l.checkpoint(f'Partitioned {args.disk}')
-b.bootstrap(processor=args.cpu, init=args.init)
-l.checkpoint(f'Bootstrapped for further install')
 si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
-                                 prefer_binary=args.prefer_binary,
                                  delay_performance_tweaks=quirks['delay-performance'])
 si.process_quirks(quirks)
 si.process_features(features)
-si.setup_portage()
-l.checkpoint(f'Set up portage')
-si.system_boot_configuration()
-l.checkpoint(f'Set up boot configuration')
-si.enable_zswap()
-si.create_user(args.user)
 
-if not args.no_packages:
-    l.checkpoint(f'Package install started')
-    failed_packages, failed_actions = si.install_packages(args.download_packages_only)
-    l.checkpoint(f'Package install ended')
-    l.warning(f'{failed_packages} packages failed to install')
-    l.warning(f'{failed_actions} actions failed to execute')
-
-
-with open('/etc/conf.d/hostname', 'w') as f:
-    f.write(args.hostname)
-
-l.checkpoint('Installation is finished!')
-l.checkpoint(f'Do not forget to do `passwd {args.user}` to set user password')
+l.checkpoint('Package install started')
+failed_packages, failed_actions = si.build_packages()
+l.checkpoint('Package install ended')
+l.warning(f'{failed_packages} packages failed to install')
+l.warning(f'{failed_actions} actions failed to execute')
 
 deinit_executor()

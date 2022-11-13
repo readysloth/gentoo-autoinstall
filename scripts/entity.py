@@ -131,7 +131,7 @@ class Package(Action):
         l = logging.getLogger(__name__)
         use_file_name = self.package.replace('/', '.')
         if self.use_flags:
-            with open(f'/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
+            with open(f'{common.TARGET_ROOT}/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
                 use_flags_file.write(f'{self.package} {self.use_flags}')
 
         l.debug(f'Possible quirks: [{self.possible_quirks}]')
@@ -139,7 +139,7 @@ class Package(Action):
             if q not in common.ENABLED_QUIRKS:
                 continue
             l.debug(f'Quirk {q} enabled for {self.package}')
-            with open('/etc/portage/package.env', 'a') as f:
+            with open(f'{common.TARGET_ROOT}/etc/portage/package.env', 'a') as f:
                 f.write(f'{self.package} {q}.conf\n')
 
         l.debug(f'Installing {self.package}, USE="{self.use_flags}"')
