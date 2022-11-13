@@ -106,21 +106,21 @@ def parse_args():
 args, quirks, features = parse_args()
 
 
-import install_logger
-import system_install as si
+import build_logger
+import system_conf as sc
 
 l = logging.getLogger(__name__)
 
 init_executor()
 
 
-si.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
+sc.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
                                  delay_performance_tweaks=quirks['delay-performance'])
-si.process_quirks(quirks)
-si.process_features(features)
+sc.process_quirks(quirks)
+sc.process_features(features)
 
 l.checkpoint('Package install started')
-failed_packages, failed_actions = si.build_packages()
+failed_packages, failed_actions = sc.build_packages()
 l.checkpoint('Package install ended')
 l.warning(f'{failed_packages} packages failed to install')
 l.warning(f'{failed_actions} actions failed to execute')

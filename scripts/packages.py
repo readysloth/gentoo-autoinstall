@@ -6,7 +6,7 @@ import itertools as it
 import urllib.request as ur
 
 import common
-import install_logger
+import build_logger
 
 from pathlib import Path
 
@@ -225,33 +225,7 @@ X_PACKAGE_LIST = [
 ]
 
 
-ACTION_LIST = [
-    Action('grub-mkconfig -o /boot/grub/grub.cfg',
-           name='grub config creation'),
-    Action("grub-install --target=$(lscpu | awk '/Architecture/ {print $2}')-efi --efi-directory=/boot --removable",
-           name='grub config creation'),
-    Action('rc-update add sysklogd default',
-           name='service update'),
-    Action('rc-update add cronie default',
-           name='service update'),
-    Action('rc-update add alsasound default',
-           name='service update'),
-    Action('rc-update add docker default',
-           name='service update'),
-    Action('rc-update add libvirtd default',
-           name='service update'),
-    Action('rc-update add dhpcd default',
-           name='service update'),
-    Action('rc-update add pulseaudio default',
-           name='service update'),
-    Action('rc-update add lvmetad boot',
-           name='service update'),
-    Action('rc-update add consolefont boot',
-           name='service update'),
-    Action('rc-update add dbus default',
-           name='service update'),
-]
-
+ACTION_LIST = []
 
 POST_INSTALL_CALLBACKS = []
 
@@ -265,7 +239,7 @@ def pre_install():
     _12_GB = 12000000
     if free_memory < _12_GB:
         l = logging.getLogger(__name__)
-        l.info(f'Your system have less than 12 Gigs of free space, creating swap')
+        l.info('Your system have less than 12 Gigs of free space, creating swap')
         block_count = (_12_GB - free_memory) // 1024
         swapfile = '/tmp/swapfile'
         dd_action = Action(f'dd if=/dev/zero of={swapfile} bs=1M count={block_count}',
@@ -278,7 +252,6 @@ def pre_install():
             Executor.exec(a)
     with open(f'{common.TARGET_ROOT}/etc/portage/package.mask/install.mask', 'w') as f:
         f.writelines(MASKS)
-
 
     if common.TMPFS_SIZE:
         tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs {common.TARGET_ROOT}/var/tmp/portage',
@@ -321,5 +294,5 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
 
-exclude_from_world_rebuild(PACKAGE_LIST)
-#PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
+# exclude_from_world_rebuild(PACKAGE_LIST)
+# PACKAGE_LIST = combine_package_install(PACKAGE_LIST)

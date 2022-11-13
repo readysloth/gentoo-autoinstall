@@ -10,7 +10,7 @@ import subprocess as sp
 from abc import ABC
 
 import common
-import install_logger
+import build_logger
 
 
 class Action:
