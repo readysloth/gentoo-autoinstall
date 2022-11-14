@@ -3,9 +3,7 @@ import argparse
 
 import common
 
-from entity import init_executor, deinit_executor
-
-import packages as pkg
+from entity import init_executor, deinit_executor, Action, Executor
 
 
 def parse_args():
@@ -16,7 +14,7 @@ def parse_args():
     build_parser.add_argument('target', help='ARCHITECTURE-VENDOR-OS-LIBC target from crossdev')
     build_parser.add_argument('-n', '--dry-run',
                               action='store_true',
-                              help='pretend to install, do nothing actually')
+                              help='pretend to build, do nothing actually')
     # TODO: https://dilfridge.blogspot.com/2021/09/experimental-binary-gentoo-package.html
     build_parser.add_argument('-v', '--verbose',
                               action='store_true',
@@ -27,31 +25,28 @@ def parse_args():
                               help='system-wide use flags')
     build_parser.add_argument('-t', '--no-gui',
                               action='store_true',
-                              help='install only terminal packages')
-    build_parser.add_argument('-T', '--no-wm',
-                              action='store_true',
-                              help='install only terminal packages and X server')
+                              help='build only terminal packages')
     build_parser.add_argument('-r', '--resume',
                               action='store_true',
-                              help='executed.actions file for installation resume')
+                              help='executed.actions file for build resume')
     build_parser.add_argument('-f', '--tmpfs',
-                              help='tmpfs size for faster installation')
+                              help='tmpfs size for faster build')
     build_parser.add_argument('-q', '--quirks',
                               default=[],
                               nargs='+',
-                              help='install quirks')
+                              help='build quirks')
     build_parser.add_argument('-e', '--features',
                               default=[],
                               nargs='+',
-                              help='install features')
+                              help='build features')
 
     info_parser = subparsers.add_parser('info', help='information')
     info_parser.add_argument('--list-quirks',
                              action='store_true',
-                             help='list awailable install quirks')
+                             help='list available build quirks')
     info_parser.add_argument('--list-features',
                              action='store_true',
-                             help='list awailable install features')
+                             help='list available build features')
 
     build_args = parser.parse_args()
 
@@ -65,22 +60,18 @@ def parse_args():
         exit(0)
 
     if build_args.subparser_name == 'build':
-        common.TARGET = args.target
-        common.TARGET_ROOT = f'/usr/{args.target}'
+        common.TARGET = build_args.target
+        common.TARGET_ROOT = f'/usr/{common.TARGET}'
         common.MAKE_CONF_PATH = f'{common.TARGET_ROOT}/{common.MAKE_CONF_PATH}'
 
         common.DRY_RUN = build_args.dry_run
         if build_args.verbose:
             common.LOGGER_LEVEL = logging.DEBUG
 
-        if not build_args.no_gui or build_args.no_wm:
+        if build_args.no_gui:
+            build_args.use_flags.append('-X')
+        else:
             build_args.use_flags.append('X')
-            if build_args.no_wm:
-                pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST + pkg.X_PACKAGE_LIST
-            else:
-                pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST \
-                                    + pkg.X_WM_PACKAGE_LIST \
-                                    + pkg.X_PACKAGE_LIST
 
         quirks = {}
         common.ENABLED_QUIRKS = set(build_args.quirks)
@@ -111,16 +102,19 @@ l = logging.getLogger(__name__)
 
 init_executor()
 
+Executor.exec(Action(f'yes | crossdev --clean -t {common.TARGET} && crossdev -t {common.TARGET}',
+                     name='crossdev init'))
+Executor.exec(Action(f'emerge-wrapper --target {common.TARGET} --init', name='cross-emerge init'),)
 
 sc.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
                                  delay_performance_tweaks=quirks['delay-performance'])
 sc.process_quirks(quirks)
 sc.process_features(features)
 
-l.checkpoint('Package install started')
+l.checkpoint('Package build started')
 failed_packages, failed_actions = sc.build_packages()
-l.checkpoint('Package install ended')
-l.warning(f'{failed_packages} packages failed to install')
+l.checkpoint('Package build ended')
+l.warning(f'{failed_packages} packages failed to build')
 l.warning(f'{failed_actions} actions failed to execute')
 
 deinit_executor()
