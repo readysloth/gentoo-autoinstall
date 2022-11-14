@@ -79,22 +79,31 @@ MASKS = [
 ]
 
 QUIRKED_PACKAGES = [
-    Package('media-libs/libsndfile', use_flags='minimal'),
+    # hack for syncing portage
+    Package('--sync'),
     Package('net-misc/aria2', use_flags='bittorent libuv ssh'),
     Package('dev-util/vmtouch'),
+    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}),
+    Package('sys-libs/gpm', '--nodeps'),
+    Package('sys-libs/ncurses'),
 ]
 
 
 ESSENTIAL_PACKAGE_LIST = [
     # with global `gpm` use flag
-    Package('sys-libs/ncurses'),
     Package('app-shells/dash'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
-    Package('sys-kernel/genkernel'),
     Package('sys-kernel/linux-firmware'),
 
-    # there can be tmpfs, so switch tmpdir to it
-    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --save-config all',
+    Action(' '.join(['genkernel',
+                     '--lvm',
+                     '--e2fsprogs',
+                     '--mountboot',
+                     '--busybox',
+                     '--no-install',
+                     '--loglevel=5',
+                     f'--kernel-outputdir={common.TARGET}',
+                     f'--cross-compile={common.TARGET} all']),
            name='genkernel'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
@@ -250,10 +259,13 @@ def pre_install():
                                name='activating swap file')
         for a in [dd_action, mkswap_action, swapon_action]:
             Executor.exec(a)
+
+    os.makedirs(f'{common.TARGET_ROOT}/etc/portage/package.mask/', exist_ok=True)
     with open(f'{common.TARGET_ROOT}/etc/portage/package.mask/install.mask', 'w') as f:
         f.writelines(MASKS)
 
     if common.TMPFS_SIZE:
+        os.makedirs(f'{common.TARGET_ROOT}/var/tmp/portage', exist_ok=True)
         tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs {common.TARGET_ROOT}/var/tmp/portage',
                               name='tmpfs mount')
         Executor.exec(tmpfs_action)
@@ -292,7 +304,10 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + FS_PACKAGE_LIST \
                + EXTRA_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
-               + DEV_PACKAGE_LIST
+               + DEV_PACKAGE_LIST \
+               + X_SERVER_PACKAGE_LIST \
+               + X_WM_PACKAGE_LIST \
+               + X_PACKAGE_LIST
 
 # exclude_from_world_rebuild(PACKAGE_LIST)
 # PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
