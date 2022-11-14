@@ -109,8 +109,8 @@ ESSENTIAL_PACKAGE_LIST = [
     #       name='system-wide pypy3'),
 
     # with global `gpm` use flag
-    Package('sys-libs/ncurses', '--oneshot', env={'USE' : '-gpm'}),
-    Package('sys-libs/gpm', '--oneshot'),
+    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}),
+    Package('sys-libs/gpm', '--nodeps'),
     Package('sys-libs/ncurses'),
     Package('app-shells/dash'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
