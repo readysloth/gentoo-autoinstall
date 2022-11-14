@@ -108,11 +108,15 @@ class Package(Action):
             if type(use_flags) == list:
                 use_flags = ' '.join(use_flags)
         self.use_flags = use_flags
-        self.options = options
+        self.options = f'--buildpkg {options}'
+        self.emerge = f'emerge-wrapper --target {common.TARGET}'
         self.possible_quirks = possible_quirks or []
-        self.emerge = f'{common.TARGET}-emerge'
-        self.cmd_template = self.emerge + ' --onlydeps {opts} {pkg}'
-        self.cmd = self.cmd_template.format(opts=self.options, pkg=self.package)
+
+        try_cmd_template = f'{self.emerge} --autounmask-write {{opts}} {{pkg}}'
+        catch_cmd_template = f'echo -5 | etc-update && {self.emerge} {{opts}} {{pkg}}'
+        self.cmd_template = f'{try_cmd_template} || ({catch_cmd_template})'
+        self.cmd = self.cmd_template.format(opts=self.options,
+                                            pkg=self.package)
         super().__init__(self.cmd,
                          name=f'{package.replace("/", "_")}',
                          nondestructive=False,
@@ -131,11 +135,6 @@ class Package(Action):
     def __call__(self, *append):
         l = logging.getLogger(__name__)
         use_file_name = self.package.replace('/', '.')
-        self.cmd = ' '.join([self.cmd,
-                             '&&',
-                             self.emerge, '--buildpkgonly {opts} {pkg}'.format(opts=self.options,
-                                                                               pkg=self.package)])
-
         if self.use_flags:
             with open(f'{common.TARGET_ROOT}/etc/portage/package.use/{use_file_name}', 'a') as use_flags_file:
                 use_flags_file.write(f'{self.package} {self.use_flags}')
