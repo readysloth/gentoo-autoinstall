@@ -369,9 +369,11 @@ def pre_install():
                               name='tmpfs mount')
         Executor.exec(tmpfs_action)
 
-    Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
     Executor.exec(Package('app-portage/mirrorselect'))
     Executor.exec(Action(f'mirrorselect -s{common.MIRROR_COUNT} -4 -D', name='mirrorselect'))
+    Executor.exec(Action('emerge --sync', name='emerge sync'))
+
+    Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
 
 
     execute_each_in(QUIRKED_PACKAGES)
