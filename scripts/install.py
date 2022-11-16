@@ -133,6 +133,7 @@ def partition_disk(disk):
     bootloader_part, lvm_part = p.part_disk(disk)
     p.create_lvm_partition(bootloader_part, lvm_part)
     p.prepare_for_os_install()
+    return bootloader_part
 
 
 args, quirks, features = parse_args()
@@ -147,7 +148,7 @@ l = logging.getLogger(__name__)
 init_executor()
 
 
-partition_disk(args.disk)
+bootloader_part = partition_disk(args.disk)
 l.checkpoint(f'Partitioned {args.disk}')
 b.bootstrap(processor=args.cpu, init=args.init)
 l.checkpoint(f'Bootstrapped for further install')
@@ -158,7 +159,7 @@ si.process_quirks(quirks)
 si.process_features(features)
 si.setup_portage()
 l.checkpoint(f'Set up portage')
-si.system_boot_configuration()
+si.system_boot_configuration(bootloader_part)
 l.checkpoint(f'Set up boot configuration')
 si.enable_zswap()
 si.create_user(args.user)
