@@ -1,5 +1,6 @@
 import os
 import re
+import shlex
 import logging
 import subprocess as sp
 
@@ -83,5 +84,5 @@ def source(file):
     proc = sp.Popen(command, stdout = sp.PIPE)
     for line in proc.stdout:
         variable = line.decode().strip()
-        (key, _, value) = formatted_line.partition('=')
+        (key, _, value) = line.partition('=')
         os.environ[key] = value
