@@ -20,22 +20,17 @@ def parted_on(disk):
     return Action(f'parted -a optimal --script {disk}', name='partition disk')
 
 
-def part_for_bootloader():
-    yield from ['mklabel gpt',
-                'mkpart primary 1MiB 3MiB',
-                'name 1 grub',
-                'set 1 bios_grub on']
-
 def part_for_boot():
-    yield from ['mkpart primary 3MiB 259MiB',
-                'name 2 boot',
-                'set 2 boot on']
+    yield from ['mklabel gpt',
+                'mkpart primary 1MiB 256MiB',
+                'name 1 boot',
+                'set 1 boot on']
 
 
 def part_for_lvm():
-    yield from ['mkpart primary 259MiB -1',
-                'name 3 lvm',
-                'set 3 lvm on']
+    yield from ['mkpart primary 256MiB -1',
+                'name 2 lvm',
+                'set 2 lvm on']
 
 
 def get_dev_node(disk, number):
@@ -66,7 +61,7 @@ def allocate_space_in_lvm(rootfs_percent=100, swap_size=2048):
 
 
 def make_fs_and_swap(partition):
-    return [Action(f'mkfs.fat -F 32 {partition}', name='filesystem creation'),
+    return [Action(f'mkfs.fat -F 32 -n efi-boot {partition}', name='filesystem creation'),
             Action(f'mkfs.ext4 /dev/{LVM_GROUP_NAME}/rootfs', name='filesystem creation'),
             Action(f'e2label /dev/{LVM_GROUP_NAME}/rootfs rootfs', name='rootfs labeling'),
             Action(f'mkswap /dev/{LVM_GROUP_NAME}/swap', name='swap creation'),
