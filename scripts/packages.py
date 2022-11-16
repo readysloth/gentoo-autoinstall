@@ -59,22 +59,14 @@ def move_kernel_src_to_tmpfs():
     if not common.TMPFS_SIZE:
         return
     kernel_sources = Path('/usr/src/linux')
-    real_sources = kernel_sources.parent / kernel_sources.readlink()
-    moved_sources = Path('/var/tmp/portage/') / real_sources.name
-    shutil.move(real_sources, moved_sources)
-    kernel_sources.unlink()
-    kernel_sources.symlink_to(moved_sources.absolute())
+    Executor.exec(Action(f'vmtouch -vft {kernel_sources}'))
 
 
 def move_kernel_src_from_tmpfs():
     if not common.TMPFS_SIZE:
         return
     kernel_sources = Path('/usr/src/linux')
-    real_sources = kernel_sources.readlink()
-    moved_sources = Path('/usr/src/') / real_sources.name
-    shutil.move(real_sources, moved_sources)
-    kernel_sources.unlink()
-    kernel_sources.symlink_to(moved_sources.absolute())
+    Executor.exec(Action(f'vmtouch -vfe {kernel_sources}'))
 
 
 MASKS = [
