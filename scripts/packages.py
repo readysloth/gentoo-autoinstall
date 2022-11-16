@@ -91,9 +91,8 @@ QUIRKED_PACKAGES = [
 ESSENTIAL_PACKAGE_LIST = [
     Package('sys-devel/gcc',
             use_flags=['-ada', '-objc', '-objc-gc',
-                       '-fortran', '-d', '-debug',
-                       'sanitize', 'graphite', 'ntpl',
-                       'jit'],
+                       '-d', '-debug', 'sanitize',
+                       'graphite', 'ntpl', 'jit'],
             possible_quirks=['half-nproc',
                              'linker-tradeoff',
                              'notmpfs']),
