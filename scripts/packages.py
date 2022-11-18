@@ -250,7 +250,7 @@ X_SERVER_PACKAGE_LIST = [
 
 X_WM_PACKAGE_LIST = [
     Package('media-gfx/scrot'),
-    Package('x11-misc/clipmenu', use_flags='rofi'),
+    Package('x11-misc/clipmenu', use_flags='rofi -dmenu'),
 
     Package('x11-wm/bspwm'),
     Package('x11-misc/sxhkd'),
