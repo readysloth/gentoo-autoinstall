@@ -301,9 +301,9 @@ X_PACKAGE_LIST = [
 
 
 ACTION_LIST = [
-    Action('grub-mkconfig -o /boot/grub/grub.cfg',
-           name='grub config creation'),
     Action("grub-install --target=$(lscpu | awk '/Architecture/ {print $2}')-efi --efi-directory=/boot --removable",
+           name='grub config creation'),
+    Action('grub-mkconfig -o /boot/grub/grub.cfg',
            name='grub config creation'),
     Action('rc-update add sysklogd default',
            name='service update'),
