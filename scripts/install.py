@@ -173,7 +173,7 @@ if not args.no_packages:
 
 
 with open('/etc/conf.d/hostname', 'w') as f:
-    f.write(args.hostname)
+    f.write(f'hostname="{args.hostname}"')
 
 l.checkpoint('Installation is finished!')
 l.checkpoint(f'Do not forget to do `passwd {args.user}` to set user password')
