@@ -281,7 +281,7 @@ X_PACKAGE_LIST = [
     Package('app-emulation/virt-manager', use_flags='gtk'),
     # Quirk, because firefox requires node js and nodejs
     # doesn't build with `lto` USE flag
-    Package('net-libs/nodejs', use_flags='-lto'),
+    Package('net-libs/nodejs', use_flags='-lto npm'),
     Package('www-client/firefox',
             use_flags=['system-harfbuzz', 'system-icu', 'system-jpeg',
                        'system-libevent', 'system-png', 'system-python-libs',
