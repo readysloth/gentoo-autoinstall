@@ -51,7 +51,7 @@ echo 'export PATH=$PATH:${USER_HOME}/.cargo/bin:${USER_HOME}/.scripts' >> ${USER
 
 # fishrc
 mkdir -p ${USER_HOME}/.config/fish/
-echo 'set -gx PATH $PATH ${USER_HOME}/.cargo/bin ${USER_HOME}/.scripts ${USER_HOME}/.local/bin' >> ${USER_HOME}/.config/fish/config.fish
+echo "set -gx PATH $PATH ${USER_HOME}/.cargo/bin ${USER_HOME}/.scripts ${USER_HOME}/.local/bin" >> ${USER_HOME}/.config/fish/config.fish
 echo 'set -gx EDITOR (command -v vim)'                         >> ${USER_HOME}/.config/fish/config.fish
 
 # Xinit
