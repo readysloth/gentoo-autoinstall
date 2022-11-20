@@ -439,3 +439,7 @@ cd ${USER_HOME}/.vim/plugged/vim-lsp-settings/installer/
     sh install-vim-language-server.sh
     sh install-rust-analyzer.sh
 cd -
+
+doas -u ${USERNAME} fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher'
+doas -u ${USERNAME} fish -c 'fisher install jethrokuan/z'
+doas -u ${USERNAME} fish -c 'fisher install IlanCosman/tide@v5'
