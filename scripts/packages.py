@@ -176,6 +176,14 @@ DEV_PACKAGE_LIST = [
                              'notmpfs']),
     Package('dev-dotnet/dotnet-sdk-bin', use_flags='dotnet-symlink'),
     Package('dev-util/coccigrep'),
+    Package('dev-util/radare2'),
+    Package('dev-util/bloaty'),
+    Package('dev-util/difftastic'),
+    Package('dev-util/gef'),
+    Package('dev-util/ltrace'),
+    Package('dev-util/strace'),
+    Package('dev-util/valgrind'),
+    Package('app-misc/binwalk'),
 ]
 
 
@@ -247,6 +255,7 @@ X_SERVER_PACKAGE_LIST = [
                 'cd warpd; make && make install; cd -',
                 'rm -rf warpd'],
                name='warpd git install'),
+    Package('x11-misc/xfe'),
 ]
 
 
