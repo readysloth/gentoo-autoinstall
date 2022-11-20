@@ -1,5 +1,4 @@
 import os
-import time
 import asyncio
 import logging
 import hashlib
@@ -8,6 +7,7 @@ import functools as ft
 import subprocess as sp
 
 from abc import ABC
+from datetime import datetime
 
 import common
 import install_logger
@@ -226,7 +226,11 @@ class Executor(ABC):
 
         l.info(f'Executing "{action.name}"')
         l.debug(f'Start of {action} + {list(args)}')
+        action_started = datetime.now()
         ended_action = action(*args)
+        action_ended = datetime.now()
+        l.info(f'"{action.name}" took {action_ended - action_started}')
+
         l.debug(f'End of {ended_action}, successfully? {ended_action.succeded}')
         if not ended_action.succeded:
             if fallbacks:
