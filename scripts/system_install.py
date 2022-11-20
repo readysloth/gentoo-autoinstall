@@ -126,7 +126,6 @@ def setup_portage():
 
 
 def system_boot_configuration(bootloader_part):
-    common.add_variable_to_file('/etc/default/grub', 'GRUB_CMDLINE_LINUX', 'dolvm')
     fstab_swap_action = Action('echo "UUID=$(blkid -t LABEL=swap -s UUID -o value) \t none \t swap \t sw \t 0 \t 0" >> /etc/fstab',
                                name='fstab alter with swap')
     fstab_rootfs_action = Action('echo "UUID=$(blkid -t LABEL=rootfs -s UUID -o value) \t / \t ext4 \t noatime \t 0 \t 1" >> /etc/fstab',
