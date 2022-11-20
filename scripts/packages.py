@@ -231,6 +231,7 @@ TERMINAL_PACKAGE_LIST = [
     Package('app-misc/tmux'),
     Package('sys-apps/ripgrep-all'),
     Package('sys-process/htop'),
+    Package('sys-process/glances'),
 ]
 
 
