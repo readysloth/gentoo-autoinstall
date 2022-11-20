@@ -323,6 +323,8 @@ ACTION_LIST = [
                 r'sed -i "/GRUB_THEME/ s/.*/GRUB_THEME=\"/boot/grub/themes/gentoo/theme.txt\"/" /etc/default/grub',
                 'rm -rf distro-grub-themes'],
                name='grub theme install'),
+    Action(r'sed -i "/GRUB_CMDLINE_LINUX/ s/.*/GRUB_CMDLINE_LINUX=\"dolvm\"/" /etc/default/grub',
+           name='grub dolvm'),
     Action('grub-mkconfig -o /boot/grub/grub.cfg',
            name='grub config creation'),
     Action('rc-update add sysklogd default',
