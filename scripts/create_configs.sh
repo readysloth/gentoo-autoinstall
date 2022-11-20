@@ -307,6 +307,7 @@ sed -i '/font-1.*=.*"/ s/"[^"]*"/"Wuncon Siji:size=11"/' ${USER_HOME}/.config/po
 
 
 #warpd
+mkdir -p ${USER_HOME}/.config/warpd
 echo 'activation_key: M-/'             >> ${USER_HOME}/.config/warpd/config
 echo 'hint: C'                         >> ${USER_HOME}/.config/warpd/config
 echo 'hint2: c'                        >> ${USER_HOME}/.config/warpd/config
