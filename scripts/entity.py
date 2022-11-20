@@ -229,7 +229,7 @@ class Executor(ABC):
         action_started = datetime.now()
         ended_action = action(*args)
         action_ended = datetime.now()
-        l.info(f'"{action.name}" took {action_ended - action_started}')
+        l.info(f'{common.Colors.GREEN}"{action.name}" took {action_ended - action_started}{common.Colors.ENDC}')
 
         l.debug(f'End of {ended_action}, successfully? {ended_action.succeded}')
         if not ended_action.succeded:
