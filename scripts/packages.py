@@ -175,6 +175,7 @@ DEV_PACKAGE_LIST = [
                              'linker-tradeoff',
                              'notmpfs']),
     Package('dev-dotnet/dotnet-sdk-bin', use_flags='dotnet-symlink'),
+    Package('dev-util/coccigrep'),
 ]
 
 
