@@ -33,7 +33,7 @@ def add_common_flags_to_make_conf(additional_use_flags='',
 
         common.add_variable_to_file(common.MAKE_CONF_PATH,
                                     'EMERGE_DEFAULT_OPTS',
-                                    f'--jobs={emerge_jobs} {emerge_binary_opt}')
+                                    f'--jobs={emerge_jobs} --load-average={emerge_jobs} {emerge_binary_opt}')
         common.add_variable_to_file(common.MAKE_CONF_PATH,
                                     'FEATURES',
                                     'parallel-install parallel-fetch')
