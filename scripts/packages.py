@@ -185,6 +185,9 @@ DEV_PACKAGE_LIST = [
     Package('dev-util/valgrind'),
     Package('app-misc/binwalk'),
     Package('dev-util/cppcheck', use_flags='htmlreport'),
+    Package('app-forensics/radamsa'),
+    Package('app-forensics/aflplusplus'),
+    Package('app-forensics/zzuf'),
 ]
 
 
