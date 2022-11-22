@@ -28,7 +28,7 @@ mkdir -p ${USER_HOME}/.scripts
 echo '#!/bin/bash'                                      > ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo 'while true'                                      >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo 'do'                                              >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
-echo "  feh --randomize --bg-fill ${USER_HOME}/Images/wallpapers" >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
+echo "  feh --randomize --bg-fill ${USER_HOME}/Images/backgrounds" >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo '  sleep 1h'                                      >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo 'done'                                            >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 
