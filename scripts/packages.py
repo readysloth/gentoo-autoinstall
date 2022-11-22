@@ -220,7 +220,7 @@ X_PACKAGE_LIST = [
 ACTION_LIST = [
     Action("grub-install --target=$(lscpu | awk '/Architecture/ {print $2}')-efi --efi-directory=/boot --removable",
            name='grub config creation'),
-    Action(r'sed -i "/GRUB_CMDLINE_LINUX/ s/.*/GRUB_CMDLINE_LINUX=\"dolvm\"/" /etc/default/grub',
+    Action('echo "GRUB_CMDLINE_LINUX=\"dolvm\"" >> /etc/default/grub',
            name='grub dolvm'),
     Action('grub-mkconfig -o /boot/grub/grub.cfg',
            name='grub config creation'),
