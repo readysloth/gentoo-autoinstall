@@ -28,7 +28,7 @@ mkdir -p ${USER_HOME}/.scripts
 echo '#!/bin/bash'                                      > ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo 'while true'                                      >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo 'do'                                              >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
-echo '  feh --randomize --bg-fill ${USER_HOME}/Images/wallpapers' >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
+echo "  feh --randomize --bg-fill ${USER_HOME}/Images/wallpapers" >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo '  sleep 1h'                                      >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo 'done'                                            >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 
@@ -47,7 +47,7 @@ chmod +x ${USER_HOME}/.scripts/make_screenshot.sh
 # bashrc
 echo "bind 'set completion-ignore-case on'"       > ${USER_HOME}/.bashrc
 echo 'export EDITOR=vim'                         >> ${USER_HOME}/.bashrc
-echo 'export PATH=$PATH:${USER_HOME}/.cargo/bin:${USER_HOME}/.scripts' >> ${USER_HOME}/.bashrc
+echo "export PATH=$PATH:${USER_HOME}/.cargo/bin:${USER_HOME}/.scripts" >> ${USER_HOME}/.bashrc
 
 # fishrc
 mkdir -p ${USER_HOME}/.config/fish/
@@ -61,8 +61,8 @@ echo "xset fp rehash"                                    >> ${USER_HOME}/.xinitr
 echo 'picom &'                                           >> ${USER_HOME}/.xinitrc
 echo 'clipmenud &'                                       >> ${USER_HOME}/.xinitrc
 echo 'setxkbmap -option grp:alt_shift_toggle dvorak,ru'  >> ${USER_HOME}/.xinitrc
-echo '${USER_HOME}/.config/polybar/launch.sh --forest &' >> ${USER_HOME}/.xinitrc
-echo '${USER_HOME}/.scripts/autochanging_wallpaper.sh &' >> ${USER_HOME}/.xinitrc
+echo "${USER_HOME}/.config/polybar/launch.sh --forest &" >> ${USER_HOME}/.xinitrc
+echo "${USER_HOME}/.scripts/autochanging_wallpaper.sh &" >> ${USER_HOME}/.xinitrc
 echo 'exec bspwm'                                        >> ${USER_HOME}/.xinitrc
 
 # picom
@@ -259,7 +259,7 @@ echo 'set -sg escape-time 1'                                  >> ${USER_HOME}/.t
 echo 'set -g base-index 1'                                    >> ${USER_HOME}/.tmux.conf
 echo 'setw -g pane-base-index 1'                              >> ${USER_HOME}/.tmux.conf
 echo 'setw -g repeat-time 1000'                               >> ${USER_HOME}/.tmux.conf
-echo 'bind r source-file ${USER_HOME}/.tmux.conf \; display "Reloaded!"' >> ${USER_HOME}/.tmux.conf
+echo "bind r source-file ${USER_HOME}/.tmux.conf \; display 'Reloaded!'" >> ${USER_HOME}/.tmux.conf
 echo                                                          >> ${USER_HOME}/.tmux.conf
 echo 'bind | split-window -h -c "#{pane_current_path}"'       >> ${USER_HOME}/.tmux.conf
 echo 'bind - split-window -v -c "#{pane_current_path}"'       >> ${USER_HOME}/.tmux.conf
@@ -380,7 +380,7 @@ echo 'Print'                                  >> ${USER_HOME}/.config/sxhkd/sxhk
 echo ' flameshot gui'                         >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo                                          >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo 'super + t'                                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' bash ${USER_HOME}/.config/polybar/scripts/colors_rofi.sh' >> ${USER_HOME}/.config/sxhkd/sxhkdrc
+echo " bash ${USER_HOME}/.config/polybar/scripts/colors_rofi.sh" >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo                                                  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo 'XF86AudioRaiseVolume'      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo ' amixer set Master 2%+'    >> ${USER_HOME}/.config/sxhkd/sxhkdrc
