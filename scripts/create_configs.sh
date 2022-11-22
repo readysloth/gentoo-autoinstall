@@ -299,13 +299,6 @@ echo                                                          >> ${USER_HOME}/.t
 echo 'run "/etc/tmux/plugins/tpm/tpm"'                        >> ${USER_HOME}/.tmux.conf
 
 
-# polybar
-mkdir -p ${USER_HOME}/.config/polybar
-touch ${USER_HOME}/.config/polybar/config
-/polybar_chooser.sh 11
-sed -i '/font-1.*=.*"/ s/"[^"]*"/"Wuncon Siji:size=11"/' ${USER_HOME}/.config/polybar/config.ini
-
-
 #warpd
 mkdir -p ${USER_HOME}/.config/warpd
 echo 'activation_key: M-/'             >> ${USER_HOME}/.config/warpd/config
@@ -444,3 +437,19 @@ cd -
 doas -u ${USERNAME} fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher'
 doas -u ${USERNAME} fish -c 'fisher install jethrokuan/z'
 doas -u ${USERNAME} fish -c 'fisher install IlanCosman/tide@v5'
+
+
+# polybar
+#
+doas -u ${USERNAME} bash -c "
+mkdir -p ${USER_HOME}/.config/polybar;
+touch ${USER_HOME}/.config/polybar/config;
+git clone https://github.com/adi1090x/polybar-themes;
+cd polybar-themes/;
+    echo 1 | ./setup.sh;
+    fc-cache -v;
+cd -;
+rm -rf polybar-themes;
+"
+
+sed -i '/font-1.*=.*"/ s/"[^"]*"/"Wuncon Siji:size=11"/' ${USER_HOME}/.config/polybar/config.ini
