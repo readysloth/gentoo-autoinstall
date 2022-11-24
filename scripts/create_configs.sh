@@ -284,6 +284,7 @@ echo                                                          >> ${USER_HOME}/.t
 echo 'set -g @plugin "tmux-plugins/tpm"'                      >> ${USER_HOME}/.tmux.conf
 echo 'set -g @plugin "tmux-plugins/tmux-resurrect"'           >> ${USER_HOME}/.tmux.conf
 echo 'set -g @plugin "tmux-plugins/tmux-cpu"'                 >> ${USER_HOME}/.tmux.conf
+echo 'set -g @plugin "jaclu/tmux-power-zoom"'                 >> ${USER_HOME}/.tmux.conf
 echo 'set -g @plugin "tmux-plugins/tmux-sidebar"'             >> ${USER_HOME}/.tmux.conf
 echo 'set -g @sidebar-tree-command "tree -C"'                 >> ${USER_HOME}/.tmux.conf
 echo                                                          >> ${USER_HOME}/.tmux.conf
