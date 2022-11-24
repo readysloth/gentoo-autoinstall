@@ -421,20 +421,29 @@ cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 chown -R ${USERNAME} ${USER_HOME}
 
 doas -u ${USERNAME} vim +PlugInstall +qa
-cd ${USER_HOME}/.vim/plugged/vim-lsp-settings/installer/
-    sh install-cmake-language-server.sh
-    sh install-bash-language-server.sh
-    sh install-clangd.sh
-    sh install-docker-langserver.sh
-    sh install-html-languageserver.sh
-    sh install-json-languageserver.sh
-    sh install-omnisharp-lsp.sh
-    sh install-powershell-languageserver.sh
-    sh install-pylsp-all.sh
-    sh install-sql-language-server.sh
-    sh install-vim-language-server.sh
-    sh install-rust-analyzer.sh
-cd -
+VIM_LSP_SETTINGS_SERVERS="${USER_HOME}/.local/share/vim-lsp-settings/servers"
+VIM_LSP_SETTINGS_ROOT="${USER_HOME}/.vim/plugged/vim-lsp-settings/installer"
+mkdir -p ${VIM_LSP_SETTINGS_SERVERS}
+
+cd ${VIM_LSP_SETTINGS_SERVERS}
+    for s in cmake-language-server
+             bash-language-server
+             clangd
+             docker-langserver
+             html-languageserver
+             json-languageserver
+             omnisharp-lsp
+             powershell-languageserver
+             pylsp-all
+             sql-language-server
+             vim-language-server
+             rust-analyzer
+    do
+        mkdir $s
+        cd $s
+            sh ${VIM_LSP_SETTINGS_ROOT}/install-$s.sh
+        cd -
+    done
 
 doas -u ${USERNAME} fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher'
 doas -u ${USERNAME} fish -c 'fisher install jethrokuan/z'
