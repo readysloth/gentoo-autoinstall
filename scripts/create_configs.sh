@@ -221,7 +221,7 @@ echo "    nmap <buffer> gi <plug>(lsp-implementation)"                          
 echo "    nmap <buffer> <leader>r <plug>(lsp-rename)"                           >> ${USER_HOME}/.vimrc
 echo "    nmap <buffer> <leader>i <plug>(lsp-next-diagnostic)"                  >> ${USER_HOME}/.vimrc
 echo "    nmap <buffer> <leader>I <plug>(lsp-previous-diagnostic)"              >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> K <plug>(lsp-hover)"                                    >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> K <plug>(lsp-hover) <bar> :syntax on"                   >> ${USER_HOME}/.vimrc
 echo "    nmap <buffer> <leader>d <plug>(lsp-document-diagnostics)"             >> ${USER_HOME}/.vimrc
 echo                                                                            >> ${USER_HOME}/.vimrc
 echo "    let g:lsp_format_sync_timeout = 1000"                                 >> ${USER_HOME}/.vimrc
