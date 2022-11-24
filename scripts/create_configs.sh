@@ -410,6 +410,7 @@ echo ' bspc node -t {floating, tiled}'        >> ${USER_HOME}/.config/sxhkd/sxhk
 
 echo "permit ${USERNAME} as root"  > /etc/doas.conf
 echo "permit root as ${USERNAME}" >> /etc/doas.conf
+echo "permit nopass root" >> /etc/doas.conf
 
 
 git config --global core.editor vim
