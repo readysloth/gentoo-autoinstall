@@ -126,6 +126,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-boot/os-prober'),
     Package('sys-apps/lm-sensors'),
     Package('sys-power/acpi'),
+    Package('sys-process/procenv'),
 ]
 
 
