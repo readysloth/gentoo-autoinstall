@@ -294,6 +294,7 @@ def download_patches_for_st():
 
 
 X_PACKAGE_LIST = [
+    Package('app-emulation/libvirt', use_flags='libssh lvm parted qemu libvirtd'),
     Package('app-emulation/virt-manager', use_flags='gtk'),
     # Quirk, because firefox requires node js and nodejs
     # doesn't build with `lto` USE flag
