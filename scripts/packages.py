@@ -47,8 +47,7 @@ def exclude_from_world_rebuild(pkg_list):
                              'sys-libs/gpm']:
             # we should build @world with this packages
             continue
-        elif pkg.package.startswith('sys-') \
-             or pkg.package in ['media-libs/mesa']:
+        elif pkg.package.startswith('sys-'):
             package_names.append(pkg.package)
 
     world_rebuild_pkg.options = f'{world_rebuild_pkg.options} --exclude "{" ".join(package_names)}"'
