@@ -393,7 +393,7 @@ echo 'super + f'                              >> ${USER_HOME}/.config/sxhkd/sxhk
 echo ' bspc node -t ~fullscreen'              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo 'super + shift + Return'                 >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo ' pkill -USR1 -x sxhkd'                  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + {j,k,j,p}'                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
+echo 'super + {j,k,l,p}'                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo ' bspc node -f {west,south,north,east}'  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo 'super + d'                              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo ' rofi -show run'                        >> ${USER_HOME}/.config/sxhkd/sxhkdrc
