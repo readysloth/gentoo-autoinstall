@@ -98,11 +98,6 @@ ESSENTIAL_PACKAGE_LIST = [
     #       name='system-wide pypy3'),
     #Action('echo "pypy3" >> /etc/python-exec/emerge.conf',
     #       name='system-wide pypy3'),
-
-    # with global `gpm` use flag
-    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}),
-    Package('sys-libs/gpm', '--nodeps'),
-    Package('sys-libs/ncurses'),
     Package('app-shells/dash'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/genkernel'),
@@ -114,6 +109,12 @@ ESSENTIAL_PACKAGE_LIST = [
            post=move_kernel_src_from_tmpfs,
            in_background=True,
            name='genkernel'),
+
+    # with global `gpm` use flag
+    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}),
+    Package('sys-libs/gpm', '--nodeps'),
+    Package('sys-libs/ncurses'),
+
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
