@@ -49,6 +49,11 @@ class Action:
         if self.pre:
             l.debug('Executing pre-function')
             self.pre()
+
+        with open('taken-actions.sh', 'a') as f:
+            f.write(f'# {self.name}_{self.action_id}.stdout\n')
+            f.write(f'# {self.name}_{self.action_id}.stderr\n')
+            f.write(f'{self.cmd}\n')
         with open(f'{self.name}_{self.action_id}.stdout', 'ab') as stdout_file, \
              open(f'{self.name}_{self.action_id}.stderr', 'ab') as stderr_file:
             self.proc = sp.Popen(f'{self.cmd} {" ".join(append)}',
