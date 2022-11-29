@@ -13,18 +13,33 @@ from pathlib import Path
 from entity import Package, Action, MetaAction, Executor, ParallelActions
 
 
-def combine_package_install(pkg_list):
-    def is_raw_package(pkg):
-        return not type(pkg) == Package and \
-               not pkg.use_flags and \
-               not pkg.possible_quirks and \
-               not pkg.options
+def reoder_packages_for_early_merge(pkg_list):
+    def is_world(p):
+        return p.package == '@world'
 
+    def is_package(p):
+        return type(p) == Package
 
-    raw_package_names = [p.package for p in pkg_list if is_raw_package(p)]
-    non_raw_packages = [p for p in pkg_list if not is_raw_package(p)]
-    big_package = Package(' '.join(raw_package_names))
-    return non_raw_packages + [big_package]
+    def is_normal_package(p):
+        return is_package(p) and not is_world(p) and p.merge_as_always
+
+    def is_bulk_package(p):
+        return is_package(p) and not is_world(p) and not p.merge_as_always
+
+    normal_merge_packages = [p for p in pkg_list if is_normal_package(p)]
+    bulk_merge_packages = [p for p in pkg_list if is_bulk_package(p)]
+    actions = [e for e in pkg_list if not is_package(e)]
+
+    world_package = [p for p in pkg_list if is_package(p) and is_world(p)][0]
+    world_package.options = f'{world_package.options} --keep-going'
+    world_package.cmd = world_package.cmd_template.format(opts=world_package.options,
+                                                          pkg=world_package.package)
+
+    reordered_package_list = normal_merge_packages \
+                             + actions \
+                             + bulk_merge_packages \
+                             + [world_package]
+    return reordered_package_list
 
 
 def exclude_from_world_rebuild(pkg_list):
@@ -42,7 +57,9 @@ def exclude_from_world_rebuild(pkg_list):
     for pkg in filter(lambda p: type(p) == Package, it.chain(normal_pkgs, parallel_actions)):
         if pkg.package == '@world':
             world_rebuild_pkg = pkg
-        elif pkg.package not in ['sys-libs/ncurses', 'sys-apps/util-linux']:
+        elif pkg.package in ['sys-libs/ncurses',
+                             'sys-apps/util-linux',
+                             'sys-libs/gpm']:
             # we should build @world with this packages
             continue
         elif pkg.package.startswith('sys-'):
@@ -173,7 +190,7 @@ X_SERVER_PACKAGE_LIST = [
     Package('x11-apps/xev'),
     Package('x11-misc/xdo'),
     Package('x11-misc/xdotool'),
-    MetaAction(['git clone https://github.com/rvaiya/warpd.git',
+    MetaAction(['git clone --depth=1 https://github.com/rvaiya/warpd.git',
                 'cd warpd; make && make install; cd -',
                 'rm -rf warpd'],
                name='warpd git install'),
@@ -182,7 +199,7 @@ X_SERVER_PACKAGE_LIST = [
 
 X_WM_PACKAGE_LIST = [
     Package('media-gfx/scrot'),
-    Package('x11-misc/clipmenu', use_flags='rofi'),
+    Package('x11-misc/clipmenu', use_flags='rofi -dmenu'),
 
     Package('x11-wm/bspwm'),
     Package('x11-misc/sxhkd'),
@@ -218,8 +235,14 @@ X_PACKAGE_LIST = [
 ACTION_LIST = [
     Action("grub-install --target=$(lscpu | awk '/Architecture/ {print $2}')-efi --efi-directory=/boot --removable",
            name='grub config creation'),
-    Action('echo "GRUB_CMDLINE_LINUX=\"dolvm\"" >> /etc/default/grub',
-           name='grub dolvm'),
+    MetaAction(['git clone --depth=1 https://github.com/AdisonCavani/distro-grub-themes.git',
+                'cp -r distro-grub-themes/customize/gentoo /boot/grub/themes',
+                r'echo "GRUB_GFXMODE=1920x1080" >> /etc/default/grub',
+                r'echo "GRUB_THEME=\"/boot/grub/themes/gentoo/theme.txt\"" >> /etc/default/grub',
+                'rm -rf distro-grub-themes'],
+               name='grub theme install'),
+    Action(r'echo "GRUB_CMDLINE_LINUX=\"dolvm root=UUID=$(blkid -t LABEL=rootfs -s UUID -o value)\"" >> /etc/default/grub',
+           name='grub liux cmdline'),
     Action('grub-mkconfig -o /boot/grub/grub.cfg',
            name='grub config creation'),
     Action('rc-update add sysklogd default',
@@ -277,9 +300,11 @@ def pre_install():
                               name='tmpfs mount')
         Executor.exec(tmpfs_action)
 
-    Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
-    Executor.exec(Package('app-portage/mirrorselect'))
+    Executor.exec(Package('app-portage/mirrorselect', merge_as_always=True))
     Executor.exec(Action(f'mirrorselect -s{common.MIRROR_COUNT} -4 -D', name='mirrorselect'))
+    Executor.exec(Action('emerge --sync', name='emerge sync'))
+
+    Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
 
 
     execute_each_in(QUIRKED_PACKAGES)
@@ -338,4 +363,5 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
 
 exclude_from_world_rebuild(PACKAGE_LIST)
-#PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
+if common.MERGE_EARLY:
+    PACKAGE_LIST = reoder_packages_for_early_merge(PACKAGE_LIST)

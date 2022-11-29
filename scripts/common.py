@@ -40,6 +40,7 @@ FEATURES = [('no-tty-ctrl-alt-del', 'Disable machine rebooting if Ctrl-Alt-Del p
 ENABLED_FEATURES = set()
 USE_ARIA2 = None
 MIRROR_COUNT = 20
+MERGE_EARLY = False
 
 
 def add_value_to_string_variable(filename, variable_name, value, quot='"', delim=' '):

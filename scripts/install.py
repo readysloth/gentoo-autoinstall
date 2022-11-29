@@ -71,6 +71,9 @@ def parse_args():
                                 default=[],
                                 nargs='+',
                                 help='install features')
+    install_parser.add_argument('-m', '--merge-early',
+                                action='store_true',
+                                help='add all needed packages to world file, then make world update')
 
 
     info_parser = subparsers.add_parser('info', help='information')
@@ -124,6 +127,7 @@ def parse_args():
         if install_args.tmpfs:
             common.TMPFS_SIZE = install_args.tmpfs
         common.USE_ARIA2 = install_args.aria2
+        common.MERGE_EARLY = install_args.merge_early
 
     return install_args, quirks, features
 
