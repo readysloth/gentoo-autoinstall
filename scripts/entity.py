@@ -132,13 +132,12 @@ class Package(Action):
 
 
     def download(self):
-        if not common.MERGE_EARLY or self.merge_as_always:
-            cmd = self.cmd_template.format(opts=f'--fetchonly {self.options}',
-                                           pkg=self.package)
-            download_action = Action(cmd,
-                                     name=f'prefetch-{self.package.replace("/", "_")}',
-                                     nondestructive=False)
-            Executor.exec(download_action)
+        cmd = self.cmd_template.format(opts=f'--fetchonly {self.options}',
+                                       pkg=self.package)
+        download_action = Action(cmd,
+                                 name=f'prefetch-{self.package.replace("/", "_")}',
+                                 nondestructive=False)
+        Executor.exec(download_action)
 
 
     def __call__(self, *append):
