@@ -13,18 +13,33 @@ from pathlib import Path
 from entity import Package, Action, MetaAction, Executor, ParallelActions
 
 
-def combine_package_install(pkg_list):
-    def is_raw_package(pkg):
-        return not type(pkg) == Package and \
-               not pkg.use_flags and \
-               not pkg.possible_quirks and \
-               not pkg.options
+def reoder_packages_for_early_merge(pkg_list):
+    def is_world(p):
+        return p.package == '@world'
 
+    def is_package(p):
+        return type(p) == Package
 
-    raw_package_names = [p.package for p in pkg_list if is_raw_package(p)]
-    non_raw_packages = [p for p in pkg_list if not is_raw_package(p)]
-    big_package = Package(' '.join(raw_package_names))
-    return non_raw_packages + [big_package]
+    def is_normal_package(p):
+        return is_package(p) and not is_world(p) and p.merge_as_always
+
+    def is_bulk_package(p):
+        return is_package(p) and not is_world(p) and not p.merge_as_always
+
+    normal_merge_packages = [p for p in pkg_list if is_normal_package(p)]
+    bulk_merge_packages = [p for p in pkg_list if is_bulk_package(p)]
+    actions = [e for e in pkg_list if not is_package(e)]
+
+    world_package = [p for p in pkg_list if is_package(p) and is_world(p)][0]
+    world_package.options = f'{world_package.options} --keep-going'
+    world_package.cmd = world_package.cmd_template.format(opts=world_package.options,
+                                                          pkg=world_package.package)
+
+    reordered_package_list = normal_merge_packages \
+                             + actions \
+                             + bulk_merge_packages \
+                             + [world_package]
+    return reordered_package_list
 
 
 def exclude_from_world_rebuild(pkg_list):
@@ -73,15 +88,16 @@ MASKS = [
 ]
 
 QUIRKED_PACKAGES = [
-    Package('media-libs/libsndfile', use_flags='minimal'),
-    Package('net-misc/aria2', use_flags='bittorent libuv ssh'),
-    Package('dev-util/ccache'),
-    Package('dev-util/vmtouch'),
+    Package('media-libs/libsndfile', use_flags='minimal', merge_as_always=True),
+    Package('net-misc/aria2', use_flags='bittorent libuv ssh', merge_as_always=True),
+    Package('dev-util/ccache', merge_as_always=True),
+    Package('dev-util/vmtouch', merge_as_always=True),
 ]
 
 
 ESSENTIAL_PACKAGE_LIST = [
     Package('sys-devel/gcc',
+            merge_as_always=True,
             use_flags=['-ada', '-objc', '-objc-gc',
                        '-d', '-debug', 'sanitize',
                        'graphite', 'ntpl', 'jit'],
@@ -89,7 +105,7 @@ ESSENTIAL_PACKAGE_LIST = [
                              'linker-tradeoff',
                              'notmpfs']),
 
-    Package('dev-python/pypy3', use_flags='gdbm jit sqlite tk'),
+    Package('dev-python/pypy3', use_flags='gdbm jit sqlite tk', merge_as_always=True),
 
     ### Uncomment following lines if pypy is faster than CPython with lto+pgo
     ### on your machine
@@ -98,10 +114,10 @@ ESSENTIAL_PACKAGE_LIST = [
     #       name='system-wide pypy3'),
     #Action('echo "pypy3" >> /etc/python-exec/emerge.conf',
     #       name='system-wide pypy3'),
-    Package('app-shells/dash'),
-    Package('sys-kernel/gentoo-sources', use_flags='symlink'),
-    Package('sys-kernel/genkernel'),
-    Package('sys-kernel/linux-firmware'),
+    Package('app-shells/dash', merge_as_always=True),
+    Package('sys-kernel/gentoo-sources', use_flags='symlink', merge_as_always=True),
+    Package('sys-kernel/genkernel', merge_as_always=True),
+    Package('sys-kernel/linux-firmware', merge_as_always=True),
 
     # there can be tmpfs, so switch tmpdir to it
     Action(' '.join(['genkernel',
@@ -119,9 +135,9 @@ ESSENTIAL_PACKAGE_LIST = [
            name='genkernel'),
 
     # with global `gpm` use flag
-    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}),
-    Package('sys-libs/gpm', '--nodeps'),
-    Package('sys-libs/ncurses'),
+    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}, merge_as_always=True),
+    Package('sys-libs/gpm', '--nodeps', merge_as_always=True),
+    Package('sys-libs/ncurses', merge_as_always=True),
 
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
@@ -397,7 +413,7 @@ def pre_install():
                               name='tmpfs mount')
         Executor.exec(tmpfs_action)
 
-    Executor.exec(Package('app-portage/mirrorselect'))
+    Executor.exec(Package('app-portage/mirrorselect', merge_as_always=True))
     Executor.exec(Action(f'mirrorselect -s{common.MIRROR_COUNT} -4 -D', name='mirrorselect'))
     Executor.exec(Action('emerge --sync', name='emerge sync'))
 
@@ -473,4 +489,5 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
 
 exclude_from_world_rebuild(PACKAGE_LIST)
-#PACKAGE_LIST = combine_package_install(PACKAGE_LIST)
+if common.MERGE_EARLY:
+    PACKAGE_LIST = reoder_packages_for_early_merge(PACKAGE_LIST)

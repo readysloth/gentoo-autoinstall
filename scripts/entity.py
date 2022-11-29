@@ -107,6 +107,7 @@ class Package(Action):
                  options='',
                  use_flags='',
                  possible_quirks=None,
+                 merge_as_always=False,
                  **kwargs):
         self.package = package
         if use_flags is not None:
@@ -114,6 +115,9 @@ class Package(Action):
                 use_flags = ' '.join(use_flags)
         self.use_flags = use_flags
         self.options = options
+        self.merge_as_always = merge_as_always
+        if self.options:
+            self.merge_as_always = True
         self.possible_quirks = possible_quirks or []
         self.cmd_template = 'emerge --autounmask-write {opts} {pkg} || (echo -5 | etc-update && emerge {opts} {pkg})'
         self.cmd = self.cmd_template.format(opts=self.options, pkg=self.package)
@@ -124,12 +128,13 @@ class Package(Action):
 
 
     def download(self):
-        cmd = self.cmd_template.format(opts=f'--fetchonly {self.options}',
-                                       pkg=self.package)
-        download_action = Action(cmd,
-                                 name=f'prefetch-{self.package.replace("/", "_")}',
-                                 nondestructive=False)
-        Executor.exec(download_action)
+        if not common.MERGE_EARLY or self.merge_as_always:
+            cmd = self.cmd_template.format(opts=f'--fetchonly {self.options}',
+                                           pkg=self.package)
+            download_action = Action(cmd,
+                                     name=f'prefetch-{self.package.replace("/", "_")}',
+                                     nondestructive=False)
+            Executor.exec(download_action)
 
 
     def __call__(self, *append):
@@ -146,6 +151,11 @@ class Package(Action):
             l.debug(f'Quirk {q} enabled for {self.package}')
             with open('/etc/portage/package.env', 'a') as f:
                 f.write(f'{self.package} {q}.conf\n')
+
+        if common.MERGE_EARLY and not self.merge_as_always:
+            Executor.exec(Action(f'echo "{self.package}" >> /var/lib/portage/world'))
+            self.succeded = True
+            return self
 
         l.debug(f'Installing {self.package}, USE="{self.use_flags}"')
         super().__call__(*append)
