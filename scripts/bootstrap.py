@@ -48,6 +48,9 @@ def _stage3_download(processor='amd64',
     filename = 'stage3'
     ur.urlretrieve(f'{site}/{folder}/{distro_path}', filename)
     l.checkpoint(f'Stage3 archive is downloaded!')
+
+    with open('taken-actions.sh', 'a') as f:
+        f.write(f'wget {site}/{folder}/{distro_path} -o {filename}\n')
     return filename
 
 
@@ -80,7 +83,7 @@ def _final_bootstrap_configuration():
 def _chroot_to_mnt():
     if common.DRY_RUN:
         return
-    scripts = glob.glob('*.sh') + glob.glob('*.py')
+    scripts = list(glob.glob('*.sh') + glob.glob('*.py'))
     for script in scripts:
         shutil.copy(script, MOUNTPOINT)
     if not os.path.isfile(f'{MOUNTPOINT}/{common.EXECUTED_ACTIONS_FILENAME}'):
@@ -88,6 +91,10 @@ def _chroot_to_mnt():
         shutil.copy(common.EXECUTED_ACTIONS_FILENAME, MOUNTPOINT)
     os.chroot(MOUNTPOINT)
     os.chdir('/')
+
+    with open('taken-actions.sh', 'a') as f:
+        f.write(f'cp {" ".join(scripts)} {MOUNTPOINT}\n')
+        f.write(f'chroot {MOUNTPOINT}\n')
     Executor.executed_actions_file = open(common.EXECUTED_ACTIONS_FILENAME, 'a')
 
 
