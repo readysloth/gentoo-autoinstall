@@ -488,6 +488,7 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
 
-exclude_from_world_rebuild(PACKAGE_LIST)
 if common.MERGE_EARLY:
     PACKAGE_LIST = reoder_packages_for_early_merge(PACKAGE_LIST)
+else:
+    exclude_from_world_rebuild(PACKAGE_LIST)
