@@ -121,6 +121,10 @@ class Package(Action):
         self.possible_quirks = possible_quirks or []
         self.cmd_template = 'emerge --autounmask-write {opts} {pkg} || (echo -5 | etc-update && emerge {opts} {pkg})'
         self.cmd = self.cmd_template.format(opts=self.options, pkg=self.package)
+
+        if common.MERGE_EARLY and not self.merge_as_always:
+            self.cmd = f'echo "{self.package}" >> /var/lib/portage/world'
+
         super().__init__(self.cmd,
                          name=f'{package.replace("/", "_")}',
                          nondestructive=False,
@@ -151,11 +155,6 @@ class Package(Action):
             l.debug(f'Quirk {q} enabled for {self.package}')
             with open('/etc/portage/package.env', 'a') as f:
                 f.write(f'{self.package} {q}.conf\n')
-
-        if common.MERGE_EARLY and not self.merge_as_always:
-            Executor.exec(Action(f'echo "{self.package}" >> /var/lib/portage/world'))
-            self.succeded = True
-            return self
 
         l.debug(f'Installing {self.package}, USE="{self.use_flags}"')
         super().__call__(*append)
