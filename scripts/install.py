@@ -5,8 +5,6 @@ import common
 
 from entity import init_executor, deinit_executor
 
-import packages as pkg
-
 def parse_args():
     parser = argparse.ArgumentParser(description='Gentoo workspace installer')
     subparsers = parser.add_subparsers(dest='subparser_name')
@@ -98,10 +96,14 @@ def parse_args():
 
     if install_args.subparser_name == 'install':
         common.DRY_RUN = install_args.dry_run
+        common.MERGE_EARLY = install_args.merge_early
+
         if install_args.verbose:
             common.LOGGER_LEVEL = logging.DEBUG
 
         if not install_args.no_gui or install_args.no_wm:
+            import packages as pkg
+
             install_args.use_flags.append('X')
             if install_args.no_wm:
                 pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST + pkg.X_PACKAGE_LIST
@@ -127,7 +129,6 @@ def parse_args():
         if install_args.tmpfs:
             common.TMPFS_SIZE = install_args.tmpfs
         common.USE_ARIA2 = install_args.aria2
-        common.MERGE_EARLY = install_args.merge_early
 
     return install_args, quirks, features
 
