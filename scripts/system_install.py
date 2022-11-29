@@ -82,7 +82,7 @@ def process_quirks(quirks):
                                  '-Sparc', '-SystemZ', '-VE', '-XCore',
                                  '-ARC', '-CSKY', '-LoongArch', '-M68k',
                                  'WebAssembly', 'X86'])
-        Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/profile/package.use.force',
+        Executor.exec(Action(f'echo "*/* LLVM_TARGETS: {llvm_targets}" >> /etc/portage/profile/package.use.force/all',
                              name='setting llvm targets'))
         # upstream version based on zig, which fails to compile with use flags above
         MASKS.append('>sys-fs/ncdu-1.17')
