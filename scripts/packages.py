@@ -32,8 +32,9 @@ def reoder_packages_for_early_merge(pkg_list):
 
     world_package = [p for p in pkg_list if is_package(p) and is_world(p)][0]
     world_package.options = f'{world_package.options} --keep-going'
-    world_package.cmd = world_package.cmd_template.format(opts=world_package.options,
-                                                          pkg=world_package.package)
+    world_emerge = world_package.cmd_template.format(opts=world_package.options,
+                                                     pkg=world_package.package)
+    world_package.cmd = f'until {world_emerge}; do :; done'
 
     reordered_package_list = normal_merge_packages \
                              + actions \
@@ -139,8 +140,8 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-libs/gpm', '--nodeps', merge_as_always=True),
     Package('sys-libs/ncurses', merge_as_always=True),
 
+    Package('sys-apps/portage', use_flags='native-extensions ipc xattr'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
-    Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
     Package('sys-apps/util-linux', use_flags='-logger'),
