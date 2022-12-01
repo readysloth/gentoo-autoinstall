@@ -128,6 +128,7 @@ ESSENTIAL_PACKAGE_LIST = [
                      '--busybox',
                      '--install',
                      '--save-config',
+                     '--ramdisk-modules',
                      '--kernel-config=/proc/config.gz',
                      'all']),
            pre=move_kernel_src_to_tmpfs,
