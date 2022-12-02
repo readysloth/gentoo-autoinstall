@@ -426,17 +426,17 @@ VIM_LSP_SETTINGS_ROOT="${USER_HOME}/.vim/plugged/vim-lsp-settings/installer"
 mkdir -p ${VIM_LSP_SETTINGS_SERVERS}
 
 cd ${VIM_LSP_SETTINGS_SERVERS}
-    for s in cmake-language-server
-             bash-language-server
-             clangd
-             docker-langserver
-             html-languageserver
-             json-languageserver
-             omnisharp-lsp
-             powershell-languageserver
-             pylsp-all
-             sql-language-server
-             vim-language-server
+    for s in cmake-language-server \
+             bash-language-server \
+             clangd \
+             docker-langserver \
+             html-languageserver \
+             json-languageserver \
+             omnisharp-lsp \
+             powershell-languageserver \
+             pylsp-all \
+             sql-language-server \
+             vim-language-server \
              rust-analyzer
     do
         mkdir $s
