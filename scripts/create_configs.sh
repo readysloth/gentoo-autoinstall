@@ -188,6 +188,8 @@ echo "Plug 'prabirshrestha/vim-lsp'"          >> ${USER_HOME}/.vimrc
 echo "Plug 'mattn/vim-lsp-settings'"          >> ${USER_HOME}/.vimrc
 echo "Plug 'Shougo/ddc.vim'"                  >> ${USER_HOME}/.vimrc
 echo "Plug 'shun/ddc-vim-lsp'"                >> ${USER_HOME}/.vimrc
+echo "Plug 'SirVer/ultisnips'"                >> ${USER_HOME}/.vimrc
+echo "Plug 'honza/vim-snippets'"              >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
 echo "call plug#end()"                        >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
@@ -200,6 +202,7 @@ echo 'map <C-s> :VialHttp<CR>'                       >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
 echo 'set updatetime=100'                            >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
+echo 'let g:UltiSnipsExpandTrigger="<tab>"'          >> ${USER_HOME}/.vimrc
 echo 'let g:rainbow_active = 1'                      >> ${USER_HOME}/.vimrc
 echo 'let g:indent_guides_enable_on_vim_startup = 1' >> ${USER_HOME}/.vimrc
 echo 'let g:XkbSwitchEnabled = 1'                    >> ${USER_HOME}/.vimrc
