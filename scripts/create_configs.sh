@@ -193,6 +193,8 @@ echo "call plug#end()"                        >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
 echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
 echo 'map U :UndotreeToggle<CR>'                     >> ${USER_HOME}/.vimrc
+echo 'map <leader>n :Files<CR>'                      >> ${USER_HOME}/.vimrc
+echo 'map <C-/> :Rg<CR>'                             >> ${USER_HOME}/.vimrc
 echo 'map gG :G<CR>'                                 >> ${USER_HOME}/.vimrc
 echo 'map <C-s> :VialHttp<CR>'                       >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
