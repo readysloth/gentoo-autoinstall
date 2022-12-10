@@ -28,7 +28,7 @@ mkdir -p ${USER_HOME}/.scripts
 echo '#!/bin/bash'                                      > ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo 'while true'                                      >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo 'do'                                              >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
-echo '  feh --randomize --bg-fill ${USER_HOME}/Images/wallpapers' >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
+echo "  feh --randomize --bg-fill ${USER_HOME}/Images/backgrounds" >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo '  sleep 1h'                                      >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 echo 'done'                                            >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 
@@ -47,11 +47,11 @@ chmod +x ${USER_HOME}/.scripts/make_screenshot.sh
 # bashrc
 echo "bind 'set completion-ignore-case on'"       > ${USER_HOME}/.bashrc
 echo 'export EDITOR=vim'                         >> ${USER_HOME}/.bashrc
-echo 'export PATH=$PATH:${USER_HOME}/.cargo/bin:${USER_HOME}/.scripts' >> ${USER_HOME}/.bashrc
+echo "export PATH=$PATH:${USER_HOME}/.cargo/bin:${USER_HOME}/.scripts" >> ${USER_HOME}/.bashrc
 
 # fishrc
 mkdir -p ${USER_HOME}/.config/fish/
-echo 'set -gx PATH $PATH ${USER_HOME}/.cargo/bin ${USER_HOME}/.scripts ${USER_HOME}/.local/bin' >> ${USER_HOME}/.config/fish/config.fish
+echo "set -gx PATH $PATH ${USER_HOME}/.cargo/bin ${USER_HOME}/.scripts ${USER_HOME}/.local/bin" >> ${USER_HOME}/.config/fish/config.fish
 echo 'set -gx EDITOR (command -v vim)'                         >> ${USER_HOME}/.config/fish/config.fish
 
 # Xinit
@@ -61,8 +61,8 @@ echo "xset fp rehash"                                    >> ${USER_HOME}/.xinitr
 echo 'picom &'                                           >> ${USER_HOME}/.xinitrc
 echo 'clipmenud &'                                       >> ${USER_HOME}/.xinitrc
 echo 'setxkbmap -option grp:alt_shift_toggle dvorak,ru'  >> ${USER_HOME}/.xinitrc
-echo '${USER_HOME}/.config/polybar/launch.sh --forest &' >> ${USER_HOME}/.xinitrc
-echo '${USER_HOME}/.scripts/autochanging_wallpaper.sh &' >> ${USER_HOME}/.xinitrc
+echo "${USER_HOME}/.config/polybar/launch.sh --forest &" >> ${USER_HOME}/.xinitrc
+echo "${USER_HOME}/.scripts/autochanging_wallpaper.sh &" >> ${USER_HOME}/.xinitrc
 echo 'exec bspwm'                                        >> ${USER_HOME}/.xinitrc
 
 # picom
@@ -142,7 +142,6 @@ echo 'set expandtab'      >> ${USER_HOME}/.vimrc
 echo 'set shiftwidth=4'   >> ${USER_HOME}/.vimrc
 echo 'set smarttab'       >> ${USER_HOME}/.vimrc
 echo                      >> ${USER_HOME}/.vimrc
-echo                      >> ${USER_HOME}/.vimrc
 echo 'syntax on'          >> ${USER_HOME}/.vimrc
 echo                      >> ${USER_HOME}/.vimrc
 
@@ -155,6 +154,7 @@ echo                                      >> ${USER_HOME}/.vimrc
 echo "vnoremap <C-j> :m '>1<CR>gv=gv"     >> ${USER_HOME}/.vimrc
 echo "vnoremap <C-k> :m '<2<CR>gv=gv"     >> ${USER_HOME}/.vimrc
 echo                                      >> ${USER_HOME}/.vimrc
+echo "let mapleader = ' '"                >> ${USER_HOME}/.vimrc
 
 echo "call plug#begin('${USER_HOME}/.vim/plugged')"      >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
@@ -184,15 +184,29 @@ echo "Plug 'Galicarnax/vim-regex-syntax'"     >> ${USER_HOME}/.vimrc
 echo "Plug 'baverman/vial'"                   >> ${USER_HOME}/.vimrc
 echo "Plug 'baverman/vial-http'"              >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
+echo "Plug 'prabirshrestha/vim-lsp'"          >> ${USER_HOME}/.vimrc
+echo "Plug 'mattn/vim-lsp-settings'"          >> ${USER_HOME}/.vimrc
+echo "Plug 'Shougo/ddc.vim'"                  >> ${USER_HOME}/.vimrc
+echo "Plug 'shun/ddc-vim-lsp'"                >> ${USER_HOME}/.vimrc
+echo "Plug 'SirVer/ultisnips'"                >> ${USER_HOME}/.vimrc
+echo "Plug 'honza/vim-snippets'"              >> ${USER_HOME}/.vimrc
+echo                                          >> ${USER_HOME}/.vimrc
 echo "call plug#end()"                        >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
 echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
 echo 'map U :UndotreeToggle<CR>'                     >> ${USER_HOME}/.vimrc
+echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
+echo                                                 >> ${USER_HOME}/.vimrc
+echo 'map <leader>n :Files<CR>'                      >> ${USER_HOME}/.vimrc
+echo 'map <C-/> :Rg<CR>'                             >> ${USER_HOME}/.vimrc
+echo 'map <C-c> :Commits<CR>'                        >> ${USER_HOME}/.vimrc
+echo                                                 >> ${USER_HOME}/.vimrc
 echo 'map gG :G<CR>'                                 >> ${USER_HOME}/.vimrc
 echo 'map <C-s> :VialHttp<CR>'                       >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
 echo 'set updatetime=100'                            >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
+echo 'let g:UltiSnipsExpandTrigger="<tab>"'          >> ${USER_HOME}/.vimrc
 echo 'let g:rainbow_active = 1'                      >> ${USER_HOME}/.vimrc
 echo 'let g:indent_guides_enable_on_vim_startup = 1' >> ${USER_HOME}/.vimrc
 echo 'let g:XkbSwitchEnabled = 1'                    >> ${USER_HOME}/.vimrc
@@ -203,6 +217,30 @@ echo 'autocmd VimEnter * DimInactiveOn'              >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
 echo 'let g:diminactive_use_syntax = 1'              >> ${USER_HOME}/.vimrc
 echo 'let g:diminactive_use_colorcolumn = 0'         >> ${USER_HOME}/.vimrc
+echo                                                 >> ${USER_HOME}/.vimrc
+echo "function! s:on_lsp_buffer_enabled() abort"                                >> ${USER_HOME}/.vimrc
+echo "    setlocal omnifunc=lsp#complete"                                       >> ${USER_HOME}/.vimrc
+echo "    setlocal signcolumn=yes"                                              >> ${USER_HOME}/.vimrc
+echo "    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif"         >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> gd <plug>(lsp-definition)"                              >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> g/ <plug>(lsp-document-symbol-search)"                  >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> g? <plug>(lsp-workspace-symbol-search)"                 >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> gr <plug>(lsp-references)"                              >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> gi <plug>(lsp-implementation)"                          >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> <leader>r <plug>(lsp-rename)"                           >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> <leader>i <plug>(lsp-next-diagnostic)"                  >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> <leader>I <plug>(lsp-previous-diagnostic)"              >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> K <plug>(lsp-hover) <bar> :syntax on"                   >> ${USER_HOME}/.vimrc
+echo "    nmap <buffer> <leader>d <plug>(lsp-document-diagnostics)"             >> ${USER_HOME}/.vimrc
+echo                                                                            >> ${USER_HOME}/.vimrc
+echo "    let g:lsp_format_sync_timeout = 1000"                                 >> ${USER_HOME}/.vimrc
+echo "    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')" >> ${USER_HOME}/.vimrc
+echo "endfunction"                                                              >> ${USER_HOME}/.vimrc
+
+echo "augroup lsp_install"                                                >> ${USER_HOME}/.vimrc
+echo "    au!"                                                            >> ${USER_HOME}/.vimrc
+echo "    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()" >> ${USER_HOME}/.vimrc
+echo "augroup END"                                                        >> ${USER_HOME}/.vimrc
 
 
 git clone https://github.com/grwlf/xkb-switch.git;
@@ -230,7 +268,7 @@ echo 'set -sg escape-time 1'                                  >> ${USER_HOME}/.t
 echo 'set -g base-index 1'                                    >> ${USER_HOME}/.tmux.conf
 echo 'setw -g pane-base-index 1'                              >> ${USER_HOME}/.tmux.conf
 echo 'setw -g repeat-time 1000'                               >> ${USER_HOME}/.tmux.conf
-echo 'bind r source-file ${USER_HOME}/.tmux.conf \; display "Reloaded!"' >> ${USER_HOME}/.tmux.conf
+echo "bind r source-file ${USER_HOME}/.tmux.conf \; display 'Reloaded!'" >> ${USER_HOME}/.tmux.conf
 echo                                                          >> ${USER_HOME}/.tmux.conf
 echo 'bind | split-window -h -c "#{pane_current_path}"'       >> ${USER_HOME}/.tmux.conf
 echo 'bind - split-window -v -c "#{pane_current_path}"'       >> ${USER_HOME}/.tmux.conf
@@ -255,6 +293,7 @@ echo                                                          >> ${USER_HOME}/.t
 echo 'set -g @plugin "tmux-plugins/tpm"'                      >> ${USER_HOME}/.tmux.conf
 echo 'set -g @plugin "tmux-plugins/tmux-resurrect"'           >> ${USER_HOME}/.tmux.conf
 echo 'set -g @plugin "tmux-plugins/tmux-cpu"'                 >> ${USER_HOME}/.tmux.conf
+echo 'set -g @plugin "jaclu/tmux-power-zoom"'                 >> ${USER_HOME}/.tmux.conf
 echo 'set -g @plugin "tmux-plugins/tmux-sidebar"'             >> ${USER_HOME}/.tmux.conf
 echo 'set -g @sidebar-tree-command "tree -C"'                 >> ${USER_HOME}/.tmux.conf
 echo                                                          >> ${USER_HOME}/.tmux.conf
@@ -270,14 +309,8 @@ echo                                                          >> ${USER_HOME}/.t
 echo 'run "/etc/tmux/plugins/tpm/tpm"'                        >> ${USER_HOME}/.tmux.conf
 
 
-# polybar
-mkdir -p ${USER_HOME}/.config/polybar
-touch ${USER_HOME}/.config/polybar/config
-/polybar_chooser.sh 11
-sed -i '/font-1.*=.*"/ s/"[^"]*"/"Wuncon Siji:size=11"/' ${USER_HOME}/.config/polybar/config.ini
-
-
 #warpd
+mkdir -p ${USER_HOME}/.config/warpd
 echo 'activation_key: M-/'             >> ${USER_HOME}/.config/warpd/config
 echo 'hint: C'                         >> ${USER_HOME}/.config/warpd/config
 echo 'hint2: c'                        >> ${USER_HOME}/.config/warpd/config
@@ -350,7 +383,7 @@ echo 'Print'                                  >> ${USER_HOME}/.config/sxhkd/sxhk
 echo ' flameshot gui'                         >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo                                          >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo 'super + t'                                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' bash ${USER_HOME}/.config/polybar/scripts/colors_rofi.sh' >> ${USER_HOME}/.config/sxhkd/sxhkdrc
+echo " bash ${USER_HOME}/.config/polybar/scripts/colors_rofi.sh" >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo                                                  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo 'XF86AudioRaiseVolume'      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo ' amixer set Master 2%+'    >> ${USER_HOME}/.config/sxhkd/sxhkdrc
@@ -369,7 +402,7 @@ echo 'super + f'                              >> ${USER_HOME}/.config/sxhkd/sxhk
 echo ' bspc node -t ~fullscreen'              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo 'super + shift + Return'                 >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo ' pkill -USR1 -x sxhkd'                  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + {j,k,j,p}'                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
+echo 'super + {j,k,l,p}'                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo ' bspc node -f {west,south,north,east}'  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo 'super + d'                              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
 echo ' rofi -show run'                        >> ${USER_HOME}/.config/sxhkd/sxhkdrc
@@ -387,6 +420,7 @@ echo ' bspc node -t {floating, tiled}'        >> ${USER_HOME}/.config/sxhkd/sxhk
 
 echo "permit ${USERNAME} as root"  > /etc/doas.conf
 echo "permit root as ${USERNAME}" >> /etc/doas.conf
+echo "permit nopass root" >> /etc/doas.conf
 
 
 git config --global core.editor vim
@@ -396,3 +430,46 @@ cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 chown -R ${USERNAME} ${USER_HOME}
 
 doas -u ${USERNAME} vim +PlugInstall +qa
+VIM_LSP_SETTINGS_SERVERS="${USER_HOME}/.local/share/vim-lsp-settings/servers"
+VIM_LSP_SETTINGS_ROOT="${USER_HOME}/.vim/plugged/vim-lsp-settings/installer"
+mkdir -p ${VIM_LSP_SETTINGS_SERVERS}
+
+cd ${VIM_LSP_SETTINGS_SERVERS}
+    for s in cmake-language-server \
+             bash-language-server \
+             clangd \
+             docker-langserver \
+             html-languageserver \
+             json-languageserver \
+             omnisharp-lsp \
+             powershell-languageserver \
+             pylsp-all \
+             sql-language-server \
+             vim-language-server \
+             rust-analyzer
+    do
+        mkdir $s
+        cd $s
+            sh ${VIM_LSP_SETTINGS_ROOT}/install-$s.sh
+        cd -
+    done
+
+doas -u ${USERNAME} fish -c 'curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher'
+doas -u ${USERNAME} fish -c 'fisher install jethrokuan/z'
+doas -u ${USERNAME} fish -c 'fisher install IlanCosman/tide@v5'
+
+
+# polybar
+#
+doas -u ${USERNAME} bash -c "
+mkdir -p ${USER_HOME}/.config/polybar;
+touch ${USER_HOME}/.config/polybar/config;
+git clone https://github.com/adi1090x/polybar-themes;
+cd polybar-themes/;
+    echo 1 | ./setup.sh;
+    fc-cache -v;
+cd -;
+rm -rf polybar-themes;
+"
+
+#sed -i '/font-1.*=.*"/ s/"[^"]*"/"Wuncon Siji:size=11"/' ${USER_HOME}/.config/polybar/config.ini
