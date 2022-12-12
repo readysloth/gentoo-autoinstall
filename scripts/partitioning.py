@@ -5,16 +5,6 @@ import disk_ops
 from entity import Executor
 
 
-def prepare_for_partitioning(disk):
-    wipe_disk_action = disk_ops.wipe_disk(disk)
-    lvm_groups_get_action = disk_ops.get_lvm_groups()
-    Executor.exec(wipe_disk_action, do_crash=True)
-    Executor.exec(lvm_groups_get_action)
-
-    lvm_rm_wipe_action = disk_ops.rm_lvm_groups(lvm_groups_get_action.value)
-    Executor.exec(lvm_rm_wipe_action)
-
-
 def part_disk(disk):
     parted_action = disk_ops.parted_on(disk)
     parted_script = it.chain(disk_ops.part_for_boot(),

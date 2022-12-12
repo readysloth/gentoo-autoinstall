@@ -1,7 +1,7 @@
 from entity import Action
 
 
-LVM_GROUP_NAME = 'vg01'
+LVM_GROUP_NAME = 'lvg'
 
 
 def wipe_disk(disk):
@@ -10,10 +10,6 @@ def wipe_disk(disk):
 
 def get_lvm_groups():
     return Action("vgs | sed 1d | awk '{print $1}'", name='list lvm groups')
-
-
-def rm_lvm_groups(groups):
-    return Action(f'vgremove -y {groups}', name='wipe lvm groups')
 
 
 def parted_on(disk):

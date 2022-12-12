@@ -129,7 +129,6 @@ def parse_args():
 
 
 def partition_disk(disk):
-    p.prepare_for_partitioning(disk)
     bootloader_part, lvm_part = p.part_disk(disk)
     p.create_lvm_partition(bootloader_part, lvm_part)
     p.prepare_for_os_install()
