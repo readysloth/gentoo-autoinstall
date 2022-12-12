@@ -85,9 +85,6 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/genkernel'),
     Package('sys-kernel/linux-firmware'),
 
-    # there can be tmpfs, so switch tmpdir to it
-    Action('genkernel --lvm --e2fsprogs --mountboot --busybox --install --save-config all',
-           name='genkernel'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
