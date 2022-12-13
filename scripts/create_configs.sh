@@ -186,13 +186,15 @@ echo "Plug 'baverman/vial-http'"              >> ${USER_HOME}/.vimrc
 echo                                          >> ${USER_HOME}/.vimrc
 echo "Plug 'prabirshrestha/vim-lsp'"          >> ${USER_HOME}/.vimrc
 echo "Plug 'mattn/vim-lsp-settings'"          >> ${USER_HOME}/.vimrc
-echo "Plug 'Shougo/ddc.vim'"                  >> ${USER_HOME}/.vimrc
-echo "Plug 'shun/ddc-vim-lsp'"                >> ${USER_HOME}/.vimrc
 echo "Plug 'SirVer/ultisnips'"                >> ${USER_HOME}/.vimrc
 echo "Plug 'honza/vim-snippets'"              >> ${USER_HOME}/.vimrc
-echo                                          >> ${USER_HOME}/.vimrc
-echo "call plug#end()"                        >> ${USER_HOME}/.vimrc
-echo                                          >> ${USER_HOME}/.vimrc
+echo "Plug 'prabirshrestha/asyncomplete.vim'" >> ${USER_HOME}/.vimrc
+echo "Plug 'prabirshrestha/asyncomplete-lsp.vim'" >> ${USER_HOME}/.vimrc
+echo                                              >> ${USER_HOME}/.vimrc
+echo "Plug 'wellle/tmux-complete.vim'"            >> ${USER_HOME}/.vimrc
+echo                                                 >> ${USER_HOME}/.vimrc
+echo "call plug#end()"                               >> ${USER_HOME}/.vimrc
+echo                                                 >> ${USER_HOME}/.vimrc
 echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
 echo 'map U :UndotreeToggle<CR>'                     >> ${USER_HOME}/.vimrc
 echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
@@ -241,6 +243,20 @@ echo "augroup lsp_install"                                                >> ${U
 echo "    au!"                                                            >> ${USER_HOME}/.vimrc
 echo "    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()" >> ${USER_HOME}/.vimrc
 echo "augroup END"                                                        >> ${USER_HOME}/.vimrc
+echo                                                      >> ${USER_HOME}/.vimrc
+echo "let g:tmuxcomplete#asyncomplete_source_options = {" >> ${USER_HOME}/.vimrc
+echo "            \ 'name':      'tmuxcomplete',"         >> ${USER_HOME}/.vimrc
+echo "            \ 'whitelist': ['*'],"                  >> ${USER_HOME}/.vimrc
+echo "            \ 'config': {"                          >> ${USER_HOME}/.vimrc
+echo "            \     'splitmode':      'words',"       >> ${USER_HOME}/.vimrc
+echo "            \     'filter_prefix':   1,"            >> ${USER_HOME}/.vimrc
+echo "            \     'show_incomplete': 1,"            >> ${USER_HOME}/.vimrc
+echo "            \     'sort_candidates': 0,"            >> ${USER_HOME}/.vimrc
+echo "            \     'scrollback':      0,"            >> ${USER_HOME}/.vimrc
+echo "            \     'truncate':        0"             >> ${USER_HOME}/.vimrc
+echo "            \     }"                                >> ${USER_HOME}/.vimrc
+echo "            \ }"                                    >> ${USER_HOME}/.vimrc
+echo "inoremap <C-t> <C-x><C-u>"                          >> ${USER_HOME}/.vimrc
 
 
 git clone https://github.com/grwlf/xkb-switch.git;
