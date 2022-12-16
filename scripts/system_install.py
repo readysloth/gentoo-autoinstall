@@ -19,12 +19,12 @@ def add_common_flags_to_make_conf(additional_use_flags='',
 
     emerge_binary_opt = ''
     if prefer_binary:
-        emerge_binary_opt = '--binpkg-respect-use=y --getbinpkg=y'
+        emerge_binary_opt = '--usepkg=y --getbinpkg=y'
         additional_use_flags += ' bindist'
         with open(common.BIN_CONF_PATH, 'w') as binrepos:
-            binrepos.writelines(['[binhost]',
-                                 'priority = 9999',
-                                 'sync-uri = https://gentoo.osuosl.org/experimental/amd64/binpkg/default/linux/17.1/x86-64/'])
+            binrepos.writelines(['[binhost]\n',
+                                 'priority = 9999\n',
+                                 'sync-uri = http://127.0.0.1/\n'])
 
     def set_parallel_emerge():
         mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
@@ -33,10 +33,10 @@ def add_common_flags_to_make_conf(additional_use_flags='',
 
         common.add_variable_to_file(common.MAKE_CONF_PATH,
                                     'EMERGE_DEFAULT_OPTS',
-                                    f'--jobs={emerge_jobs} --load-average={emerge_jobs} {emerge_binary_opt}')
+                                    f'--jobs={emerge_jobs} --load-average={emerge_jobs} {emerge_binary_opt} --exclude app-emulation/qemu')
         common.add_variable_to_file(common.MAKE_CONF_PATH,
                                     'FEATURES',
-                                    'parallel-install parallel-fetch')
+                                    'parallel-install parallel-fetch -pid-sandbox -network-sandbox')
     if delay_performance_tweaks:
         # to save RAM
         POST_INSTALL_CALLBACKS.append(set_parallel_emerge)
@@ -50,7 +50,7 @@ def add_common_flags_to_make_conf(additional_use_flags='',
     common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'COMMON_FLAGS', '-march=native')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_LICENSE', '*')
     default_useflags = ' '.join(['python', 'alsa', 'opencl',
-                                 'inotify', 'lto', 'pgo',
+                                 'inotify', 'lto',
                                  'openmp', 'zstd', 'jumbo-build',
                                  '-wayland', '-gnome-online-accounts', '-npm',
                                  'jit', 'threads', 'gpm',
