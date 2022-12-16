@@ -28,6 +28,7 @@ TARGET_ROOT = ''
 MAKE_CONF_PATH = '/etc/portage/make.conf'
 DEFAULT_GENTOO_PROFILE = 6
 RESUME = False
+MERGE_EARLY = False
 TMPFS_SIZE = None
 EXECUTED_ACTIONS_FILENAME = 'executed.actions'
 QUIRKS = [('delay-performance', 'Delay portage performance tweaks to after install stage'),

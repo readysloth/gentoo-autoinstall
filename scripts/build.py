@@ -39,6 +39,9 @@ def parse_args():
                               default=[],
                               nargs='+',
                               help='build features')
+    build_parser.add_argument('-m', '--merge-early',
+                              action='store_true',
+                              help='add all needed packages to world file, then make world update')
 
     info_parser = subparsers.add_parser('info', help='information')
     info_parser.add_argument('--list-quirks',
@@ -89,6 +92,7 @@ def parse_args():
             common.EXECUTED_ACTIONS_FILENAME = build_args.resume
         if build_args.tmpfs:
             common.TMPFS_SIZE = build_args.tmpfs
+        common.MERGE_EARLY = install_args.merge_early
     return build_args, quirks, features
 
 
