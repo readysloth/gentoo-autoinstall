@@ -107,6 +107,7 @@ class Package(Action):
                  options='',
                  use_flags='',
                  possible_quirks=None,
+                 merge_as_always=False,
                  **kwargs):
         self.package = package
         if use_flags is not None:
@@ -115,7 +116,15 @@ class Package(Action):
         self.use_flags = use_flags
         self.options = f'--buildpkg {options}'
         self.emerge = f'emerge-wrapper --target {common.TARGET}'
+        self.merge_as_always = merge_as_always
+        if self.options:
+            self.merge_as_always = True
         self.possible_quirks = possible_quirks or []
+        self.cmd_template = 'emerge --autounmask-write {opts} {pkg} || (echo -5 | etc-update && emerge {opts} {pkg})'
+        self.cmd = self.cmd_template.format(opts=self.options, pkg=self.package)
+
+        if common.MERGE_EARLY and not self.merge_as_always:
+            self.cmd = f'echo "{self.package}" >> {common.TARGET_ROOT}/var/lib/portage/world'
 
         try_cmd_template = f'{self.emerge} --autounmask-write {{opts}} {{pkg}}'
         catch_cmd_template = f'echo -5 | etc-update && {self.emerge} {{opts}} {{pkg}}'
@@ -236,7 +245,11 @@ class Executor(ABC):
 
         l.info(f'Executing "{action.name}"')
         l.debug(f'Start of {action} + {list(args)}')
+        action_started = datetime.now()
         ended_action = action(*args)
+        action_ended = datetime.now()
+        l.info(f'{common.Colors.GREEN}"{action.name}" took {action_ended - action_started}{common.Colors.ENDC}')
+
         l.debug(f'End of {ended_action}, successfully? {ended_action.succeded}')
         if not ended_action.succeded:
             if fallbacks:
