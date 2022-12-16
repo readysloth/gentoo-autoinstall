@@ -85,7 +85,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/genkernel'),
     Package('sys-kernel/linux-firmware'),
 
-    Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
+    Package('@world', '-uDNv --with-bdeps=y --backtrack=100 --exclude="sys-devel/gcc"'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
