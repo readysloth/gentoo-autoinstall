@@ -24,7 +24,7 @@ if 'LOGLEVEL' in os.environ:
 DRY_RUN = False
 MAKE_CONF_PATH = '/etc/portage/make.conf'
 BIN_CONF_PATH = '/etc/portage/binrepos.conf'
-DEFAULT_GENTOO_PROFILE = 6
+DEFAULT_GENTOO_PROFILE = 1
 RESUME = False
 TMPFS_SIZE = None
 EXECUTED_ACTIONS_FILENAME = 'executed.actions'
