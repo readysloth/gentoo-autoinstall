@@ -120,8 +120,6 @@ class Package(Action):
         if self.options:
             self.merge_as_always = True
         self.possible_quirks = possible_quirks or []
-        self.cmd_template = 'emerge --autounmask-write {opts} {pkg} || (echo -5 | etc-update && emerge {opts} {pkg})'
-        self.cmd = self.cmd_template.format(opts=self.options, pkg=self.package)
 
         if common.MERGE_EARLY and not self.merge_as_always:
             self.cmd = f'echo "{self.package}" >> {common.TARGET_ROOT}/var/lib/portage/world'
