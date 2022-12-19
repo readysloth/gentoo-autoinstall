@@ -1,3 +1,4 @@
+import os
 import logging
 import argparse
 
@@ -109,7 +110,9 @@ init_executor()
 Executor.exec(Action(f'yes | crossdev --clean -t {common.TARGET} && crossdev -t {common.TARGET}',
                      name='crossdev init'))
 Executor.exec(Action(f'emerge-wrapper --target {common.TARGET} --init', name='cross-emerge init'),)
+os.environ.update({'PORTAGE_CONFIGROOT': common.TARGET_ROOT})
 
+sc.select_profile()
 sc.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
                                  delay_performance_tweaks=quirks['delay-performance'])
 sc.process_quirks(quirks)

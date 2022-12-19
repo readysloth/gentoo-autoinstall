@@ -41,7 +41,7 @@ def add_common_flags_to_make_conf(additional_use_flags='',
 
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_LICENSE', '*')
     default_useflags = ' '.join(['python', 'alsa', 'opencl',
-                                 'inotify', 'lto', 'pgo',
+                                 'inotify', 'lto',
                                  'openmp', 'zstd', 'jumbo-build',
                                  '-wayland', '-gnome-online-accounts', '-npm',
                                  'jit', 'threads', 'gpm',
@@ -83,6 +83,11 @@ def process_features(features):
     if features['no-tty-ctrl-alt-del']:
         Executor.exec(Action('sed -i "/ctrlaltdel/ s/.*/#&/" /etc/inittab',
                              name='removing ctrl-alt-del reboot'))
+
+
+def select_profile():
+    Executor.exec(Action(f'eselect profile set --force {common.DEFAULT_GENTOO_PROFILE}',
+                         name='setting cross-compile profile'))
 
 
 def build_packages():
