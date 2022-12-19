@@ -92,7 +92,7 @@ def parse_args():
             common.EXECUTED_ACTIONS_FILENAME = build_args.resume
         if build_args.tmpfs:
             common.TMPFS_SIZE = build_args.tmpfs
-        common.MERGE_EARLY = install_args.merge_early
+        common.MERGE_EARLY = build_args.merge_early
     return build_args, quirks, features
 
 
