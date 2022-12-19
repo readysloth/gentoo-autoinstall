@@ -121,7 +121,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/linux-firmware'),
 
-    Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
+    Package('@world', '-uDNv --with-bdeps=y --backtrack=100 --emptytree'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='perl terminal lua'),
@@ -282,7 +282,7 @@ def pre_install():
 
     if common.TMPFS_SIZE:
         os.makedirs(f'{common.TARGET_ROOT}/var/tmp/portage', exist_ok=True)
-        tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs {common.TARGET_ROOT}/var/tmp/portage',
+        tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs {common.TARGET_ROOT}/tmp/portage',
                               name='tmpfs mount')
         Executor.exec(tmpfs_action)
 
