@@ -93,16 +93,25 @@ def move_kernel_src_from_tmpfs():
 
 
 MASKS = [
+    '>dev-lang/python-3.10.9'
 ]
 
 QUIRKED_PACKAGES = [
     # hack for syncing portage
     Package('--sync'),
-    Package('net-misc/aria2', use_flags='bittorent libuv ssh'),
-    Package('dev-util/vmtouch'),
-    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}),
-    Package('sys-libs/gpm', '--nodeps'),
-    Package('sys-libs/ncurses'),
+    Package('net-misc/aria2', use_flags='bittorent libuv ssh', merge_as_always=True),
+    Package('dev-util/vmtouch', merge_as_always=True),
+    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}, merge_as_always=True),
+    Package('sys-libs/gpm', '--nodeps', merge_as_always=True),
+    Package('sys-libs/ncurses', merge_as_always=True),
+
+    Package('@system', '-uv --keep-going', env={'USE' : '-python'}, merge_as_always=True),
+    Package('sys-apps/util-linux', use_flags='-logger', env={'USE' : '-python'}, merge_as_always=True),
+    Package('dev-lang/python',
+            merge_as_always=True,
+            use_flags='gdbm readline sqlite\n*/* PYTHON_SINGLE_TARGET: -* python3_11\n*/* PYTHON_TARGETS: -* python3_10'),
+    Package('sys-apps/util-linux', merge_as_always=True),
+    Package('dev-lang/lua', use_flags='\n*/* LUA_SINGLE_TARGET: -* lua5-4', merge_as_always=True),
 ]
 
 
@@ -112,20 +121,10 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/linux-firmware'),
 
-    Action(' '.join(['genkernel',
-                     '--lvm',
-                     '--e2fsprogs',
-                     '--mountboot',
-                     '--busybox',
-                     '--no-install',
-                     '--loglevel=5',
-                     f'--kernel-outputdir={common.TARGET}',
-                     f'--cross-compile={common.TARGET} all']),
-           name='genkernel'),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
-    Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
+    Package('app-editors/vim', use_flags='perl terminal lua'),
     Package('sys-apps/util-linux', use_flags='-logger'),
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
@@ -170,7 +169,6 @@ FS_PACKAGE_LIST = [
 
 DEV_PACKAGE_LIST = [
     Package('dev-vcs/git', use_flags='cgi gpg highlight webdav'),
-    Package('dev-lang/python', use_flags='gdbm readline sqlite tk'),
 ]
 
 
@@ -178,7 +176,7 @@ EXTRA_PACKAGE_LIST = [
     Package('app-arch/unrar'),
     Package('sys-apps/lshw'),
     Package('media-gfx/imagemagick',
-            use_flags=['djvu', 'jpeg', 'lzma',
+            use_flags=['jpeg', 'lzma', 'xml',
                        'png', 'postscript',
                        'raw', 'svg', 'webp']),
 
@@ -280,7 +278,7 @@ def pre_install():
 
     os.makedirs(f'{common.TARGET_ROOT}/etc/portage/package.mask/', exist_ok=True)
     with open(f'{common.TARGET_ROOT}/etc/portage/package.mask/install.mask', 'w') as f:
-        f.writelines(MASKS)
+        f.writelines([m + '\n' for m in MASKS])
 
     if common.TMPFS_SIZE:
         os.makedirs(f'{common.TARGET_ROOT}/var/tmp/portage', exist_ok=True)
