@@ -12,6 +12,8 @@ from abc import ABC
 import common
 import build_logger
 
+from datetime import datetime
+
 
 class Action:
     exec_counter = 0
@@ -117,18 +119,18 @@ class Package(Action):
         self.options = f'--buildpkg {options}'
         self.emerge = f'emerge-wrapper --target {common.TARGET}'
         self.merge_as_always = merge_as_always
-        if self.options:
+        if options:
             self.merge_as_always = True
         self.possible_quirks = possible_quirks or []
-
-        if common.MERGE_EARLY and not self.merge_as_always:
-            self.cmd = f'echo "{self.package}" >> {common.TARGET_ROOT}/var/lib/portage/world'
 
         try_cmd_template = f'{self.emerge} --autounmask-write {{opts}} {{pkg}}'
         catch_cmd_template = f'echo -5 | etc-update && {self.emerge} {{opts}} {{pkg}}'
         self.cmd_template = f'{try_cmd_template} || ({catch_cmd_template})'
         self.cmd = self.cmd_template.format(opts=self.options,
                                             pkg=self.package)
+        if common.MERGE_EARLY and not self.merge_as_always:
+            self.cmd = f'echo "{self.package}" >> {common.TARGET_ROOT}/var/lib/portage/world'
+
         super().__init__(self.cmd,
                          name=f'{package.replace("/", "_")}',
                          nondestructive=False,
