@@ -19,7 +19,7 @@ def add_common_flags_to_make_conf(additional_use_flags='',
 
     emerge_binary_opt = ''
     if prefer_binary:
-        emerge_binary_opt = '--usepkg=y --getbinpkg=y'
+        emerge_binary_opt = '--usepkg=y --getbinpkg=y --binpkg-respect-use=n'
         additional_use_flags += ' bindist'
         with open(common.BIN_CONF_PATH, 'w') as binrepos:
             binrepos.writelines(['[binhost]\n',
