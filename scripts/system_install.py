@@ -123,6 +123,7 @@ def setup_portage():
 
     Executor.exec(Action('emerge app-portage/cpuid2cpuflags', name='emerging cpuid2cpuflags'))
     Executor.exec(Action('echo "*/* $(cpuid2cpuflags)" >> /etc/portage/package.use/global', name='setting cpu-flags'))
+    Executor.exec(Action(': > /etc/portage/package.use/zzz_autounmask', name='creating autounmask use-file'))
 
 
 def system_boot_configuration(bootloader_part):
