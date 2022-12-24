@@ -79,10 +79,8 @@ echo "	\"name = 'Notification'\","                                              
 echo "	\"class_g = 'Conky'\","                                                   >> ${USER_HOME}/.config/picom.conf
 echo "	\"class_g ?= 'Notify-osd'\","                                             >> ${USER_HOME}/.config/picom.conf
 echo "	\"class_g = 'Cairo-clock'\","                                             >> ${USER_HOME}/.config/picom.conf
-echo "	\"_GTK_FRAME_EXTENTS@:c\""                                                >> ${USER_HOME}/.config/picom.conf
 echo "];"                                                                         >> ${USER_HOME}/.config/picom.conf
 echo ""                                                                           >> ${USER_HOME}/.config/picom.conf
-echo "menu-opacity = 0.8;"                                                        >> ${USER_HOME}/.config/picom.conf
 echo "inactive-opacity = 0.9;"                                                    >> ${USER_HOME}/.config/picom.conf
 echo "frame-opacity = 0.7;"                                                       >> ${USER_HOME}/.config/picom.conf
 echo "inactive-opacity-override = true;"                                          >> ${USER_HOME}/.config/picom.conf
@@ -91,11 +89,9 @@ echo "blur-kern = \"3x3box\";"                                                  
 echo "blur-background-exclude = ["                                                >> ${USER_HOME}/.config/picom.conf
 echo "	\"window_type = 'dock'\","                                                >> ${USER_HOME}/.config/picom.conf
 echo "	\"window_type = 'desktop'\","                                             >> ${USER_HOME}/.config/picom.conf
-echo "	\"_GTK_FRAME_EXTENTS@:\""                                                 >> ${USER_HOME}/.config/picom.conf
 echo "];"                                                                         >> ${USER_HOME}/.config/picom.conf
 echo ""                                                                           >> ${USER_HOME}/.config/picom.conf
 echo "glx-copy-from-front = false;"                                               >> ${USER_HOME}/.config/picom.conf
-echo "glx-swap-method = \"undefined\";"                                           >> ${USER_HOME}/.config/picom.conf
 echo ""                                                                           >> ${USER_HOME}/.config/picom.conf
 echo "wintypes:"                                                                  >> ${USER_HOME}/.config/picom.conf
 echo "{"                                                                          >> ${USER_HOME}/.config/picom.conf
