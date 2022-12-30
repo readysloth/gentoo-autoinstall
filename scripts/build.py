@@ -101,6 +101,8 @@ args, quirks, features = parse_args()
 
 
 import build_logger
+
+import bootstrap
 import system_conf as sc
 
 l = logging.getLogger(__name__)
@@ -111,6 +113,8 @@ Executor.exec(Action(f'yes | crossdev --clean -t {common.TARGET} && crossdev -t 
                      name='crossdev init'))
 Executor.exec(Action(f'emerge-wrapper --target {common.TARGET} --init', name='cross-emerge init'),)
 os.environ.update({'PORTAGE_CONFIGROOT': common.TARGET_ROOT})
+bootstrap.qemu_setup()
+
 
 sc.select_profile()
 sc.add_common_flags_to_make_conf(additional_use_flags=args.use_flags,
