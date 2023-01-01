@@ -310,7 +310,7 @@ X_WM_PACKAGE_LIST = [
 
 def download_patches_for_st():
     l = logging.getLogger(__name__)
-    patch_folder_path = '/etc/portage/patches/dev-lang/x11-terms/st'
+    patch_folder_path = '/etc/portage/patches/x11-terms/st'
     base_url = 'https://st.suckless.org/patches/'
     patches = ['alpha/st-alpha-20220206-0.8.5.diff',
                'dynamic-cursor-color/st-dynamic-cursor-color-0.8.4.diff']
