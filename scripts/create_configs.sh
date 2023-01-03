@@ -194,6 +194,7 @@ echo 'map U :UndotreeToggle<CR>'                     >> ${USER_HOME}/.vimrc
 echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
 echo                                                 >> ${USER_HOME}/.vimrc
 echo 'map <leader>n :Files<CR>'                      >> ${USER_HOME}/.vimrc
+echo 'map <leader>/ :Lines<CR>'                      >> ${USER_HOME}/.vimrc
 echo 'map <C-/> :Rg<CR>'                             >> ${USER_HOME}/.vimrc
 echo 'map <C-c> :Commits<CR>'                        >> ${USER_HOME}/.vimrc
 echo 'map gt :Buffers<CR>'                           >> ${USER_HOME}/.vimrc
