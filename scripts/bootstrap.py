@@ -108,6 +108,7 @@ def _binhost_setup():
 
 
 def _final_bootstrap_configuration():
+    repos_path = '/var/db/repos/gentoo'
     final_actions = [Action(f'mkdir -p {MOUNTPOINT}/etc/portage/repos.conf', name='creating repos.conf folder'),
                      Action(f'cp /usr/share/portage/config/repos.conf {MOUNTPOINT}/etc/portage/repos.conf/gentoo.conf',
                             name='copying repos.conf'),
@@ -118,7 +119,9 @@ def _final_bootstrap_configuration():
                      Action(f'mount --rbind       /run  {MOUNTPOINT}/run', name='binding virtual fs'),
                      Action(f'mount --make-rslave       {MOUNTPOINT}/run', name='enslaving virtual fs'),
                      Action(f'mount --rbind       /dev  {MOUNTPOINT}/dev', name='binding virtual fs'),
-                     Action(f'mount --make-rslave       {MOUNTPOINT}/dev', name='enslaving virtual fs')]
+                     Action(f'mount --make-rslave       {MOUNTPOINT}/dev', name='enslaving virtual fs'),
+                     Action(f'mkdir -p {MOUNTPOINT}{repos_path}', name='creating path for binding repos'),
+                     Action(f'mount --bind {repos_path} {MOUNTPOINT}{repos_path}', name='binding repos')]
     for a in final_actions:
         Executor.exec(a, do_crash=True)
     _binhost_setup()
@@ -147,7 +150,7 @@ def bootstrap(processor='arm64', init='openrc'):
     _launch_ntpd()
     stage3_archive = _stage3_download(processor=processor, init='openrc')
     _unpack(stage3_archive)
-    #_mirrorselect()
+    _mirrorselect()
     _final_bootstrap_configuration()
     _chroot_to_mnt()
     l.checkpoint(f'Chrooted to {MOUNTPOINT}')
