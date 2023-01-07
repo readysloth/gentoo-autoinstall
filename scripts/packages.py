@@ -91,18 +91,19 @@ QUIRKED_PACKAGES = [
     Package('media-libs/libsndfile', use_flags='minimal'),
     Package('net-misc/aria2', use_flags='bittorent libuv ssh'),
     Package('dev-util/vmtouch'),
+    Package('dev-perl/Locale-gettext')
 ]
 
 
 ESSENTIAL_PACKAGE_LIST = [
     # with global `gpm` use flag
-    Package('sys-libs/ncurses'),
     Package('app-shells/dash'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/genkernel'),
     Package('sys-kernel/linux-firmware'),
 
-    Package('@world', '-uDNv --with-bdeps=y --backtrack=100 --exclude="sys-devel/gcc"'),
+    Package('@system', '-uDNv --usepkgonly'),
+    Package('@world', '-uDNv --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
@@ -111,10 +112,8 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-process/cronie'),
 
     Package('sys-boot/grub', use_flags='device-mapper mount'),
-    Package('sys-boot/os-prober'),
     Package('sys-apps/lm-sensors'),
     Package('sys-power/acpi'),
-    Package('sys-process/procenv'),
 ]
 
 
@@ -292,7 +291,7 @@ def pre_install():
         for a in [dd_action, mkswap_action, swapon_action]:
             Executor.exec(a)
     with open('/etc/portage/package.mask/install.mask', 'w') as f:
-        f.writelines(MASKS)
+        f.writelines([f'{m}\n' for m in MASKS])
 
 
     if common.TMPFS_SIZE:
