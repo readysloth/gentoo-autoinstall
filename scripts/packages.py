@@ -158,6 +158,11 @@ ESSENTIAL_PACKAGE_LIST = [
 
 
 NETWORK_PACKAGE_LIST = [
+    Package('net-misc/networkmanager',
+            use_flags=['conncheck', 'connection-sharing',
+                       'dhcpcd', 'elogind',
+                       'iptables', 'wifi',
+                       'tools']),
     Package('net-misc/dhcpcd'),
     Package('net-wireless/iw'),
     Package('net-wireless/wireless-tools'),
@@ -380,6 +385,8 @@ ACTION_LIST = [
     Action('rc-update add consolefont boot',
            name='service update'),
     Action('rc-update add dbus default',
+           name='service update'),
+    Action('rc-update add NetworkManager default',
            name='service update'),
 ]
 
