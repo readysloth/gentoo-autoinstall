@@ -240,28 +240,16 @@ ACTION_LIST = [
                 'make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc)',
                 f'dd if=u-boot-sunxi-with-spl.bin of={common.DISK_NODE} bs=1k seek=8'],
                name='u-boot installation'),
-
-
-    Action('rc-update add sysklogd default',
-           name='service update'),
-    Action('rc-update add cronie default',
-           name='service update'),
-    Action('rc-update add alsasound default',
-           name='service update'),
-    Action('rc-update add docker default',
-           name='service update'),
-    Action('rc-update add libvirtd default',
-           name='service update'),
-    Action('rc-update add dhpcd default',
-           name='service update'),
-    Action('rc-update add pulseaudio default',
-           name='service update'),
-    Action('rc-update add lvmetad boot',
-           name='service update'),
-    Action('rc-update add consolefont boot',
-           name='service update'),
-    Action('rc-update add dbus default',
-           name='service update'),
+] + [
+    Action(f'rc-update add {s} boot',
+           name=f'service {s} added to boot')
+    for s in ['lvmetad', 'consolefont']
+] + [
+    Action(f'rc-update add {s} default',
+           name=f'service {s} added to default')
+    for s in ['sysklogd', 'cronie', 'alsasound',
+              'docker', 'libvirtd', 'pulseaudio',
+              'dbus', 'dhcpcd']
 ]
 
 
