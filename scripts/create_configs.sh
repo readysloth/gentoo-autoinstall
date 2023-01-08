@@ -94,10 +94,10 @@ chmod +x ${USER_HOME}/.scripts/get_bg_color.sh
 chmod +x ${USER_HOME}/.scripts/connected_to.sh
 
 
-cat << "EOF" > ${USER_HOME}/.bashrc
+cat << EOF > ${USER_HOME}/.bashrc
 bind 'set completion-ignore-case on'
 export EDITOR=vim
-export PATH=$PATH:${USER_HOME}/.cargo/bin:${USER_HOME}/.scripts
+export PATH=\$PATH:${USER_HOME}/.cargo/bin:${USER_HOME}/.scripts
 EOF
 
 # fishrc
