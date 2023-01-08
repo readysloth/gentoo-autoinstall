@@ -349,6 +349,7 @@ X_PACKAGE_LIST = [
     Package('media-gfx/gimp', use_flags='webp lua'),
     Package('media-gfx/flameshot'),
     Package('media-video/peek'),
+    Package('app-admin/conky', use_flags='intel-backlight iostats portmon imlib'),
     Package('x11-terms/st', use_flags='savedconfig', pre=download_patches_for_st),
 ]
 

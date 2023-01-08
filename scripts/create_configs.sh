@@ -25,17 +25,29 @@ curl -fLo ${USER_HOME}/.vim/autoload/plug.vim --create-dirs https://raw.githubus
 # scripts
 mkdir -p ${USER_HOME}/.scripts
 cat << EOF > ${USER_HOME}/.scripts/autochanging_wallpaper.sh
-#!/bin/bash
+#!/usr/bin/env bash
+
+BACKGROUND_DIR='${USER_HOME}/Images/backgrounds'
 while true
 do
-  feh --randomize --bg-fill ${USER_HOME}/Images/backgrounds
+  background="\$BACKGROUND_DIR/\$(ls "\$BACKGROUND_DIR" | shuf | head -n1)"
+  echo "\$background" > /tmp/background.image
+  convert "\$background" -scale 500x500! \
+                        -format %c \
+                        +dither \
+                        -brightness-contrast 40 \
+                        -colors 50 \
+                        -unique-colors txt:- \
+    | grep 'srgb(' \
+    | awk '{print \$3}' >> /tmp/background.image
+  feh --bg-fill "\$background"
   sleep 1h
 done
 EOF
 
 
 cat << "EOF" > ${USER_HOME}/.scripts/make_screenshot.sh
-#!/bin/bash
+#!/usr/bin/env bash
 
 TEMP_DIR=$(mktemp -d)
 pushd $TEMP_DIR
@@ -44,8 +56,43 @@ pushd $TEMP_DIR
 popd
 EOF
 
+
+cat << "EOF" > ${USER_HOME}/.scripts/get_bg_color.sh
+#!/usr/bin/env bash
+
+BACKGROUND_INFO=/tmp/background.image
+LINE_COUNT=$(wc -l "$BACKGROUND_INFO" | awk '{print $1}')
+POSITION="$1"
+
+[ "$1" == 'last' ] && POSITION='$'
+[ "$1" == 'middle' ] && POSITION="$(($LINE_COUNT / 2))"
+
+sed -e 1d -e 's/#//g' "$BACKGROUND_INFO" | sed -n "${POSITION}p"
+EOF
+
+
+cat << "EOF" > ${USER_HOME}/.scripts/connected_to.sh
+#!/usr/bin/env bash
+
+for info in $(netstat -nputw |
+            grep ESTABLISHED |
+            awk '{print $5,$7}' |
+            sed 's/:[^[:space:]]*/ /'|
+            sort -u |
+            tr -s ' ' ,)
+do
+  ip="$(echo $info | cut -d, -f1)"
+  process="$(echo $info | cut -d, -f2)"
+  echo $ip $process $(curl "ipinfo.io/$ip" 2>/dev/null | jq '(.country) + ": " + (.city)' | tr -d '"' | tr ' ' -)
+done | sed '1i\ IP PROCESS COUNTRY' | column -t | tr - ' '
+EOF
+
+
 chmod +x ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 chmod +x ${USER_HOME}/.scripts/make_screenshot.sh
+chmod +x ${USER_HOME}/.scripts/get_bg_color.sh
+chmod +x ${USER_HOME}/.scripts/connected_to.sh
+
 
 cat << "EOF" > ${USER_HOME}/.bashrc
 bind 'set completion-ignore-case on'
@@ -67,6 +114,8 @@ xset +fp \$(echo ${USER_HOME}/.fonts)
 xset fp rehash
 picom &
 clipmenud &
+conky
+warpd
 setxkbmap -option grp:alt_shift_toggle dvorak,ru
 ${USER_HOME}/.config/polybar/launch.sh --forest &
 ${USER_HOME}/.scripts/autochanging_wallpaper.sh &
@@ -449,6 +498,115 @@ super + r
  bspc node @/ -R 90
 super + space
  bspc node -t {floating, tiled}
+EOF
+
+
+# conky
+mkdir -p ${USER_HOME}/.config/conky
+cat << "EOF" > ${USER_HOME}/.config/conky/conky.conf
+conky.config = {
+    alignment = 'top_right',
+    background = true,
+    border_width = 1,
+    cpu_avg_samples = 2,
+    default_color = 'green',
+    default_outline_color = 'white',
+    default_shade_color = 'white',
+    double_buffer = true,
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+    extra_newline = false,
+    font = 'Liberation Mono:pixelsize=15',
+    gap_x = 10,
+    gap_y = 50,
+    minimum_height = 5,
+    minimum_width = 5,
+    maximum_width = 700,
+    net_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_ncurses = false,
+    out_to_stderr = false,
+    out_to_x = true,
+    own_window = true,
+    own_window_class = 'Conky',
+    own_window_type = 'desktop',
+    own_window_transparent = false,
+    own_window_argb_visual = true,
+    own_window_argb_value = 130,
+    show_graph_range = false,
+    show_graph_scale = false,
+    stippled_borders = 0,
+    update_interval = 2.0,
+    uppercase = false,
+    use_spacer = 'none',
+    use_xft = true,
+}
+
+conky.text = [[
+!title_color ${scroll 100 $sysname $nodename $kernel $machine}
+!hr_color $hr
+!title_color Uptime:!info_color $uptime
+!title_color Battery:!info_color $battery
+!title_color CPU Usage:!info_color $cpu% ${cpubar 4}
+!title_color Frequency (in GHz):!info_color $freq_g
+!title_color Cpu Graph:
+${cpugraph cpu1 50,150 !info_color FF0000 -t} \
+${cpugraph cpu2 50,150 !info_color FF0000 -t} \
+${cpugraph cpu3 50,150 !info_color FF0000 -t} \
+${cpugraph cpu4 50,150 !info_color FF0000 -t}
+${cpugraph cpu5 50,150 !info_color FF0000 -t} \
+${cpugraph cpu6 50,150 !info_color FF0000 -t} \
+${cpugraph cpu7 50,150 !info_color FF0000 -t} \
+${cpugraph cpu8 50,150 !info_color FF0000 -t}
+!title_color RAM Usage:!info_color $mem/$memmax - $memperc% ${membar 4}
+!title_color RAM Graph:
+${memgraph 70,635 !title_color,$info_color}
+!title_color Swap Usage:!info_color $swap/$swapmax - $swapperc% ${swapbar 4}
+!title_color Processes:!info_color $processes  !title_color Running:!info_color $running_processes
+!hr_color $hr
+!title_color Name              PID     CPU%   MEM%
+!info_color ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+!info_color ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
+!title_color Syslog
+!info_color\
+${font 'Liberation Mono:pixelsize=13'}${execp tail -n5 /var/log/syslog | !limit_output}
+$font\
+!hr_color $hr
+!title_color File systems:
+ / !info_color ${fs_used /}/${fs_size /} ${fs_bar 6 /}
+!hr_color $hr
+!title_color Networking (${addr wlan0}):
+!title_color Public IP:
+!title_color - Current!info_color ${curl https://icanhazip.com/ 30}\
+!title_color - Previous!info_color ${curl https://icanhazip.com/ 60}\
+!title_color Up:!info_color ${upspeed} !title_color Down:!info_color ${downspeed}
+!title_color Connected to:
+!info_color\
+${execpi 600 connected_to.sh}
+]]
+conky.text = string.gsub(conky.text,
+                         "!title_color",
+                         "${eval $${color ${exec get_bg_color.sh middle}}}")
+conky.text = string.gsub(conky.text,
+                         "!hr_color",
+                         "${eval $${color ${exec get_bg_color.sh 5}}}")
+conky.text = string.gsub(conky.text,
+                         "!info_color",
+                         "${eval $${color ${exec get_bg_color.sh last}}}")
+conky.text = string.gsub(conky.text,
+                         "!hot_color",
+                         "${eval $${color ${exec get_bg_color.sh 1 | sed 's/^../FF/'}}}")
+
+conky.text = string.gsub(conky.text,
+                         "!limit_output",
+                         "sed -e 's/gentoo//' -e 's/\\[\\.\\{3\\}\\]//g' | tr -s ' ' | cut -c16-110 | sed 's/.*/ &.../g' ")
+
+conky.text = string.gsub(conky.text,
+                         "!delete_big_numbers",
+                         "sed 's/[[:digit:]]\\{3,\\}/.../g' | sed 's/\\.\\+/.../g'")
 EOF
 
 
