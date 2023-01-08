@@ -1,5 +1,4 @@
-# I'm aware about heredocuments, but don't like them
-#
+#!/usr/bin/env bash
 
 USERNAME="$1"
 USER_HOME=$(eval echo ~"$USERNAME")
@@ -25,236 +24,251 @@ curl -fLo ${USER_HOME}/.vim/autoload/plug.vim --create-dirs https://raw.githubus
 
 # scripts
 mkdir -p ${USER_HOME}/.scripts
-echo '#!/bin/bash'                                      > ${USER_HOME}/.scripts/autochanging_wallpaper.sh
-echo 'while true'                                      >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
-echo 'do'                                              >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
-echo "  feh --randomize --bg-fill ${USER_HOME}/Images/backgrounds" >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
-echo '  sleep 1h'                                      >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
-echo 'done'                                            >> ${USER_HOME}/.scripts/autochanging_wallpaper.sh
+cat << EOF > ${USER_HOME}/.scripts/autochanging_wallpaper.sh
+#!/bin/bash
+while true
+do
+  feh --randomize --bg-fill ${USER_HOME}/Images/backgrounds
+  sleep 1h
+done
+EOF
 
 
-echo '#!/bin/bash'                                           > ${USER_HOME}/.scripts/make_screenshot.sh
-echo ''                                                     >> ${USER_HOME}/.scripts/make_screenshot.sh
-echo 'TEMP_DIR=$(mktemp -d)'                                >> ${USER_HOME}/.scripts/make_screenshot.sh
-echo 'pushd $TEMP_DIR'                                      >> ${USER_HOME}/.scripts/make_screenshot.sh
-echo '    scrot'                                            >> ${USER_HOME}/.scripts/make_screenshot.sh
-echo '    xclip -i -selection clipboard -t image/png *.png' >> ${USER_HOME}/.scripts/make_screenshot.sh
-echo 'popd'                                                 >> ${USER_HOME}/.scripts/make_screenshot.sh
+cat << "EOF" > ${USER_HOME}/.scripts/make_screenshot.sh
+#!/bin/bash
+
+TEMP_DIR=$(mktemp -d)
+pushd $TEMP_DIR
+    scrot
+    xclip -i -selection clipboard -t image/png *.png
+popd
+EOF
 
 chmod +x ${USER_HOME}/.scripts/autochanging_wallpaper.sh
 chmod +x ${USER_HOME}/.scripts/make_screenshot.sh
 
-# bashrc
-echo "bind 'set completion-ignore-case on'"       > ${USER_HOME}/.bashrc
-echo 'export EDITOR=vim'                         >> ${USER_HOME}/.bashrc
-echo "export PATH=$PATH:${USER_HOME}/.cargo/bin:${USER_HOME}/.scripts" >> ${USER_HOME}/.bashrc
+cat << "EOF" > ${USER_HOME}/.bashrc
+bind 'set completion-ignore-case on'
+export EDITOR=vim
+export PATH=$PATH:${USER_HOME}/.cargo/bin:${USER_HOME}/.scripts
+EOF
 
 # fishrc
 mkdir -p ${USER_HOME}/.config/fish/
-echo "set -gx PATH $PATH ${USER_HOME}/.cargo/bin ${USER_HOME}/.scripts ${USER_HOME}/.local/bin" >> ${USER_HOME}/.config/fish/config.fish
-echo 'set -gx EDITOR (command -v vim)'                         >> ${USER_HOME}/.config/fish/config.fish
+cat << EOF >> ${USER_HOME}/.config/fish/config.fish
+set -gx PATH \$PATH ${USER_HOME}/.cargo/bin ${USER_HOME}/.scripts ${USER_HOME}/.local/bin
+set -gx EDITOR (command -v vim)
+EOF
 
 # Xinit
-echo 'sxhkd &'                                           > ${USER_HOME}/.xinitrc
-echo "xset +fp $(echo ${USER_HOME}/.fonts)"              >> ${USER_HOME}/.xinitrc
-echo "xset fp rehash"                                    >> ${USER_HOME}/.xinitrc
-echo 'picom &'                                           >> ${USER_HOME}/.xinitrc
-echo 'clipmenud &'                                       >> ${USER_HOME}/.xinitrc
-echo 'setxkbmap -option grp:alt_shift_toggle dvorak,ru'  >> ${USER_HOME}/.xinitrc
-echo "${USER_HOME}/.config/polybar/launch.sh --forest &" >> ${USER_HOME}/.xinitrc
-echo "${USER_HOME}/.scripts/autochanging_wallpaper.sh &" >> ${USER_HOME}/.xinitrc
-echo 'exec bspwm'                                        >> ${USER_HOME}/.xinitrc
+cat << EOF > ${USER_HOME}/.xinitrc
+sxhkd &
+xset +fp \$(echo ${USER_HOME}/.fonts)
+xset fp rehash
+picom &
+clipmenud &
+setxkbmap -option grp:alt_shift_toggle dvorak,ru
+${USER_HOME}/.config/polybar/launch.sh --forest &
+${USER_HOME}/.scripts/autochanging_wallpaper.sh &
+exec bspwm
+EOF
 
 # picom
 
-echo "shadow = true;"                                                             >> ${USER_HOME}/.config/picom.conf
-echo "no-dnd-shadow = true;"                                                      >> ${USER_HOME}/.config/picom.conf
-echo "no-dock-shadow = true;"                                                     >> ${USER_HOME}/.config/picom.conf
-echo "clear-shadow = true;"                                                       >> ${USER_HOME}/.config/picom.conf
-echo "shadow-radius = 7;"                                                         >> ${USER_HOME}/.config/picom.conf
-echo "shadow-offset-x = -7;"                                                      >> ${USER_HOME}/.config/picom.conf
-echo "shadow-offset-y = -7;"                                                      >> ${USER_HOME}/.config/picom.conf
-echo "shadow-exclude = ["                                                         >> ${USER_HOME}/.config/picom.conf
-echo "	\"name = 'Notification'\","                                               >> ${USER_HOME}/.config/picom.conf
-echo "	\"class_g = 'Conky'\","                                                   >> ${USER_HOME}/.config/picom.conf
-echo "	\"class_g ?= 'Notify-osd'\","                                             >> ${USER_HOME}/.config/picom.conf
-echo "	\"class_g = 'Cairo-clock'\","                                             >> ${USER_HOME}/.config/picom.conf
-echo "];"                                                                         >> ${USER_HOME}/.config/picom.conf
-echo ""                                                                           >> ${USER_HOME}/.config/picom.conf
-echo "inactive-opacity = 0.9;"                                                    >> ${USER_HOME}/.config/picom.conf
-echo "frame-opacity = 0.7;"                                                       >> ${USER_HOME}/.config/picom.conf
-echo "inactive-opacity-override = true;"                                          >> ${USER_HOME}/.config/picom.conf
-echo "alpha-step = 0.06;"                                                         >> ${USER_HOME}/.config/picom.conf
-echo "blur-kern = \"3x3box\";"                                                    >> ${USER_HOME}/.config/picom.conf
-echo "blur-background-exclude = ["                                                >> ${USER_HOME}/.config/picom.conf
-echo "	\"window_type = 'dock'\","                                                >> ${USER_HOME}/.config/picom.conf
-echo "	\"window_type = 'desktop'\","                                             >> ${USER_HOME}/.config/picom.conf
-echo "];"                                                                         >> ${USER_HOME}/.config/picom.conf
-echo ""                                                                           >> ${USER_HOME}/.config/picom.conf
-echo "glx-copy-from-front = false;"                                               >> ${USER_HOME}/.config/picom.conf
-echo ""                                                                           >> ${USER_HOME}/.config/picom.conf
-echo "wintypes:"                                                                  >> ${USER_HOME}/.config/picom.conf
-echo "{"                                                                          >> ${USER_HOME}/.config/picom.conf
-echo "  tooltip = { fade = true; shadow = true; opacity = 0.75; focus = true; };" >> ${USER_HOME}/.config/picom.conf
-echo "};"                                                                         >> ${USER_HOME}/.config/picom.conf
+cat << EOF > ${USER_HOME}/.config/picom.conf
+shadow = true;
+no-dnd-shadow = true;
+no-dock-shadow = true;
+clear-shadow = true;
+shadow-radius = 7;
+shadow-offset-x = -7;
+shadow-offset-y = -7;
+shadow-exclude = [
+	"name = 'Notification'",
+	"class_g = 'Conky'",
+	"class_g ?= 'Notify-osd'",
+	"class_g = 'Cairo-clock'",
+];
+
+inactive-opacity = 0.9;
+frame-opacity = 0.7;
+inactive-opacity-override = true;
+alpha-step = 0.06;
+blur-kern = "3x3box";
+blur-background-exclude = [
+	"window_type = 'dock'",
+	"window_type = 'desktop'",
+];
+
+glx-copy-from-front = false;
+
+wintypes:
+{
+  tooltip = { fade = true; shadow = true; opacity = 0.75; focus = true; };
+};
+EOF
 
 
 # synaptics
 
 mkdir -p /etc/X11/xorg.conf.d/
-echo 'Section "InputClass"'                           > /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Identifier "touchpad catchall"'        >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Driver "synaptics"'                    >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        MatchIsTouchpad "on"'                  >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "VertEdgeScroll" "on"'          >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo                                                 >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "CircularScrolling"     "on"'   >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "CircScrollTrigger"     "3"'    >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "CircScrollDelta"       "0.01"' >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo                                                 >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "PalmDetect"            "0.01"' >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo                                                 >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "VertTwoFingerScroll"   "on"'   >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "VertScrollDelta"       "30"'   >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "HorizScrollDelta"      "30"'   >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "TapButton1"            "1"'    >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "TapButton2"            "3"'    >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo '        Option "TapButton3"            "2"'    >> /etc/X11/xorg.conf.d/50-synaptics.conf
-echo 'EndSection'                                    >> /etc/X11/xorg.conf.d/50-synaptics.conf
+cat << EOF > /etc/X11/xorg.conf.d/50-synaptics.conf
+Section "InputClass"
+        Identifier "touchpad catchall"
+        Driver "synaptics"
+        MatchIsTouchpad "on"
+        Option "VertEdgeScroll" "on"
+
+        Option "CircularScrolling"     "on"
+        Option "CircScrollTrigger"     "3"
+        Option "CircScrollDelta"       "0.01"
+
+        Option "PalmDetect"            "0.01"
+
+        Option "VertTwoFingerScroll"   "on"
+        Option "VertScrollDelta"       "30"
+        Option "HorizScrollDelta"      "30"
+        Option "TapButton1"            "1"
+        Option "TapButton2"            "3"
+        Option "TapButton3"            "2"
+EndSection
+EOF
 
 # Vim
-echo 'set number'         >> ${USER_HOME}/.vimrc
-echo 'set relativenumber' >> ${USER_HOME}/.vimrc
-echo                      >> ${USER_HOME}/.vimrc
-echo 'set hlsearch'       >> ${USER_HOME}/.vimrc
-echo 'set incsearch'      >> ${USER_HOME}/.vimrc
-echo                      >> ${USER_HOME}/.vimrc
-echo 'set wildmenu'       >> ${USER_HOME}/.vimrc
-echo 'set nocompatible'   >> ${USER_HOME}/.vimrc
-echo                      >> ${USER_HOME}/.vimrc
-echo 'set tabstop=8'      >> ${USER_HOME}/.vimrc
-echo 'set softtabstop=0'  >> ${USER_HOME}/.vimrc
-echo 'set expandtab'      >> ${USER_HOME}/.vimrc
-echo 'set shiftwidth=4'   >> ${USER_HOME}/.vimrc
-echo 'set smarttab'       >> ${USER_HOME}/.vimrc
-echo                      >> ${USER_HOME}/.vimrc
-echo 'syntax on'          >> ${USER_HOME}/.vimrc
-echo                      >> ${USER_HOME}/.vimrc
+cat << EOF > ${USER_HOME}/.vimrc
+set number
+set relativenumber
 
-echo 'nnoremap <C-j> :m .+1<CR>'          >> ${USER_HOME}/.vimrc
-echo 'nnoremap <C-k> :m .-2<CR>'          >> ${USER_HOME}/.vimrc
-echo                                      >> ${USER_HOME}/.vimrc
-echo 'inoremap <C-j> <ESC>:m .+1<CR>==gi' >> ${USER_HOME}/.vimrc
-echo 'inoremap <C-k> <ESC>:m .-2<CR>==gi' >> ${USER_HOME}/.vimrc
-echo                                      >> ${USER_HOME}/.vimrc
-echo "vnoremap <C-j> :m '>1<CR>gv=gv"     >> ${USER_HOME}/.vimrc
-echo "vnoremap <C-k> :m '<2<CR>gv=gv"     >> ${USER_HOME}/.vimrc
-echo                                      >> ${USER_HOME}/.vimrc
-echo "let mapleader = ' '"                >> ${USER_HOME}/.vimrc
+set hlsearch
+set incsearch
 
-echo "call plug#begin('${USER_HOME}/.vim/plugged')"      >> ${USER_HOME}/.vimrc
-echo                                          >> ${USER_HOME}/.vimrc
-echo "Plug 'easymotion/vim-easymotion'"       >> ${USER_HOME}/.vimrc
-echo "Plug 'godlygeek/tabular'"               >> ${USER_HOME}/.vimrc
-echo "Plug 'luochen1990/rainbow'"             >> ${USER_HOME}/.vimrc
-echo "Plug 'mbbill/undotree'"                 >> ${USER_HOME}/.vimrc
-echo "Plug 'mkitt/tabline.vim'"               >> ${USER_HOME}/.vimrc
-echo "Plug 'nathanaelkane/vim-indent-guides'" >> ${USER_HOME}/.vimrc
-echo "Plug 'scrooloose/nerdtree'"             >> ${USER_HOME}/.vimrc
-echo "Plug 'sheerun/vim-polyglot'"            >> ${USER_HOME}/.vimrc
-echo "Plug 'tpope/vim-fugitive'"              >> ${USER_HOME}/.vimrc
-echo "Plug 'tpope/vim-surround'"              >> ${USER_HOME}/.vimrc
-echo "Plug 'chrisbra/csv.vim'"                >> ${USER_HOME}/.vimrc
-echo "Plug 'lyokha/vim-xkbswitch'"            >> ${USER_HOME}/.vimrc
-echo "Plug 'kovetskiy/sxhkd-vim'"             >> ${USER_HOME}/.vimrc
-echo "Plug 'tpope/vim-repeat'"                >> ${USER_HOME}/.vimrc
-echo "Plug 'junegunn/fzf.vim'"                >> ${USER_HOME}/.vimrc
-echo "Plug 'blueyed/vim-diminactive'"         >> ${USER_HOME}/.vimrc
-echo "Plug 'unblevable/quick-scope'"          >> ${USER_HOME}/.vimrc
-echo "Plug 'wlangstroth/vim-racket'"          >> ${USER_HOME}/.vimrc
-echo "Plug 'calebsmith/vim-lambdify'"         >> ${USER_HOME}/.vimrc
-echo "Plug 'ntpeters/vim-better-whitespace'"  >> ${USER_HOME}/.vimrc
-echo "Plug 'mhinz/vim-signify'"               >> ${USER_HOME}/.vimrc
-echo "Plug 'wsdjeg/vim-fetch'"                >> ${USER_HOME}/.vimrc
-echo "Plug 'Galicarnax/vim-regex-syntax'"     >> ${USER_HOME}/.vimrc
-echo "Plug 'baverman/vial'"                   >> ${USER_HOME}/.vimrc
-echo "Plug 'baverman/vial-http'"              >> ${USER_HOME}/.vimrc
-echo                                          >> ${USER_HOME}/.vimrc
-echo "Plug 'prabirshrestha/vim-lsp'"          >> ${USER_HOME}/.vimrc
-echo "Plug 'mattn/vim-lsp-settings'"          >> ${USER_HOME}/.vimrc
-echo "Plug 'SirVer/ultisnips'"                >> ${USER_HOME}/.vimrc
-echo "Plug 'honza/vim-snippets'"              >> ${USER_HOME}/.vimrc
-echo "Plug 'prabirshrestha/asyncomplete.vim'" >> ${USER_HOME}/.vimrc
-echo "Plug 'prabirshrestha/asyncomplete-lsp.vim'" >> ${USER_HOME}/.vimrc
-echo                                              >> ${USER_HOME}/.vimrc
-echo "Plug 'wellle/tmux-complete.vim'"            >> ${USER_HOME}/.vimrc
-echo                                                 >> ${USER_HOME}/.vimrc
-echo "call plug#end()"                               >> ${USER_HOME}/.vimrc
-echo                                                 >> ${USER_HOME}/.vimrc
-echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
-echo 'map U :UndotreeToggle<CR>'                     >> ${USER_HOME}/.vimrc
-echo 'map <C-n> :NERDTreeToggle<CR>'                 >> ${USER_HOME}/.vimrc
-echo                                                 >> ${USER_HOME}/.vimrc
-echo 'map <leader>n :Files<CR>'                      >> ${USER_HOME}/.vimrc
-echo 'map <leader>/ :Lines<CR>'                      >> ${USER_HOME}/.vimrc
-echo 'map <C-/> :Rg<CR>'                             >> ${USER_HOME}/.vimrc
-echo 'map <C-c> :Commits<CR>'                        >> ${USER_HOME}/.vimrc
-echo 'map gt :Buffers<CR>'                           >> ${USER_HOME}/.vimrc
-echo                                                 >> ${USER_HOME}/.vimrc
-echo 'map gG :G<CR>'                                 >> ${USER_HOME}/.vimrc
-echo 'map <C-s> :VialHttp<CR>'                       >> ${USER_HOME}/.vimrc
-echo                                                 >> ${USER_HOME}/.vimrc
-echo 'set updatetime=100'                            >> ${USER_HOME}/.vimrc
-echo                                                 >> ${USER_HOME}/.vimrc
-echo 'let g:UltiSnipsExpandTrigger="<tab>"'          >> ${USER_HOME}/.vimrc
-echo 'let g:rainbow_active = 1'                      >> ${USER_HOME}/.vimrc
-echo 'let g:indent_guides_enable_on_vim_startup = 1' >> ${USER_HOME}/.vimrc
-echo 'let g:XkbSwitchEnabled = 1'                    >> ${USER_HOME}/.vimrc
-echo 'let g:diminactive_use_syntax = 1'              >> ${USER_HOME}/.vimrc
-echo "let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']" >> ${USER_HOME}/.vimrc
-echo                                                 >> ${USER_HOME}/.vimrc
-echo 'autocmd VimEnter * DimInactiveOn'              >> ${USER_HOME}/.vimrc
-echo                                                 >> ${USER_HOME}/.vimrc
-echo 'let g:diminactive_use_syntax = 1'              >> ${USER_HOME}/.vimrc
-echo 'let g:diminactive_use_colorcolumn = 0'         >> ${USER_HOME}/.vimrc
-echo                                                 >> ${USER_HOME}/.vimrc
-echo "function! s:on_lsp_buffer_enabled() abort"                                >> ${USER_HOME}/.vimrc
-echo "    setlocal omnifunc=lsp#complete"                                       >> ${USER_HOME}/.vimrc
-echo "    setlocal signcolumn=yes"                                              >> ${USER_HOME}/.vimrc
-echo "    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif"         >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> gd <plug>(lsp-definition)"                              >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> g/ <plug>(lsp-document-symbol-search)"                  >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> g? <plug>(lsp-workspace-symbol-search)"                 >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> gr <plug>(lsp-references)"                              >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> gi <plug>(lsp-implementation)"                          >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> <leader>r <plug>(lsp-rename)"                           >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> <leader>i <plug>(lsp-next-diagnostic)"                  >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> <leader>I <plug>(lsp-previous-diagnostic)"              >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> K <plug>(lsp-hover) <bar> :syntax on"                   >> ${USER_HOME}/.vimrc
-echo "    nmap <buffer> <leader>d <plug>(lsp-document-diagnostics)"             >> ${USER_HOME}/.vimrc
-echo                                                                            >> ${USER_HOME}/.vimrc
-echo "    let g:lsp_format_sync_timeout = 1000"                                 >> ${USER_HOME}/.vimrc
-echo "    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')" >> ${USER_HOME}/.vimrc
-echo "endfunction"                                                              >> ${USER_HOME}/.vimrc
+set wildmenu
+set nocompatible
 
-echo "augroup lsp_install"                                                >> ${USER_HOME}/.vimrc
-echo "    au!"                                                            >> ${USER_HOME}/.vimrc
-echo "    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()" >> ${USER_HOME}/.vimrc
-echo "augroup END"                                                        >> ${USER_HOME}/.vimrc
-echo                                                      >> ${USER_HOME}/.vimrc
-echo "let g:tmuxcomplete#asyncomplete_source_options = {" >> ${USER_HOME}/.vimrc
-echo "            \ 'name':      'tmuxcomplete',"         >> ${USER_HOME}/.vimrc
-echo "            \ 'whitelist': ['*'],"                  >> ${USER_HOME}/.vimrc
-echo "            \ 'config': {"                          >> ${USER_HOME}/.vimrc
-echo "            \     'splitmode':      'words',"       >> ${USER_HOME}/.vimrc
-echo "            \     'filter_prefix':   1,"            >> ${USER_HOME}/.vimrc
-echo "            \     'show_incomplete': 1,"            >> ${USER_HOME}/.vimrc
-echo "            \     'sort_candidates': 0,"            >> ${USER_HOME}/.vimrc
-echo "            \     'scrollback':      0,"            >> ${USER_HOME}/.vimrc
-echo "            \     'truncate':        0"             >> ${USER_HOME}/.vimrc
-echo "            \     }"                                >> ${USER_HOME}/.vimrc
-echo "            \ }"                                    >> ${USER_HOME}/.vimrc
-echo "inoremap <C-t> <C-x><C-u>"                          >> ${USER_HOME}/.vimrc
+set tabstop=8
+set softtabstop=0
+set expandtab
+set shiftwidth=4
+set smarttab
+
+syntax on
+
+
+nnoremap <C-j> :m .+1<CR>
+nnoremap <C-k> :m .-2<CR>
+
+inoremap <C-j> <ESC>:m .+1<CR>==gi
+inoremap <C-k> <ESC>:m .-2<CR>==gi
+
+vnoremap <C-j> :m '>1<CR>gv=gv
+vnoremap <C-k> :m '<2<CR>gv=gv
+
+let mapleader = ' '
+
+call plug#begin('${USER_HOME}/.vim/plugged')
+
+Plug 'easymotion/vim-easymotion'
+Plug 'godlygeek/tabular'
+Plug 'luochen1990/rainbow'
+Plug 'mbbill/undotree'
+Plug 'mkitt/tabline.vim'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'scrooloose/nerdtree'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'chrisbra/csv.vim'
+Plug 'lyokha/vim-xkbswitch'
+Plug 'kovetskiy/sxhkd-vim'
+Plug 'tpope/vim-repeat'
+Plug 'junegunn/fzf.vim'
+Plug 'blueyed/vim-diminactive'
+Plug 'unblevable/quick-scope'
+Plug 'wlangstroth/vim-racket'
+Plug 'calebsmith/vim-lambdify'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'mhinz/vim-signify'
+Plug 'wsdjeg/vim-fetch'
+Plug 'Galicarnax/vim-regex-syntax'
+Plug 'baverman/vial'
+Plug 'baverman/vial-http'
+
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+Plug 'wellle/tmux-complete.vim'
+
+call plug#end()
+
+map <C-n> :NERDTreeToggle<CR>
+map U :UndotreeToggle<CR>
+map <C-n> :NERDTreeToggle<CR>
+
+map <leader>n :Files<CR>
+map <leader>/ :Lines<CR>
+map <C-/> :Rg<CR>
+map <C-c> :Commits<CR>
+map gt :Buffers<CR>
+
+map gG :G<CR>
+map <C-s> :VialHttp<CR>
+
+set updatetime=100
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:rainbow_active = 1
+let g:indent_guides_enable_on_vim_startup = 1
+let g:XkbSwitchEnabled = 1
+let g:diminactive_use_syntax = 1
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+autocmd VimEnter * DimInactiveOn
+
+let g:diminactive_use_syntax = 1
+let g:diminactive_use_colorcolumn = 0
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> g/ <plug>(lsp-document-symbol-search)
+    nmap <buffer> g? <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> <leader>r <plug>(lsp-rename)
+    nmap <buffer> <leader>i <plug>(lsp-next-diagnostic)
+    nmap <buffer> <leader>I <plug>(lsp-previous-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover) <bar> :syntax on
+    nmap <buffer> <leader>d <plug>(lsp-document-diagnostics)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+endfunction
+
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+let g:tmuxcomplete#asyncomplete_source_options = {
+            \ 'name':      'tmuxcomplete',
+            \ 'whitelist': ['*'],
+            \ 'config': {
+            \     'splitmode':      'words',
+            \     'filter_prefix':   1,
+            \     'show_incomplete': 1,
+            \     'sort_candidates': 0,
+            \     'scrollback':      0,
+            \     'truncate':        0
+            \     }
+            \ }
+inoremap <C-t> <C-x><C-u>
+EOF
 
 
 git clone https://github.com/grwlf/xkb-switch.git;
@@ -272,169 +286,177 @@ rm -rf xkb-switch
 
 # tmux
 git clone https://github.com/tmux-plugins/tpm /etc/tmux/plugins/tpm
-echo 'set -g prefix C-a'                                       > ${USER_HOME}/.tmux.conf
-echo ''                                                       >> ${USER_HOME}/.tmux.conf
-echo 'set-option -g default-shell /bin/fish'                  >> ${USER_HOME}/.tmux.conf
-echo ''                                                       >> ${USER_HOME}/.tmux.conf
-echo 'bind C-a send-prefix'                                   >> ${USER_HOME}/.tmux.conf
-echo 'unbind C-b'                                             >> ${USER_HOME}/.tmux.conf
-echo 'set -sg escape-time 1'                                  >> ${USER_HOME}/.tmux.conf
-echo 'set -g base-index 1'                                    >> ${USER_HOME}/.tmux.conf
-echo 'setw -g pane-base-index 1'                              >> ${USER_HOME}/.tmux.conf
-echo 'setw -g repeat-time 1000'                               >> ${USER_HOME}/.tmux.conf
-echo "bind r source-file ${USER_HOME}/.tmux.conf \; display 'Reloaded!'" >> ${USER_HOME}/.tmux.conf
-echo                                                          >> ${USER_HOME}/.tmux.conf
-echo 'bind | split-window -h -c "#{pane_current_path}"'       >> ${USER_HOME}/.tmux.conf
-echo 'bind - split-window -v -c "#{pane_current_path}"'       >> ${USER_HOME}/.tmux.conf
-echo 'bind c new-window -c      "#{pane_current_path}"'       >> ${USER_HOME}/.tmux.conf
-echo                                                          >> ${USER_HOME}/.tmux.conf
-echo 'bind h select-pane -L'                                  >> ${USER_HOME}/.tmux.conf
-echo 'bind j select-pane -D'                                  >> ${USER_HOME}/.tmux.conf
-echo 'bind k select-pane -U'                                  >> ${USER_HOME}/.tmux.conf
-echo 'bind l select-pane -R'                                  >> ${USER_HOME}/.tmux.conf
-echo                                                          >> ${USER_HOME}/.tmux.conf
-echo 'bind -r C-h select-window -t :-'                        >> ${USER_HOME}/.tmux.conf
-echo 'bind -r C-l select-window -t :+'                        >> ${USER_HOME}/.tmux.conf
-echo                                                          >> ${USER_HOME}/.tmux.conf
-echo 'bind -r H resize-pane -L 5'                             >> ${USER_HOME}/.tmux.conf
-echo 'bind -r J resize-pane -D 5'                             >> ${USER_HOME}/.tmux.conf
-echo 'bind -r K resize-pane -U 5'                             >> ${USER_HOME}/.tmux.conf
-echo 'bind -r L resize-pane -R 5'                             >> ${USER_HOME}/.tmux.conf
-echo                                                          >> ${USER_HOME}/.tmux.conf
-echo 'set -g default-terminal "screen-256color"'              >> ${USER_HOME}/.tmux.conf
-echo 'set-window-option -g mode-keys vi'                      >> ${USER_HOME}/.tmux.conf
-echo                                                          >> ${USER_HOME}/.tmux.conf
-echo 'set -g @plugin "tmux-plugins/tpm"'                      >> ${USER_HOME}/.tmux.conf
-echo 'set -g @plugin "tmux-plugins/tmux-resurrect"'           >> ${USER_HOME}/.tmux.conf
-echo 'set -g @plugin "tmux-plugins/tmux-cpu"'                 >> ${USER_HOME}/.tmux.conf
-echo 'set -g @plugin "jaclu/tmux-power-zoom"'                 >> ${USER_HOME}/.tmux.conf
-echo 'set -g @plugin "tmux-plugins/tmux-sidebar"'             >> ${USER_HOME}/.tmux.conf
-echo 'set -g @sidebar-tree-command "tree -C"'                 >> ${USER_HOME}/.tmux.conf
-echo                                                          >> ${USER_HOME}/.tmux.conf
-echo 'set -g @plugin "tmux-plugins/tmux-prefix-highlight"'    >> ${USER_HOME}/.tmux.conf
 
 TMUX_CPU="#{cpu_bg_color} CPU: #{cpu_icon} #{cpu_percentage}"
 TMUX_BAT="#{battery_status_bg} Batt: #{battery_icon} #{battery_percentage} #{battery_remain}"
 TMUX_PREFIX="#{prefix_highlight}"
 
-echo "set -g status-right \"$TMUX_PREFIX | $TMUX_CPU | $TMUX_BAT | %a %h-%d %H:%M\"" >> ${USER_HOME}/.tmux.conf
-echo 'set -g status-right-length "150"'                       >> ${USER_HOME}/.tmux.conf
-echo                                                          >> ${USER_HOME}/.tmux.conf
-echo 'run "/etc/tmux/plugins/tpm/tpm"'                        >> ${USER_HOME}/.tmux.conf
+cat << EOF > ${USER_HOME}/.tmux.conf
+set -g prefix C-a
+
+set-option -g default-shell /bin/fish
+
+bind C-a send-prefix
+unbind C-b
+set -sg escape-time 1
+set -g base-index 1
+setw -g pane-base-index 1
+setw -g repeat-time 1000
+bind r source-file ${USER_HOME}/.tmux.conf \; display 'Reloaded!
+
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+bind c new-window -c      "#{pane_current_path}"
+
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+set -g default-terminal "screen-256color"
+set-window-option -g mode-keys vi
+
+set -g @plugin "tmux-plugins/tpm"
+set -g @plugin "tmux-plugins/tmux-resurrect"
+set -g @plugin "tmux-plugins/tmux-cpu"
+set -g @plugin "jaclu/tmux-power-zoom"
+set -g @plugin "tmux-plugins/tmux-sidebar"
+set -g @sidebar-tree-command "tree -C"
+
+set -g @plugin "tmux-plugins/tmux-prefix-highlight"
+
+set -g status-right "$TMUX_PREFIX | $TMUX_CPU | $TMUX_BAT | %a %h-%d %H:%M"
+set -g status-right-length "150"
+
+run "/etc/tmux/plugins/tpm/tpm"
+EOF
 
 
 #warpd
 mkdir -p ${USER_HOME}/.config/warpd
-echo 'activation_key: M-/'             >> ${USER_HOME}/.config/warpd/config
-echo 'hint: C'                         >> ${USER_HOME}/.config/warpd/config
-echo 'hint2: c'                        >> ${USER_HOME}/.config/warpd/config
-echo 'exit: esc'                       >> ${USER_HOME}/.config/warpd/config
-echo 'drag: v'                         >> ${USER_HOME}/.config/warpd/config
-echo 'copy_and_exit: y'                >> ${USER_HOME}/.config/warpd/config
-echo 'accelerator: space'              >> ${USER_HOME}/.config/warpd/config
-echo 'buttons: Alt_L underscore Alt_R' >> ${USER_HOME}/.config/warpd/config
-echo 'history: colon'                  >> ${USER_HOME}/.config/warpd/config
-echo 'grid: g'                         >> ${USER_HOME}/.config/warpd/config
-echo 'screen: s'                       >> ${USER_HOME}/.config/warpd/config
-echo 'left: h'                         >> ${USER_HOME}/.config/warpd/config
-echo 'down: j'                         >> ${USER_HOME}/.config/warpd/config
-echo 'up: k'                           >> ${USER_HOME}/.config/warpd/config
-echo 'right: l'                        >> ${USER_HOME}/.config/warpd/config
-echo 'top: H'                          >> ${USER_HOME}/.config/warpd/config
-echo 'middle: M'                       >> ${USER_HOME}/.config/warpd/config
-echo 'bottom: L'                       >> ${USER_HOME}/.config/warpd/config
-echo 'start: 0'                        >> ${USER_HOME}/.config/warpd/config
-echo 'end: $'                          >> ${USER_HOME}/.config/warpd/config
-echo 'scroll_down: C-d'                >> ${USER_HOME}/.config/warpd/config
-echo 'scroll_up: C-u'                  >> ${USER_HOME}/.config/warpd/config
-echo 'cursor_color: FF4500'            >> ${USER_HOME}/.config/warpd/config
-echo 'cursor_size: 7'                  >> ${USER_HOME}/.config/warpd/config
-echo 'repeat_interval: 20'             >> ${USER_HOME}/.config/warpd/config
-echo 'speed: 220'                      >> ${USER_HOME}/.config/warpd/config
-echo 'max_speed: 1600'                 >> ${USER_HOME}/.config/warpd/config
-echo 'acceleration: 700'               >> ${USER_HOME}/.config/warpd/config
-echo                                   >> ${USER_HOME}/.config/warpd/config
-echo 'hint_bgcolor: 00ff00'            >> ${USER_HOME}/.config/warpd/config
-echo 'hint_fgcolor: 000000'            >> ${USER_HOME}/.config/warpd/config
-echo 'hint_undo: u'                    >> ${USER_HOME}/.config/warpd/config
-echo 'scroll_speed: 300'               >> ${USER_HOME}/.config/warpd/config
-echo 'scroll_max_speed: 9000'          >> ${USER_HOME}/.config/warpd/config
-echo 'scroll_acceleration: 2600'       >> ${USER_HOME}/.config/warpd/config
-echo 'indicator: topleft'              >> ${USER_HOME}/.config/warpd/config
-echo 'indicator_color: 00ff00'         >> ${USER_HOME}/.config/warpd/config
-echo 'indicator_size: 22'              >> ${USER_HOME}/.config/warpd/config
+cat << EOF > ${USER_HOME}/.config/warpd/config
+activation_key: M-/
+hint: C
+hint2: c
+exit: esc
+drag: v
+copy_and_exit: y
+accelerator: space
+buttons: Alt_L underscore Alt_R
+history: colon
+grid: g
+screen: s
+left: h
+down: j
+up: k
+right: l
+top: H
+middle: M
+bottom: L
+start: 0
+end: $
+scroll_down: C-d
+scroll_up: C-u
+cursor_color: FF4500
+cursor_size: 7
+repeat_interval: 20
+speed: 220
+max_speed: 1600
+acceleration: 700
+
+hint_bgcolor: 00ff00
+hint_fgcolor: 000000
+hint_undo: u
+scroll_speed: 300
+scroll_max_speed: 9000
+scroll_acceleration: 2600
+indicator: topleft
+indicator_color: 00ff00
+indicator_size: 22
+EOF
 
 
 # bspwm
 mkdir -p ${USER_HOME}/.config/bspwm
 touch ${USER_HOME}/.config/bspwm/bspwmrc
 chmod +x ${USER_HOME}/.config/bspwm/bspwmrc
-echo '#!/bin/sh'                                      > ${USER_HOME}/.config/bspwm/bspwmrc
-echo 'bspc monitor -d I II III IV V VI VII VIII IX X' >> ${USER_HOME}/.config/bspwm/bspwmrc
-echo 'bspc config border_width 2'                     >> ${USER_HOME}/.config/bspwm/bspwmrc
-echo 'bspc config borderless_monocle true'            >> ${USER_HOME}/.config/bspwm/bspwmrc
-echo 'bspc config gapless_monocle true'               >> ${USER_HOME}/.config/bspwm/bspwmrc
-echo 'bspc config focus_follows_pointer true'         >> ${USER_HOME}/.config/bspwm/bspwmrc
+cat << EOF > ${USER_HOME}/.config/bspwm/bspwmrc
+#!/bin/sh
+bspc monitor -d I II III IV V VI VII VIII IX X
+bspc config border_width 2
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+bspc config focus_follows_pointer true
+EOF
 
 # sxhkd
 mkdir -p ${USER_HOME}/.config/sxhkd
 touch ${USER_HOME}/.config/sxhkd/sxhkdrc
 
-echo '#!/bin/sh'                               > ${USER_HOME}/.config/sxhkd/sxhkdrc
+cat << EOF > ${USER_HOME}/.config/sxhkd/sxhkdrc
+#!/bin/sh
 
-echo 'super + shift + {z,a}'                  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' bspc node @/ -C {forward,backward}'    >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + Return'                         >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' st -e tmux'                            >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo                                          >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + c'                              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' CM_LAUNCHER=rofi clipmenu -i'          >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo                                          >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + Tab'                            >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' setxkbmap -option grp:alt_shift_toggle {dvorak, us},ru' >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo                                          >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'Print'                                  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' flameshot gui'                         >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo                                          >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + t'                                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo " bash ${USER_HOME}/.config/polybar/scripts/colors_rofi.sh" >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo                                                  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'XF86AudioRaiseVolume'      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' amixer set Master 2%+'    >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'XF86AudioLowerVolume'      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' amixer set Master 2%-'    >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'XF86AudioMute'             >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' amixer set Master toggle' >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'XF86MonBrightnessUp'       >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' xbacklight +5'            >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'XF86MonBrightnessDown'     >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' xbacklight -5'            >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo                                          >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + n'                              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' firefox'                               >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + f'                              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' bspc node -t ~fullscreen'              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + shift + Return'                 >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' pkill -USR1 -x sxhkd'                  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + {j,k,l,p}'                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' bspc node -f {west,south,north,east}'  >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + d'                              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' rofi -show run'                        >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + shift + d'                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' rofi -show drun'                       >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + shift + q'                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' bspc node -{c,k}'                      >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + {_,shift + }{1-9,0}'            >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo " bspc {desktop -f,node -d} '^{1-9,10}'" >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + r'                              >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' bspc node @/ -R 90'                    >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo 'super + space'                          >> ${USER_HOME}/.config/sxhkd/sxhkdrc
-echo ' bspc node -t {floating, tiled}'        >> ${USER_HOME}/.config/sxhkd/sxhkdrc
+super + shift + {z,a}
+ bspc node @/ -C {forward,backward}
+super + Return
+ st -e tmux
+
+super + c
+ CM_LAUNCHER=rofi clipmenu -i
+
+super + Tab
+ setxkbmap -option grp:alt_shift_toggle {dvorak, us},ru
+
+Print
+ flameshot gui
+
+XF86AudioRaiseVolume
+ amixer set Master 2%+
+XF86AudioLowerVolume
+ amixer set Master 2%-
+XF86AudioMute
+ amixer set Master toggle
+XF86MonBrightnessUp
+ xbacklight +5
+XF86MonBrightnessDown
+ xbacklight -5
+
+super + n
+ firefox
+super + f
+ bspc node -t ~fullscreen
+super + shift + Return
+ pkill -USR1 -x sxhkd
+super + {j,k,l,p}
+ bspc node -f {west,south,north,east}
+super + d
+ rofi -show run
+super + shift + d
+ rofi -show drun
+super + shift + q
+ bspc node -{c,k}
+super + {_,shift + }{1-9,0}
+ bspc {desktop -f,node -d} '^{1-9,10}'
+super + r
+ bspc node @/ -R 90
+super + space
+ bspc node -t {floating, tiled}
+EOF
 
 
-echo "permit ${USERNAME} as root"  > /etc/doas.conf
-echo "permit root as ${USERNAME}" >> /etc/doas.conf
-echo "permit nopass root" >> /etc/doas.conf
+cat << EOF > /etc/doas.conf
+permit ${USERNAME} as root
+permit root as ${USERNAME}
+permit nopass root
+EOF
 
 
 git config --global core.editor vim
@@ -485,5 +507,3 @@ cd polybar-themes/;
 cd -;
 rm -rf polybar-themes;
 "
-
-#sed -i '/font-1.*=.*"/ s/"[^"]*"/"Wuncon Siji:size=11"/' ${USER_HOME}/.config/polybar/config.ini
