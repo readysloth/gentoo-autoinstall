@@ -1,0 +1,3 @@
+[submodule "cpuinfo2qemu"]
+	path = cpuinfo2qemu
+	url = git@github.com:readysloth/cpuinfo2qemu.git
