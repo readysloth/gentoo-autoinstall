@@ -292,7 +292,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> <leader>r <plug>(lsp-rename)
     nmap <buffer> <leader>i <plug>(lsp-next-diagnostic)
     nmap <buffer> <leader>I <plug>(lsp-previous-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover) <bar> :syntax on
+    nmap <buffer> K <plug>(lsp-hover) <bar> :syntax on<CR>
     nmap <buffer> <leader>d <plug>(lsp-document-diagnostics)
 
     let g:lsp_format_sync_timeout = 1000
