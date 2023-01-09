@@ -17,8 +17,7 @@ def parted_on(disk):
 
 
 def part_for_boot():
-    yield from ['mklabel gpt',
-                'mkpart primary 1MiB 256MiB',
+    yield from ['mkpart primary 1MiB 256MiB',
                 'name 1 boot',
                 'set 1 boot on']
 

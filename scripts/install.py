@@ -86,6 +86,7 @@ def parse_args():
                              help='list awailable install features')
 
     install_args = parser.parse_args()
+    common.DISK_NODE = install_args.disk
 
     if install_args.subparser_name == 'info':
         if install_args.list_quirks:

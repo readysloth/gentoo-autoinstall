@@ -22,6 +22,7 @@ if 'LOGLEVEL' in os.environ:
 
 
 DRY_RUN = False
+DISK_NODE = ''
 MAKE_CONF_PATH = '/etc/portage/make.conf'
 BIN_CONF_PATH = '/etc/portage/binrepos.conf'
 DEFAULT_GENTOO_PROFILE = 1

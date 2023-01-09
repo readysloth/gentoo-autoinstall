@@ -111,7 +111,6 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
 
-    Package('sys-boot/grub', use_flags='device-mapper mount'),
     Package('sys-apps/lm-sensors'),
     Package('sys-power/acpi'),
 ]
@@ -214,7 +213,7 @@ X_WM_PACKAGE_LIST = [
 
 def download_patches_for_st():
     l = logging.getLogger(__name__)
-    patch_folder_path = '/etc/portage/patches/dev-lang/x11-terms/st'
+    patch_folder_path = '/etc/portage/patches/x11-terms/st'
     base_url = 'https://st.suckless.org/patches/'
     patches = ['alpha/st-alpha-20220206-0.8.5.diff',
                'dynamic-cursor-color/st-dynamic-cursor-color-0.8.4.diff']
@@ -232,18 +231,17 @@ X_PACKAGE_LIST = [
 
 
 ACTION_LIST = [
-    Action("grub-install --target=$(lscpu | awk '/Architecture/ {print $2}')-efi --efi-directory=/boot --removable",
-           name='grub config creation'),
-    MetaAction(['git clone --depth=1 https://github.com/AdisonCavani/distro-grub-themes.git',
-                'cp -r distro-grub-themes/customize/gentoo /boot/grub/themes',
-                r'echo "GRUB_GFXMODE=1920x1080" >> /etc/default/grub',
-                r'echo "GRUB_THEME=\"/boot/grub/themes/gentoo/theme.txt\"" >> /etc/default/grub',
-                'rm -rf distro-grub-themes'],
-               name='grub theme install'),
-    Action(r'echo "GRUB_CMDLINE_LINUX=\"dolvm root=UUID=$(blkid -t LABEL=rootfs -s UUID -o value)\"" >> /etc/default/grub',
-           name='grub liux cmdline'),
-    Action('grub-mkconfig -o /boot/grub/grub.cfg',
-           name='grub config creation'),
+    MetaAction(['git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git',
+                'cd trusted-firmware-a',
+                'make PLAT=sun50i_h616 -j$(nproc) all'],
+               name='trusted-firmware compilation'),
+    MetaAction(['git clone https://source.denx.de/u-boot/u-boot.git',
+                'cd u-boot',
+                'make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc)',
+                f'dd if=u-boot-sunxi-with-spl.bin of={common.DISK_NODE} bs=1k seek=8'],
+               name='u-boot installation'),
+
+
     Action('rc-update add sysklogd default',
            name='service update'),
     Action('rc-update add cronie default',
