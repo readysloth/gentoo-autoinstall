@@ -10,7 +10,8 @@ install_logger.py
 packages.py
 partitioning.py
 system_install.py
-create_configs.sh"
+create_configs.sh
+u-boot.config"
 
 FOLDER=installation_scripts
 

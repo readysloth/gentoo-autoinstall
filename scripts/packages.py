@@ -103,7 +103,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/linux-firmware'),
 
     Package('@system', '-uDNv --usepkgonly'),
-    Package('@world', '-uDNv --backtrack=100'),
+    Package('@world', '-uDNv --backtrack=100 --exclude="sys-devel/gcc"'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
@@ -233,10 +233,12 @@ X_PACKAGE_LIST = [
 ACTION_LIST = [
     MetaAction(['git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git',
                 'cd trusted-firmware-a',
+                'sed -i "s/[^[:space:]]*--fatal-warnings//g" Makefile',
                 'make PLAT=sun50i_h616 -j$(nproc) all'],
                name='trusted-firmware compilation'),
     MetaAction(['git clone https://source.denx.de/u-boot/u-boot.git',
                 'cd u-boot',
+                'cp /uboot.config .config',
                 'make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc)',
                 f'dd if=u-boot-sunxi-with-spl.bin of={common.DISK_NODE} bs=1k seek=8'],
                name='u-boot installation'),
