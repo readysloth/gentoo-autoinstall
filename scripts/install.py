@@ -5,7 +5,6 @@ import common
 
 from entity import init_executor, deinit_executor
 
-import packages as pkg
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Gentoo workspace installer')
@@ -103,7 +102,9 @@ def parse_args():
             common.LOGGER_LEVEL = logging.DEBUG
 
         if not install_args.no_gui or install_args.no_wm:
+            import packages as pkg
             install_args.use_flags.append('X')
+
             if install_args.no_wm:
                 pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST + pkg.X_PACKAGE_LIST
             else:
