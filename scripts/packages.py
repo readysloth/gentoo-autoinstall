@@ -88,29 +88,31 @@ MASKS = [
 ]
 
 QUIRKED_PACKAGES = [
-    Package('media-libs/libsndfile', use_flags='minimal'),
-    Package('net-misc/aria2', use_flags='bittorent libuv ssh'),
-    Package('dev-util/vmtouch'),
-    Package('dev-perl/Locale-gettext')
+    Package('media-libs/libsndfile', use_flags='minimal', merge_as_always=True),
+    Package('net-misc/aria2', use_flags='bittorent libuv ssh', merge_as_always=True),
+    Package('dev-util/vmtouch', merge_as_always=True),
+    Package('dev-perl/Locale-gettext', merge_as_always=True),
 ]
 
 
 ESSENTIAL_PACKAGE_LIST = [
     # with global `gpm` use flag
-    Package('app-shells/dash'),
-    Package('sys-kernel/gentoo-sources', use_flags='symlink'),
-    Package('sys-kernel/genkernel'),
-    Package('sys-kernel/linux-firmware'),
+    Package('app-shells/dash', merge_as_always=True),
+    Package('sys-kernel/gentoo-sources', use_flags='symlink', merge_as_always=True),
+    Package('sys-kernel/genkernel', merge_as_always=True),
+    Package('sys-kernel/linux-firmware', merge_as_always=True),
 
-    Package('@system', '-uDNv --usepkgonly'),
-    Package('@world', '-uDNv --backtrack=100 --exclude="sys-devel/gcc"'),
+    Package('@system', '-uDNv --usepkgonly', merge_as_always=True),
+    Package('@world', '-uDNv --backtrack=100 --exclude="sys-devel/gcc"', merge_as_always=True),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
-    Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
+    Package('app-editors/vim', use_flags='perl terminal lua'),
     Package('sys-apps/util-linux', use_flags='-logger'),
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
 
+
+    Package('sys-boot/grub', use_flags='device-mapper mount'),
     Package('sys-apps/lm-sensors'),
     Package('sys-power/acpi'),
 ]
@@ -122,7 +124,6 @@ NETWORK_PACKAGE_LIST = [
     Package('net-wireless/wireless-tools'),
     Package('net-wireless/wpa_supplicant', use_flags='ap'),
 
-    Package('net-misc/proxychains'),
     Package('net-vpn/tor', use_flags='tor-hardening'),
     Package('net-dns/bind-tools'),
     Package('sys-apps/net-tools'),
@@ -135,7 +136,6 @@ FS_PACKAGE_LIST = [
     Package('sys-fs/inotify-tools'),
     Package('sys-fs/e2fsprogs', use_flags='tools'),
     Package('sys-fs/fuse-exfat'),
-    Package('sys-fs/exfatprogs'),
     Package('sys-fs/ntfs3g', use_flags='fuse mount-ntfs ntfsprogs'),
     Package('sys-fs/mtools'),
     Package('sys-fs/ncdu'),
@@ -147,8 +147,13 @@ FS_PACKAGE_LIST = [
 
 
 DEV_PACKAGE_LIST = [
-    Package('dev-vcs/git', use_flags='cgi gpg highlight webdav'),
-    Package('dev-lang/python', use_flags='gdbm readline sqlite tk'),
+    Package('dev-vcs/git', use_flags='cgi gpg webdav'),
+    Package('dev-lang/swig'),
+    Package('dev-lang/python',
+            merge_as_always=True,
+            use_flags='\n'.join(['gdbm readline sqlite tk',
+                                 '*/* PYTHON_SINGLE_TARGET: -* python3_10',
+                                 '*/* PYTHON_TARGETS: -* python3_10'])),
 ]
 
 
@@ -158,7 +163,7 @@ EXTRA_PACKAGE_LIST = [
     Package('media-gfx/imagemagick',
             use_flags=['djvu', 'jpeg', 'lzma',
                        'png', 'postscript',
-                       'raw', 'svg', 'webp']),
+                       'raw', 'webp']),
 
     Package('www-client/links',
             use_flags=['freetype', 'libevent', 'unicode',
@@ -231,6 +236,18 @@ X_PACKAGE_LIST = [
 
 
 ACTION_LIST = [
+    Action("grub-install --target=$(lscpu | awk '/Architecture/ {print $2}')-efi --efi-directory=/boot --removable",
+           name='grub config creation'),
+    MetaAction(['git clone --depth=1 https://github.com/AdisonCavani/distro-grub-themes.git',
+                'cp -r distro-grub-themes/customize/gentoo /boot/grub/themes',
+                r'echo "GRUB_GFXMODE=1920x1080" >> /etc/default/grub',
+                r'echo "GRUB_THEME=\"/boot/grub/themes/gentoo/theme.txt\"" >> /etc/default/grub',
+                'rm -rf distro-grub-themes'],
+               name='grub theme install'),
+    Action(r'echo "GRUB_CMDLINE_LINUX=\"dolvm root=UUID=$(blkid -t LABEL=rootfs -s UUID -o value)\"" >> /etc/default/grub',
+           name='grub liux cmdline'),
+    Action('grub-mkconfig -o /boot/grub/grub.cfg',
+           name='grub config creation'),
     MetaAction(['git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git',
                 'cd trusted-firmware-a',
                 'sed -i "s/[^[:space:]]*--fatal-warnings//g" Makefile',
@@ -238,7 +255,9 @@ ACTION_LIST = [
                name='trusted-firmware compilation'),
     MetaAction(['git clone https://source.denx.de/u-boot/u-boot.git',
                 'cd u-boot',
-                'cp /uboot.config .config',
+                'cp /u-boot.config .config',
+                'git apply power.patch',
+                'make olddefconfig',
                 'make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc)',
                 f'dd if=u-boot-sunxi-with-spl.bin of={common.DISK_NODE} bs=1k seek=8'],
                name='u-boot installation'),
