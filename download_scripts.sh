@@ -11,8 +11,9 @@ packages.py
 partitioning.py
 system_install.py
 create_configs.sh
-u-boot.config
-power.patch"
+configs/u-boot.config
+configs/power.patch
+configs/kernel-5.16.17.config"
 
 FOLDER=installation_scripts
 
