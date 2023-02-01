@@ -130,10 +130,11 @@ def _final_bootstrap_configuration():
 def _chroot_to_mnt():
     if common.DRY_RUN:
         return
-    scripts = list(glob.glob('*.sh') \
-                   + glob.glob('*.py') \
-                   + glob.glob('*.config') \
-                   + glob.glob('*.patch'))
+    scripts = list(glob.glob('*.sh')
+                   + glob.glob('*.py')
+                   + glob.glob('*.config')
+                   + glob.glob('*.patch')
+                   + glob.glob('*.cmd'))
     for script in scripts:
         shutil.copy(script, MOUNTPOINT)
     if not os.path.isfile(f'{MOUNTPOINT}/{common.EXECUTED_ACTIONS_FILENAME}'):
