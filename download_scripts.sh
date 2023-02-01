@@ -11,9 +11,12 @@ packages.py
 partitioning.py
 system_install.py
 create_configs.sh
+configs/boot.cmd
 configs/u-boot.config
 configs/power.patch
-configs/kernel-5.16.17.config"
+configs/power.dtb.patch
+configs/gentoo-kernel-6.1.8.config"
+
 
 FOLDER=installation_scripts
 
