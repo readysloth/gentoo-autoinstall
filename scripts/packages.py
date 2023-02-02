@@ -97,8 +97,6 @@ MASKS = [
 ]
 
 QUIRKED_PACKAGES = [
-    # hack for syncing portage
-    Package('--sync'),
     Package('net-misc/aria2',
             use_flags='bittorent libuv ssh',
             merge_as_always=True),
@@ -129,7 +127,6 @@ QUIRKED_PACKAGES = [
 
 
 ESSENTIAL_PACKAGE_LIST = [
-    # with global `gpm` use flag
     Package('app-shells/dash'),
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/linux-firmware'),
@@ -145,6 +142,9 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-boot/grub', use_flags='device-mapper mount'),
     Package('sys-apps/lm-sensors'),
     Package('sys-power/acpi'),
+    Package('dev-embedded/u-boot-tools'),
+
+    Package('media-libs/libsndfile', use_flags='minimal'),
 ]
 
 
@@ -154,7 +154,6 @@ NETWORK_PACKAGE_LIST = [
     Package('net-wireless/wireless-tools'),
     Package('net-wireless/wpa_supplicant', use_flags='ap'),
 
-    Package('net-misc/proxychains'),
     Package('net-vpn/tor', use_flags='tor-hardening'),
     Package('net-dns/bind-tools'),
     Package('sys-apps/net-tools'),
@@ -187,9 +186,9 @@ EXTRA_PACKAGE_LIST = [
     Package('app-arch/unrar'),
     Package('sys-apps/lshw'),
     Package('media-gfx/imagemagick',
-            use_flags=['jpeg', 'lzma', 'xml',
+            use_flags=['djvu', 'jpeg', 'lzma',
                        'png', 'postscript',
-                       'raw', 'svg', 'webp']),
+                       'raw', 'webp']),
 
     Package('www-client/links',
             use_flags=['freetype', 'libevent', 'unicode',
@@ -199,7 +198,6 @@ EXTRA_PACKAGE_LIST = [
     Package('app-admin/doas'),
     Package('sys-apps/inxi'),
 ]
-
 
 
 TERMINAL_PACKAGE_LIST = [
@@ -219,10 +217,6 @@ X_SERVER_PACKAGE_LIST = [
     Package('x11-apps/xev'),
     Package('x11-misc/xdo'),
     Package('x11-misc/xdotool'),
-    MetaAction(['git clone --depth=1 https://github.com/rvaiya/warpd.git',
-                'cd warpd; make && make install; cd -',
-                'rm -rf warpd'],
-               name='warpd git install'),
 ]
 
 
@@ -257,7 +251,9 @@ def download_patches_for_st():
 
 X_PACKAGE_LIST = [
     Package('media-gfx/feh', use_flags='xinerama'),
-    Package('x11-terms/st', use_flags='savedconfig', pre=download_patches_for_st),
+    Package('x11-terms/st',
+            use_flags='savedconfig',
+            pre=download_patches_for_st),
 ]
 
 
