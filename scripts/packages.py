@@ -99,19 +99,32 @@ MASKS = [
 QUIRKED_PACKAGES = [
     # hack for syncing portage
     Package('--sync'),
-    Package('net-misc/aria2', use_flags='bittorent libuv ssh', merge_as_always=True),
+    Package('net-misc/aria2',
+            use_flags='bittorent libuv ssh',
+            merge_as_always=True),
     Package('dev-util/vmtouch', merge_as_always=True),
-    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}, merge_as_always=True),
+    Package('sys-libs/ncurses', '--nodeps',
+            env={'USE': '-gpm'},
+            merge_as_always=True),
     Package('sys-libs/gpm', '--nodeps', merge_as_always=True),
     Package('sys-libs/ncurses', merge_as_always=True),
 
-    Package('@system', '-uv --keep-going', env={'USE' : '-python'}, merge_as_always=True),
-    Package('sys-apps/util-linux', use_flags='-logger', env={'USE' : '-python'}, merge_as_always=True),
+    Package('@system', '-uv --keep-going',
+            env={'USE': '-python'},
+            merge_as_always=True),
+    Package('sys-apps/util-linux',
+            use_flags='-logger',
+            env={'USE': '-python'},
+            merge_as_always=True),
     Package('dev-lang/python',
             merge_as_always=True,
-            use_flags='gdbm readline sqlite\n*/* PYTHON_SINGLE_TARGET: -* python3_11\n*/* PYTHON_TARGETS: -* python3_10'),
+            use_flags='\n'.join(['gdbm readline sqlite',
+                                 '*/* PYTHON_SINGLE_TARGET: -* python3_10',
+                                 '*/* PYTHON_TARGETS: -* python3_10'])),
     Package('sys-apps/util-linux', merge_as_always=True),
-    Package('dev-lang/lua', use_flags='\n*/* LUA_SINGLE_TARGET: -* lua5-4', merge_as_always=True),
+    Package('dev-lang/lua',
+            use_flags='*/* LUA_SINGLE_TARGET: -* lua5-4',
+            merge_as_always=True),
 ]
 
 
@@ -121,7 +134,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/gentoo-sources', use_flags='symlink'),
     Package('sys-kernel/linux-firmware'),
 
-    Package('@world', '-uDNv --with-bdeps=y --backtrack=100 --emptytree'),
+    Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='perl terminal lua'),
@@ -130,10 +143,8 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-process/cronie'),
 
     Package('sys-boot/grub', use_flags='device-mapper mount'),
-    Package('sys-boot/os-prober'),
     Package('sys-apps/lm-sensors'),
     Package('sys-power/acpi'),
-    Package('sys-process/procenv'),
 ]
 
 
@@ -168,7 +179,7 @@ FS_PACKAGE_LIST = [
 
 
 DEV_PACKAGE_LIST = [
-    Package('dev-vcs/git', use_flags='cgi gpg highlight webdav'),
+    Package('dev-vcs/git', use_flags='cgi gpg webdav'),
 ]
 
 
