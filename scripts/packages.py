@@ -101,6 +101,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/gentoo-sources', use_flags='symlink', merge_as_always=True),
     Package('sys-kernel/genkernel', merge_as_always=True),
     Package('sys-kernel/linux-firmware', merge_as_always=True),
+    Package('dev-embedded/u-boot-tools'),
 
     Package('@system', '-uDNv --usepkgonly', merge_as_always=True),
     Package('@world', '-uDNv --backtrack=100 --exclude="sys-devel/gcc"', merge_as_always=True),
@@ -256,9 +257,11 @@ ACTION_LIST = [
     MetaAction(['git clone https://source.denx.de/u-boot/u-boot.git',
                 'cd u-boot',
                 'cp /u-boot.config .config',
-                'git apply power.patch',
+                'git apply /power.patch',
+                'git apply /power.dtb.patch',
                 'make olddefconfig',
                 'make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc)',
+                'mkimage -C none -A arm64 -T script -d /boot/boot.cmd /boot.cmd',
                 f'dd if=u-boot-sunxi-with-spl.bin of={common.DISK_NODE} bs=1k seek=8'],
                name='u-boot installation'),
 ] + [
