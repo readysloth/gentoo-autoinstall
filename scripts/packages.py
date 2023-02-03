@@ -93,7 +93,6 @@ def move_kernel_src_from_tmpfs():
 
 
 MASKS = [
-    '>dev-lang/python-3.10.9'
 ]
 
 QUIRKED_PACKAGES = [
@@ -116,9 +115,7 @@ QUIRKED_PACKAGES = [
             merge_as_always=True),
     Package('dev-lang/python',
             merge_as_always=True,
-            use_flags='\n'.join(['gdbm readline sqlite',
-                                 '*/* PYTHON_SINGLE_TARGET: -* python3_10',
-                                 '*/* PYTHON_TARGETS: -* python3_10'])),
+            use_flags='gdbm readline sqlite'),
     Package('sys-apps/util-linux', merge_as_always=True),
     Package('dev-lang/lua',
             use_flags='*/* LUA_SINGLE_TARGET: -* lua5-4',
@@ -166,7 +163,6 @@ FS_PACKAGE_LIST = [
     Package('sys-fs/inotify-tools'),
     Package('sys-fs/e2fsprogs', use_flags='tools'),
     Package('sys-fs/fuse-exfat'),
-    Package('sys-fs/exfatprogs'),
     Package('sys-fs/ntfs3g', use_flags='fuse mount-ntfs ntfsprogs'),
     Package('sys-fs/mtools'),
     Package('sys-fs/ncdu'),
@@ -233,6 +229,26 @@ X_WM_PACKAGE_LIST = [
     Package('x11-misc/xclip'),
     Package('x11-apps/xdpyinfo'),
     Package('x11-apps/xbacklight'),
+]
+
+
+PERL_CLEANER_PACKAGE_LIST = [
+    Package('perl-core/File-Temp'),
+    Package('dev-perl/Text-CharWidth'),
+    Package('virtual/perl-File-Temp'),
+    Package('dev-perl/MIME-Charset'),
+    Package('dev-perl/TermReadKey'),
+    Package('dev-perl/Locale-gettext'),
+    Package('dev-perl/Pod-Parser'),
+    Package('dev-perl/YAML-Tiny'),
+    Package('dev-perl/Text-WrapI18N'),
+    Package('dev-perl/Module-Build'),
+    Package('dev-perl/Unicode-LineBreak'),
+    Package('dev-perl/SGMLSpm'),
+    Package('dev-perl/ExtUtils-CChecker'),
+    Package('dev-perl/XS-Parse-Keyword'),
+    Package('dev-perl/Syntax-Keyword-Try'),
+    Package('app-text/po4a'),
 ]
 
 
@@ -327,7 +343,8 @@ PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + FS_PACKAGE_LIST \
                + EXTRA_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
-               + DEV_PACKAGE_LIST
+               + DEV_PACKAGE_LIST \
+               + PERL_CLEANER_PACKAGE_LIST
 
 if common.MERGE_EARLY:
     PACKAGE_LIST = reoder_packages_for_early_merge(PACKAGE_LIST)
