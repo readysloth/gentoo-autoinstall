@@ -149,6 +149,8 @@ FS_PACKAGE_LIST = [
 
 DEV_PACKAGE_LIST = [
     Package('dev-vcs/git', use_flags='cgi gpg webdav'),
+    # it possibly needed by something as build dependency
+    Package('dev-lang/rust-bin'),
     Package('dev-lang/swig'),
     Package('dev-lang/python',
             merge_as_always=True,
