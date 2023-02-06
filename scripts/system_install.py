@@ -2,7 +2,9 @@ import os
 import multiprocessing as mp
 
 import common
+
 from entity import Action, Executor
+from disk_ops import LVM_GROUP_NAME
 from packages import (PACKAGE_LIST,
                       POST_INSTALL_CALLBACKS,
                       MASKS,
@@ -127,9 +129,12 @@ def setup_portage():
 
 
 def system_boot_configuration(bootloader_part):
-    fstab_swap_action = Action('echo "UUID=$(blkid -t LABEL=swap -s UUID -o value) \t none \t swap \t sw \t 0 \t 0" >> /etc/fstab',
+    rootfs_uuid = f'blkid -s UUID -o value $(blkid -t LABEL=rootfs -o device | grep {LVM_GROUP_NAME})'
+    swap_uuid = f'blkid -s UUID -o value $(blkid -t LABEL=swap -o device | grep {LVM_GROUP_NAME})'
+
+    fstab_swap_action = Action(f'echo "UUID=$({swap_uuid}) \t none \t swap \t sw \t 0 \t 0" >> /etc/fstab',
                                name='fstab alter with swap')
-    fstab_rootfs_action = Action('echo "UUID=$(blkid -t LABEL=rootfs -s UUID -o value) \t / \t ext4 \t noatime \t 0 \t 1" >> /etc/fstab',
+    fstab_rootfs_action = Action(f'echo "UUID=$({rootfs_uuid}) \t / \t ext4 \t noatime \t 0 \t 1" >> /etc/fstab',
                                  name='fstab alter with rootfs')
     boot_mount_action = Action(f'mount {bootloader_part} /boot', name='/boot mount')
     Executor.exec(fstab_swap_action)
