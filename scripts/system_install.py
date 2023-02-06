@@ -54,7 +54,7 @@ def add_common_flags_to_make_conf(additional_use_flags='',
                                  'openmp', 'zstd', 'jumbo-build',
                                  '-wayland', '-gnome-online-accounts', '-npm',
                                  'jit', 'threads', 'gpm',
-                                 'minimal', 'ssl'])
+                                 'minimal', 'ssl', '-nls'])
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'USE', f'{default_useflags} {additional_use_flags}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'PORTAGE_IONICE_COMMAND', r'ionice -c 3 -p \${PID}')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'ACCEPT_KEYWORDS', '~arm64 arm64')

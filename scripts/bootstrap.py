@@ -35,10 +35,6 @@ int main(int argc, char **argv, char **envp) {
                          name='qemu wrapper compilation'))
 
 
-def _launch_ntpd():
-    Executor.exec(Action('ntpd -q -g', name='time syncing'), do_crash=True)
-
-
 def _stage3_download(processor='arm64',
                      init='openrc',
                      desktop=False,
@@ -151,7 +147,6 @@ def _chroot_to_mnt():
 
 def bootstrap(processor='arm64', init='openrc'):
     l = logging.getLogger(__name__)
-    _launch_ntpd()
     stage3_archive = _stage3_download(processor=processor, init='openrc')
     _unpack(stage3_archive)
     _mirrorselect()

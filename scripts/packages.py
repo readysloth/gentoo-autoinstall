@@ -11,6 +11,7 @@ import install_logger
 from pathlib import Path
 
 from entity import Package, Action, MetaAction, Executor, ParallelActions
+from disk_ops import LVM_GROUP_NAME
 
 
 def reoder_packages_for_early_merge(pkg_list):
@@ -107,7 +108,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('@world', '-uDNv --backtrack=100 --exclude="sys-devel/gcc"', merge_as_always=True),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
-    Package('app-editors/vim', use_flags='perl terminal lua'),
+    Package('app-editors/vim', use_flags='perl terminal lua -minimal'),
     Package('sys-apps/util-linux', use_flags='-logger'),
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
@@ -239,7 +240,7 @@ X_PACKAGE_LIST = [
 
 
 ACTION_LIST = [
-    Action("grub-install --target=$(lscpu | awk '/Architecture/ {print $2}')-efi --efi-directory=/boot --removable",
+    Action("grub-install --target=arm64-efi --efi-directory=/boot --removable",
            name='grub config creation'),
     MetaAction(['git clone --depth=1 https://github.com/AdisonCavani/distro-grub-themes.git',
                 'cp -r distro-grub-themes/customize/gentoo /boot/grub/themes',
@@ -247,24 +248,30 @@ ACTION_LIST = [
                 r'echo "GRUB_THEME=\"/boot/grub/themes/gentoo/theme.txt\"" >> /etc/default/grub',
                 'rm -rf distro-grub-themes'],
                name='grub theme install'),
-    Action(r'echo "GRUB_CMDLINE_LINUX=\"dolvm root=UUID=$(blkid -t LABEL=rootfs -s UUID -o value)\"" >> /etc/default/grub',
+    Action(f'echo "GRUB_CMDLINE_LINUX=\\"dolvm root=UUID=$(blkid -s UUID -o value $(blkid -t LABEL=rootfs -o device | grep {LVM_GROUP_NAME}))\\"" >> /etc/default/grub',
            name='grub liux cmdline'),
     Action('grub-mkconfig -o /boot/grub/grub.cfg',
            name='grub config creation'),
     MetaAction(['git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git',
-                'cd trusted-firmware-a',
-                'sed -i "s/[^[:space:]]*--fatal-warnings//g" Makefile',
-                'make PLAT=sun50i_h616 -j$(nproc) all'],
+                '''
+                set -x &&
+                cd /trusted-firmware-a &&
+                sed -i "s/[^[:space:]]*--fatal-warnings//g" Makefile &&
+                make PLAT=sun50i_h616 -j$(nproc) all
+                '''],
                name='trusted-firmware compilation'),
     MetaAction(['git clone https://source.denx.de/u-boot/u-boot.git',
-                'cd u-boot',
-                'cp /u-boot.config .config',
-                'git apply /power.patch',
-                'git apply /power.dtb.patch',
-                'make olddefconfig',
-                'make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc)',
-                'mkimage -C none -A arm64 -T script -d /boot/boot.cmd /boot.cmd',
-                f'dd if=u-boot-sunxi-with-spl.bin of={common.DISK_NODE} bs=1k seek=8'],
+                f'''
+                set -x &&
+                cd /u-boot &&
+                cp /u-boot.config .config &&
+                git apply /power.patch &&
+                git apply /power.dtb.patch &&
+                make olddefconfig &&
+                make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc) &&
+                mkimage -C none -A arm64 -T script -d /boot.cmd /boot/boot.scr &&
+                cp u-boot.dtb /boot &&
+                dd if=u-boot-sunxi-with-spl.bin of={common.DISK_NODE} bs=1k seek=8'''],
                name='u-boot installation'),
 ] + [
     Action(f'rc-update add {s} boot',
