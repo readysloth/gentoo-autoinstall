@@ -131,7 +131,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('sys-apps/portage', '-vND', use_flags='native-extensions ipc xattr'),
     Package('media-libs/libpng', use_flags='apng'),
-    Package('app-editors/vim', use_flags='perl terminal lua'),
+    Package('app-editors/vim', use_flags='perl terminal lua -minimal'),
     Package('sys-apps/util-linux', use_flags='-logger'),
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
