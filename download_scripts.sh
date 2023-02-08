@@ -13,9 +13,13 @@ system_install.py
 create_configs.sh
 configs/boot.cmd
 configs/u-boot.config
-configs/power.patch
-configs/power.dtb.patch
-configs/gentoo-kernel-6.1.8.config"
+configs/gentoo-kernel-6.1.8.config
+configs/patches/power.patch
+configs/patches/power.dtb.patch
+configs/patches/arm64-dts-allwinner-h616-Add-device-node-for-SID.patch
+configs/patches/arm64-dts-allwinner-h616-Add-thermal-sensor-and-thermal-zones.patch
+configs/patches/arm64-dts-allwinner-sun50i-h616-Add-GPU-node.patch
+"
 
 
 FOLDER=installation_scripts

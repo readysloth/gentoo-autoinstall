@@ -267,6 +267,9 @@ ACTION_LIST = [
                 cp /u-boot.config .config &&
                 git apply /power.patch &&
                 git apply /power.dtb.patch &&
+                git apply /arm64-dts-allwinner-h616-Add-device-node-for-SID.patch &&
+                git apply /arm64-dts-allwinner-h616-Add-thermal-sensor-and-thermal-zones.patch &&
+                git apply /arm64-dts-allwinner-sun50i-h616-Add-GPU-node.patch &&
                 make olddefconfig &&
                 make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc) &&
                 mkimage -C none -A arm64 -T script -d /boot.cmd /boot/boot.scr &&
