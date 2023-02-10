@@ -19,6 +19,9 @@ configs/patches/power.dtb.patch
 configs/patches/arm64-dts-allwinner-h616-Add-device-node-for-SID.patch
 configs/patches/arm64-dts-allwinner-h616-Add-thermal-sensor-and-thermal-zones.patch
 configs/patches/arm64-dts-allwinner-sun50i-h616-Add-GPU-node.patch
+configs/patches/arm64-dts-allwiner-sun50i-h616.dtsi-add-usb-ehci-ohc.patch
+configs/patches/orangepizero2_dts_set_bldo2_to_1.8v.patch
+configs/patches/hdmi.dtb.patch
 "
 
 
