@@ -20,10 +20,10 @@ index 9cd13ed1a2..40287b0de0 100644
 +				};
 +
 +				cpu_hot: cpu_hot {
-+ 					temperature = <85000>;
-+ 					hysteresis = <2000>;
-+ 					type = "passive";
-+ 				};
++					temperature = <85000>;
++					hysteresis = <2000>;
++					type = "passive";
++				};
 +
 +				cpu_very_hot_pre: cpu_very_hot_pre {
 +					temperature = <90000>;
@@ -40,8 +40,8 @@ index 9cd13ed1a2..40287b0de0 100644
 +				cpu_crit: cpu_crit {
 +					temperature = <105000>;
 +					hysteresis = <2000>;
-+ 					type = "critical";
-+ 				};
++					type = "critical";
++				};
  			};
  
  			cooling-maps {
@@ -54,7 +54,7 @@ index 9cd13ed1a2..40287b0de0 100644
 +				cpu_warm_limit_cpu {
 +					trip = <&cpu_warm>;
 +					cooling-device = <&cpu0 THERMAL_NO_LIMIT 2>;
-+ 				};
++				};
 +
 +				cpu_hot_pre_limit_cpu {
 +					trip = <&cpu_hot_pre>;
