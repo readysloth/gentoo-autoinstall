@@ -20,8 +20,16 @@ configs/patches/arm64-dts-allwinner-h616-Add-device-node-for-SID.patch
 configs/patches/arm64-dts-allwinner-h616-Add-thermal-sensor-and-thermal-zones.patch
 configs/patches/arm64-dts-allwinner-sun50i-h616-Add-GPU-node.patch
 configs/patches/arm64-dts-allwiner-sun50i-h616.dtsi-add-usb-ehci-ohc.patch
+configs/patches/arm64-dts-allwinner-sun50i-h616-Add-VPU-node.patch
 configs/patches/orangepizero2_dts_set_bldo2_to_1.8v.patch
 configs/patches/hdmi.dtb.patch
+configs/patches/cpu-opp-table.dtb.patch
+configs/patches/dma.dtb.patch
+configs/patches/ethernet.dtb.patch
+configs/patches/hdmi_audio.dtb.patch
+configs/patches/pwm.dtb.patch
+configs/patches/sunxi-info.dtb.patch
+configs/patches/thermal.dtb.patch
 "
 
 
