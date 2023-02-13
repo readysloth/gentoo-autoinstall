@@ -8,7 +8,7 @@ index a16ef32edf..9cd13ed1a2 100644
  		};
 +
 +		sunxi-info {
-+			compatible = "allwinner,sun50i-h6-sys-info";
++			compatible = "allwinner,sun50i-h616-sys-info";
 +			status = "okay";
 +		};
 +
