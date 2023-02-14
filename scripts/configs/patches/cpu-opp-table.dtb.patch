@@ -64,3 +64,19 @@ index 40287b0de0..2511ab8c05 100644
 +&cpu3 {
 +	operating-points-v2 = <&cpu_opp_table>;
  };
+diff --git a/arch/arm/dts/sun50i-h616-orangepi-zero2.dts b/arch/arm/dts/sun50i-h616-orangepi-zero2.dts
+index e2dd771224..acd1fdc5ee 100644
+--- a/arch/arm/dts/sun50i-h616-orangepi-zero2.dts
++++ b/arch/arm/dts/sun50i-h616-orangepi-zero2.dts
+@@ -245,6 +245,10 @@
+ 	};
+ };
+ 
++&cpu0 {
++	cpu-supply = <&reg_dcdca>;
++};
++
+ &de {
+ 	status = "okay";
+ };
+
