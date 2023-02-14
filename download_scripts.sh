@@ -30,7 +30,6 @@ configs/patches/hdmi_audio.dtb.patch
 configs/patches/pwm.dtb.patch
 configs/patches/sunxi-info.dtb.patch
 configs/patches/thermal.dtb.patch
-configs/patches/realtek-driver.patch
 "
 
 
