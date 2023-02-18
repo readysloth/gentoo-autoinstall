@@ -30,6 +30,9 @@ configs/patches/hdmi_audio.dtb.patch
 configs/patches/pwm.dtb.patch
 configs/patches/sunxi-info.dtb.patch
 configs/patches/thermal.dtb.patch
+configs/patches/gpu.dtb.patch
+configs/patches/usbotg.dtb.patch
+configs/patches/sram.dtb.patch
 "
 
 
