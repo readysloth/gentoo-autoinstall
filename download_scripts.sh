@@ -33,6 +33,7 @@ configs/patches/thermal.dtb.patch
 configs/patches/gpu.dtb.patch
 configs/patches/usbotg.dtb.patch
 configs/patches/sram.dtb.patch
+configs/patches/ths-workaround.uboot.patch
 "
 
 
