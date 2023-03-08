@@ -34,6 +34,7 @@ configs/patches/gpu.dtb.patch
 configs/patches/usbotg.dtb.patch
 configs/patches/sram.dtb.patch
 configs/patches/ths-workaround.uboot.patch
+configs/patches/r_rsb-to-r_i2c.patch
 "
 
 

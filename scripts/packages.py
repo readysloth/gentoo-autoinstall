@@ -284,6 +284,7 @@ ACTION_LIST = [
                 git apply /usbotg.dtb.patch &&
                 git apply /sram.dtb.patch &&
                 git apply /ths-workaround.uboot.patch &&
+                git apply /r_rsb-to-r_i2c.patch &&
                 make olddefconfig &&
                 make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc) &&
                 mkimage -C none -A arm64 -T script -d /boot.cmd /boot/boot.scr &&
