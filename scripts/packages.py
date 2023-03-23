@@ -265,7 +265,7 @@ ACTION_LIST = [
                 set -x &&
                 cd /u-boot &&
                 cp /u-boot.config .config &&
-                git apply /power.patch &&
+                git apply /axp1530-u-boot.patch &&
                 git apply /power.dtb.patch &&
                 git apply /arm64-dts-allwinner-h616-Add-device-node-for-SID.patch &&
                 git apply /arm64-dts-allwinner-h616-Add-thermal-sensor-and-thermal-zones.patch &&
