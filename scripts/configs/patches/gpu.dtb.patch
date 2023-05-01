@@ -1,9 +1,9 @@
 diff --git a/arch/arm/dts/sun50i-h616-orangepi-zero2.dts b/arch/arm/dts/sun50i-h616-orangepi-zero2.dts
-index acd1fdc5ee..a8c64c1355 100644
+index 24cc85b0f6..95b81bd780 100644
 --- a/arch/arm/dts/sun50i-h616-orangepi-zero2.dts
 +++ b/arch/arm/dts/sun50i-h616-orangepi-zero2.dts
-@@ -99,6 +99,11 @@
- 	};
+@@ -77,6 +77,11 @@
+ 	status = "okay";
  };
  
 +&gpu {
@@ -11,6 +11,6 @@ index acd1fdc5ee..a8c64c1355 100644
 +	status = "okay";
 +};
 +
+ /* USB 2 & 3 are on headers only. */
+ 
  &emac0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&ext_rgmii_pins>;
