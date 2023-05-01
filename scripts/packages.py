@@ -276,12 +276,12 @@ ACTION_LIST = [
                 git apply /arm64-dts-allwinner-sun50i-h616-Add-VPU-node.patch &&
                 git apply /sunxi-info.dtb.patch &&
                 git apply /thermal.dtb.patch &&
-                git apply /cpu-opp-table.dtb.patch &&
                 git apply /pwm.dtb.patch &&
                 git apply /dma.dtb.patch &&
                 git apply /hdmi_audio.dtb.patch &&
                 git apply /gpu.dtb.patch &&
                 git apply /ths-workaround.uboot.patch &&
+                git apply /cpu-opp-table.dtb.patch &&
                 make olddefconfig &&
                 make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc) &&
                 mkimage -C none -A arm64 -T script -d /boot.cmd /boot/boot.scr &&
