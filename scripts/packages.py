@@ -272,7 +272,6 @@ ACTION_LIST = [
                 git apply /arm64-dts-allwinner-sun50i-h616-Add-GPU-node.patch &&
                 git apply /arm64-dts-allwiner-sun50i-h616.dtsi-add-usb-ehci-ohc.patch &&
                 git apply /orangepizero2_dts_set_bldo2_to_1.8v.patch &&
-                git apply /hdmi.dtb.patch &&
                 git apply /arm64-dts-allwinner-sun50i-h616-Add-VPU-node.patch &&
                 git apply /sunxi-info.dtb.patch &&
                 git apply /thermal.dtb.patch &&
@@ -282,6 +281,7 @@ ACTION_LIST = [
                 git apply /gpu.dtb.patch &&
                 git apply /ths-workaround.uboot.patch &&
                 git apply /cpu-opp-table.dtb.patch &&
+                git apply /hdmi.dtb.patch &&
                 make olddefconfig &&
                 make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc) &&
                 mkimage -C none -A arm64 -T script -d /boot.cmd /boot/boot.scr &&
