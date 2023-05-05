@@ -100,7 +100,7 @@ index 880c41fa7021..6caa7e87ad80 100644
  static const struct regmap_irq axp20x_regmap_irqs[] = {
  	INIT_REGMAP_IRQ(AXP20X, ACIN_OVER_V,		0, 7),
  	INIT_REGMAP_IRQ(AXP20X, ACIN_PLUGIN,		0, 6),
-@@ -514,6 +552,18 @@ static const struct regmap_irq_chip axp152_regmap_irq_chip = {
+@@ -514,6 +552,17 @@ static const struct regmap_irq_chip axp152_regmap_irq_chip = {
  	.num_regs		= 3,
  };
  
@@ -108,8 +108,7 @@ index 880c41fa7021..6caa7e87ad80 100644
 +	.name = "axp1530_irq_chip",
 +	.status_base = AXP1530_IRQ_STATUS1,
 +	.ack_base = AXP1530_IRQ_STATUS1,
-+	.mask_base = AXP1530_IRQ_ENABLE1,
-+	.mask_invert = true,
++	.unmask_base = AXP1530_IRQ_ENABLE1,
 +	.init_ack_masked = true,
 +	.irqs = axp1530_regmap_irqs,
 +	.num_irqs = ARRAY_SIZE(axp1530_regmap_irqs),
@@ -119,7 +118,7 @@ index 880c41fa7021..6caa7e87ad80 100644
  static const struct regmap_irq_chip axp20x_regmap_irq_chip = {
  	.name			= "axp20x_irq_chip",
  	.status_base		= AXP20X_IRQ1_STATE,
-@@ -683,6 +733,12 @@ static const struct mfd_cell axp152_cells[] = {
+@@ -683,6 +732,12 @@ static const struct mfd_cell axp152_cells[] = {
  	},
  };
  
@@ -132,7 +131,7 @@ index 880c41fa7021..6caa7e87ad80 100644
  static const struct resource axp288_adc_resources[] = {
  	DEFINE_RES_IRQ_NAMED(AXP288_IRQ_GPADC, "GPADC"),
  };
-@@ -874,6 +930,12 @@ int axp20x_match_device(struct axp20x_dev *axp20x)
+@@ -874,6 +929,12 @@ int axp20x_match_device(struct axp20x_dev *axp20x)
  		axp20x->regmap_cfg = &axp152_regmap_config;
  		axp20x->regmap_irq_chip = &axp152_regmap_irq_chip;
  		break;
@@ -209,4 +208,3 @@ index 9ab0e2fca7ea..cad25754500f 100644
  enum {
  	AXP20X_IRQ_ACIN_OVER_V = 1,
  	AXP20X_IRQ_ACIN_PLUGIN,
---
