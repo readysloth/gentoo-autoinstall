@@ -18,11 +18,10 @@ git apply --verbose "$DIR"/pwm.dtb.patch
 git apply --verbose "$DIR"/dma.dtb.patch
 git apply --verbose "$DIR"/hdmi_audio.dtb.patch
 git apply --verbose "$DIR"/gpu.dtb.patch
-# I don't really understand what for this patch exists
-# git apply --verbose "$DIR"/sram.dtb.patch
 git apply --verbose "$DIR"/ths-workaround.uboot.patch
 # I'l try to test it with u-boot defaults
 #git apply --verbose "$DIR"/r_rsb-to-r_i2c.patch
 git apply --verbose "$DIR"/cpu-opp-table.dtb.patch
 git apply --verbose "$DIR"/hdmi.dtb.patch
 git apply --verbose "$DIR"/new-thermal-trips.dtb.patch
+git apply --verbose "$DIR"/sram.dtb.patch

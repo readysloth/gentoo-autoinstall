@@ -283,6 +283,7 @@ ACTION_LIST = [
                 git apply /cpu-opp-table.dtb.patch &&
                 git apply /hdmi.dtb.patch &&
                 git apply /new-thermal-trips.dtb.patch &&
+                git apply /sram.dtb.patch &&
                 make olddefconfig &&
                 make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc) &&
                 mkimage -C none -A arm64 -T script -d /boot.cmd /boot/boot.scr &&
