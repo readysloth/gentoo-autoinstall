@@ -25,3 +25,4 @@ git apply --verbose "$DIR"/ths-workaround.uboot.patch
 #git apply --verbose "$DIR"/r_rsb-to-r_i2c.patch
 git apply --verbose "$DIR"/cpu-opp-table.dtb.patch
 git apply --verbose "$DIR"/hdmi.dtb.patch
+git apply --verbose "$DIR"/new-thermal-trips.dtb.patch
