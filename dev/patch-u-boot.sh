@@ -5,7 +5,6 @@ set -x
 DIR="$(dirname "$0")/../scripts/configs/patches"
 
 git apply --verbose "$DIR"/power.patch
-git apply --verbose "$DIR"/power.dtb.patch
 git apply --verbose "$DIR"/arm64-dts-allwinner-h616-Add-device-node-for-SID.patch
 git apply --verbose "$DIR"/arm64-dts-allwinner-h616-Add-thermal-sensor-and-thermal-zones.patch
 git apply --verbose "$DIR"/arm64-dts-allwinner-sun50i-h616-Add-GPU-node.patch
@@ -25,3 +24,4 @@ git apply --verbose "$DIR"/cpu-opp-table.dtb.patch
 git apply --verbose "$DIR"/hdmi.dtb.patch
 git apply --verbose "$DIR"/new-thermal-trips.dtb.patch
 git apply --verbose "$DIR"/sram.dtb.patch
+git apply --verbose "$DIR"/power.dtb.patch
