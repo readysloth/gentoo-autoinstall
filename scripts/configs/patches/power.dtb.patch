@@ -50,7 +50,7 @@ index f9b5d25533..1d45876199 100644
  };
  
  &mmc0 {
--	vmmc-supply = <&reg_aldo1>;
+-	vmmc-supply = <&reg_dcdce>;
 +	vmmc-supply = <&reg_vcc3v3>;
  	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;	/* PF6 */
  	bus-width = <4>;
@@ -76,7 +76,7 @@ index f9b5d25533..1d45876199 100644
  &pio {
 -	vcc-pc-supply = <&reg_aldo1>;
 -	vcc-pf-supply = <&reg_aldo1>;
--	vcc-pg-supply = <&reg_aldo1>;
+-	vcc-pg-supply = <&reg_bldo1>;
 -	vcc-ph-supply = <&reg_aldo1>;
 -	vcc-pi-supply = <&reg_aldo1>;
 +	vcc-pc-supply = <&reg_vcc3v3>;
