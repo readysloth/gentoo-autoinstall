@@ -1,10 +1,10 @@
 diff --git a/arch/arm/dts/sun50i-h616-orangepi-zero2.dts b/arch/arm/dts/sun50i-h616-orangepi-zero2.dts
-index 02893f3ac9..2dcebe50cd 100644
+index f9b5d25533..1d45876199 100644
 --- a/arch/arm/dts/sun50i-h616-orangepi-zero2.dts
 +++ b/arch/arm/dts/sun50i-h616-orangepi-zero2.dts
-@@ -49,6 +49,43 @@
- 		regulator-max-microvolt = <5000000>;
- 		regulator-always-on;
+@@ -70,6 +70,43 @@
+ 		enable-active-high;
+ 		gpio = <&pio 2 16 GPIO_ACTIVE_HIGH>; /* PC16 */
  	};
 +
 +	reg_vcc3v3: vcc3v3 {
@@ -45,12 +45,12 @@ index 02893f3ac9..2dcebe50cd 100644
 +	};
  };
  
- &emac0 {
-@@ -70,12 +107,22 @@
+ &ehci1 {
+@@ -102,12 +139,22 @@
  };
  
  &mmc0 {
--	vmmc-supply = <&reg_dcdce>;
+-	vmmc-supply = <&reg_aldo1>;
 +	vmmc-supply = <&reg_vcc3v3>;
  	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;	/* PF6 */
  	bus-width = <4>;
@@ -67,16 +67,16 @@ index 02893f3ac9..2dcebe50cd 100644
 +	status = "okay";
 +};
 +
- &r_rsb {
+ &ohci1 {
  	status = "okay";
- 
-@@ -185,11 +232,11 @@
+ };
+@@ -248,11 +295,11 @@
  };
  
  &pio {
 -	vcc-pc-supply = <&reg_aldo1>;
 -	vcc-pf-supply = <&reg_aldo1>;
--	vcc-pg-supply = <&reg_bldo1>;
+-	vcc-pg-supply = <&reg_aldo1>;
 -	vcc-ph-supply = <&reg_aldo1>;
 -	vcc-pi-supply = <&reg_aldo1>;
 +	vcc-pc-supply = <&reg_vcc3v3>;

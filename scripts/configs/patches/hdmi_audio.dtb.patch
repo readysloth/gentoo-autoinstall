@@ -1,9 +1,9 @@
 diff --git a/arch/arm/dts/sun50i-h616.dtsi b/arch/arm/dts/sun50i-h616.dtsi
-index f9ae55a472..5a2007488e 100644
+index fc5c2002ca..71f7fa8894 100644
 --- a/arch/arm/dts/sun50i-h616.dtsi
 +++ b/arch/arm/dts/sun50i-h616.dtsi
-@@ -1063,6 +1063,13 @@
- 			#phy-cells = <0>;
+@@ -591,6 +591,13 @@
+ 			status = "disabled";
  		};
  
 +    hdmi_audio: hdmi-audio@1 {
@@ -13,6 +13,6 @@ index f9ae55a472..5a2007488e 100644
 +			status = "okay";
 +		};
 +
- 		tcon_top: tcon-top@6510000 {
- 			compatible = "allwinner,sun50i-h6-tcon-top";
- 			reg = <0x06510000 0x1000>;
+ 		uart0: serial@5000000 {
+ 			compatible = "snps,dw-apb-uart";
+ 			reg = <0x05000000 0x400>;

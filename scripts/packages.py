@@ -266,25 +266,24 @@ ACTION_LIST = [
                 cd /u-boot &&
                 cp /u-boot.config .config &&
                 git apply /axp1530-u-boot.patch &&
-                git apply /power.dtb.patch &&
                 git apply /arm64-dts-allwinner-h616-Add-device-node-for-SID.patch &&
                 git apply /arm64-dts-allwinner-h616-Add-thermal-sensor-and-thermal-zones.patch &&
                 git apply /arm64-dts-allwinner-sun50i-h616-Add-GPU-node.patch &&
                 git apply /arm64-dts-allwiner-sun50i-h616.dtsi-add-usb-ehci-ohc.patch &&
                 git apply /orangepizero2_dts_set_bldo2_to_1.8v.patch &&
-                git apply /hdmi.dtb.patch &&
                 git apply /arm64-dts-allwinner-sun50i-h616-Add-VPU-node.patch &&
                 git apply /sunxi-info.dtb.patch &&
                 git apply /thermal.dtb.patch &&
-                git apply /cpu-opp-table.dtb.patch &&
                 git apply /pwm.dtb.patch &&
                 git apply /dma.dtb.patch &&
                 git apply /hdmi_audio.dtb.patch &&
                 git apply /gpu.dtb.patch &&
-                git apply /usbotg.dtb.patch &&
-                git apply /sram.dtb.patch &&
                 git apply /ths-workaround.uboot.patch &&
-                git apply /r_rsb-to-r_i2c.patch &&
+                git apply /cpu-opp-table.dtb.patch &&
+                git apply /hdmi.dtb.patch &&
+                git apply /new-thermal-trips.dtb.patch &&
+                git apply /sram.dtb.patch &&
+                git apply /power.dtb.patch &&
                 make olddefconfig &&
                 make BL31=/trusted-firmware-a/build/sun50i_h616/release/bl31.bin -j$(nproc) &&
                 mkimage -C none -A arm64 -T script -d /boot.cmd /boot/boot.scr &&
