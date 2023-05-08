@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-set -x
+set -xe
 
 DIR="$(dirname "$0")/../scripts/configs/patches"
 
-git apply --verbose "$DIR"/power.patch
+git apply --verbose "$DIR"/axp1530-u-boot.patch
 git apply --verbose "$DIR"/arm64-dts-allwinner-h616-Add-device-node-for-SID.patch
 git apply --verbose "$DIR"/arm64-dts-allwinner-h616-Add-thermal-sensor-and-thermal-zones.patch
 git apply --verbose "$DIR"/arm64-dts-allwinner-sun50i-h616-Add-GPU-node.patch
