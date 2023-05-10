@@ -249,8 +249,9 @@ Plug 'honza/vim-snippets'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
-Plug 'wellle/tmux-complete.vim'
-
+Plug 'roxma/nvim-yarp', v:version >= 800 && !has('nvim') ? {} : { 'on': [], 'for': [] }
+Plug 'roxma/vim-hug-neovim-rpc', v:version >= 800 && !has('nvim') ? {} : { 'on': [], 'for': [] }
+Plug 'raghur/vim-ghost', {'do': ':GhostInstall'}
 call plug#end()
 
 map <C-n> :NERDTreeToggle<CR>
@@ -304,18 +305,6 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-let g:tmuxcomplete#asyncomplete_source_options = {
-            \ 'name':      'tmuxcomplete',
-            \ 'whitelist': ['*'],
-            \ 'config': {
-            \     'splitmode':      'words',
-            \     'filter_prefix':   1,
-            \     'show_incomplete': 1,
-            \     'sort_candidates': 0,
-            \     'scrollback':      0,
-            \     'truncate':        0
-            \     }
-            \ }
 inoremap <C-t> <C-x><C-u>
 EOF
 

@@ -174,7 +174,8 @@ NETWORK_PACKAGE_LIST = [
     Package('sys-apps/net-tools'),
     Package('net-proxy/mitmproxy'),
     Package('net-proxy/privoxy', use_flags='compression fast-redirects whitelists'),
-    Package('net-analyzer/tcpdump')
+    Package('net-analyzer/tcpdump'),
+    Package('net-misc/tigervnc', use_flags='server viewer')
 ]
 
 
@@ -222,6 +223,7 @@ DEV_PACKAGE_LIST = [
     Package('app-forensics/radamsa'),
     Package('app-forensics/aflplusplus'),
     Package('app-forensics/zzuf'),
+    Package('dev-util/poke', use_flags='nbd'),
 ]
 
 
@@ -266,6 +268,13 @@ EXTRA_PACKAGE_LIST = [
     Package('sys-apps/inxi'),
     Package('app-misc/jq'),
     Package('app-misc/yq'),
+
+    Package('media-gfx/freecad',
+            use_flags=['addonmgr', 'designer', 'fem',
+                       'gui', 'image', 'inspection',
+                       'material', 'netgen', 'part-design',
+                       'show', 'surface', 'techdraw']),
+    Package('net-print/hplip', use_flags='hpcups')
 ]
 
 
