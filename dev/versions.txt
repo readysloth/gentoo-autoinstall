@@ -1,0 +1,17 @@
+u-boot: 0a9a4384c1483a88776bca38e28f09be51161034
+------------------------------------------------
+Merge: f1d33a44ca 716ed2a8c0
+Author: Tom Rini <trini@konsulko.com>
+Date:   Tue May 9 12:45:49 2023 -0400
+
+    Merge tag 'u-boot-rockchip-20230509' of
+    https://source.denx.de/u-boot/custodians/u-boot-rockchip
+
+    - Rockchip NFC driver update and dev addr pointer api update;
+    - use standard dr_mode for usb driver;
+    - rock pi boards dts update;
+    - Add rk3566 Anbernic boards;
+    - Misc fixes for drivers;
+
+
+Linux kernel: 6.1.8
