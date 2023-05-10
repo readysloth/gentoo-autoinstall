@@ -28,9 +28,9 @@ index a8c64c1355..ba4c723e48 100644
 -		cldoin-supply = <&reg_vcc5v>;
 -
 -		regulators {
-+    axp1530: pmic@36 {
++	axp1530: pmic@36 {
 +		compatible = "x-powers,axp1530";
-+        status = "okay";
++		status = "okay";
 +		reg = <0x36>;
 +		wakeup-source;
 +
