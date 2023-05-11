@@ -224,6 +224,7 @@ DEV_PACKAGE_LIST = [
     Package('app-forensics/aflplusplus'),
     Package('app-forensics/zzuf'),
     Package('dev-util/poke', use_flags='nbd'),
+    Package('media-gfx/graphviz'),
 ]
 
 
