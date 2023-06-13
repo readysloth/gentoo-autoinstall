@@ -23,7 +23,8 @@ class Action:
                  nondestructive=False,
                  pre=None,
                  post=None,
-                 in_background=False):
+                 in_background=False,
+                 keywords=None):
         Action.exec_counter += 1
 
         self.cmd = cmd
@@ -37,6 +38,7 @@ class Action:
         self.post = post
         self.in_background = in_background
         self.action_id = Action.exec_counter
+        self.keywords = keywords or {}
 
 
     def __call__(self, *append):

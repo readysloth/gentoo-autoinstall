@@ -137,7 +137,7 @@ ESSENTIAL_PACKAGE_LIST = [
            name='genkernel'),
 
     # with global `gpm` use flag
-    Package('sys-libs/ncurses', '--nodeps', env={'USE' : '-gpm'}, merge_as_always=True),
+    Package('sys-libs/ncurses', '--nodeps', env={'USE': '-gpm'}, merge_as_always=True),
     Package('sys-libs/gpm', '--nodeps', merge_as_always=True),
     Package('sys-libs/ncurses', merge_as_always=True),
 
@@ -232,7 +232,7 @@ DEV_PACKAGE_LIST = [
 EXTRA_PACKAGE_LIST = [
     Package('media-fonts/noto', use_flags='cjk'),
     Package('media-fonts/noto-emoji'),
-    Package('dev-util/glslang'), # for mesa build
+    Package('dev-util/glslang'),  # for mesa build
     Package('media-libs/mesa', use_flags=['classic', 'd3d9', 'lm-sensors',
                                           'osmesa', 'vdpau', 'vulkan']),
     Package('media-sound/pulseaudio', use_flags='daemon glib'),
@@ -279,7 +279,6 @@ EXTRA_PACKAGE_LIST = [
     Package('media-gfx/openscad'),
     Package('net-print/hplip', use_flags='hpcups')
 ]
-
 
 
 TERMINAL_PACKAGE_LIST = [
@@ -417,7 +416,6 @@ def pre_install():
     with open('/etc/portage/package.mask/install.mask', 'w') as f:
         f.writelines(MASKS)
 
-
     if common.TMPFS_SIZE:
         tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs /var/tmp/portage',
                               name='tmpfs mount')
@@ -428,7 +426,6 @@ def pre_install():
     Executor.exec(Action('emerge --sync', name='emerge sync'))
 
     Executor.exec(Action('perl-cleaner --reallyall', name='perl clean'))
-
 
     execute_each_in(QUIRKED_PACKAGES)
     if common.USE_ARIA2:
@@ -449,19 +446,38 @@ def pre_install():
                                     'FETCHCOMMAND',
                                     ' '.join(aria_cmd))
 
-
     common.add_value_to_string_variable(common.MAKE_CONF_PATH, 'FEATURES', 'ccache')
     common.add_variable_to_file(common.MAKE_CONF_PATH, 'CCACHE_DIR', '/var/cache/ccache')
 
-
     os.makedirs('/var/cache/ccache/', exist_ok=True)
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'max_size', '15.0G', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'hash_dir', 'false', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compiler_check', r'%compiler% -dumpversion', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'cache_dir_levels', '3', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compression', 'true', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'compression_level', '1', quot='')
-    common.add_variable_to_file('/var/cache/ccache/ccache.conf', 'cache_dir', '/var/cache/ccache/cache', quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf',
+                                'max_size',
+                                '15.0G',
+                                quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf',
+                                'hash_dir',
+                                'false',
+                                quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf',
+                                'compiler_check',
+                                r'%compiler% -dumpversion',
+                                quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf',
+                                'cache_dir_levels',
+                                '3',
+                                quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf',
+                                'compression',
+                                'true',
+                                quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf',
+                                'compression_level',
+                                '1',
+                                quot='')
+    common.add_variable_to_file('/var/cache/ccache/ccache.conf',
+                                'cache_dir',
+                                '/var/cache/ccache/cache',
+                                quot='')
 
     prefetch_thread = t.Thread(target=predownload,
                                args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
