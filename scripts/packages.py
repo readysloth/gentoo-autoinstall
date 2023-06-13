@@ -276,6 +276,7 @@ EXTRA_PACKAGE_LIST = [
                        'gui', 'image', 'inspection',
                        'material', 'netgen', 'part-design',
                        'show', 'surface', 'techdraw']),
+    Package('media-gfx/openscad'),
     Package('net-print/hplip', use_flags='hpcups')
 ]
 
