@@ -72,6 +72,9 @@ def parse_args():
     install_parser.add_argument('-m', '--merge-early',
                                 action='store_true',
                                 help='add all needed packages to world file, then make world update')
+    install_parser.add_argument('-M', '--minimal',
+                                action='store_true',
+                                help='use only minimal set of packages')
 
 
     info_parser = subparsers.add_parser('info', help='information')
@@ -97,12 +100,16 @@ def parse_args():
     if install_args.subparser_name == 'install':
         common.DRY_RUN = install_args.dry_run
         common.MERGE_EARLY = install_args.merge_early
+        import packages as pkg
 
         if install_args.verbose:
             common.LOGGER_LEVEL = logging.DEBUG
 
+        if install_args.minimal:
+            pkg.PACKAGE_LIST = [p for p in pkg.PACKAGE_LIST
+                                if p.keywords.get('minimal', True)]
+
         if not install_args.no_gui or install_args.no_wm:
-            import packages as pkg
 
             install_args.use_flags.append('X')
             if install_args.no_wm:
