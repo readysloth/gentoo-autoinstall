@@ -190,7 +190,7 @@ FS_PACKAGE_LIST = [
     Package('sys-fs/exfatprogs'),
     Package('sys-fs/ntfs3g', use_flags='fuse mount-ntfs ntfsprogs'),
     Package('sys-fs/mtools'),
-    Package('sys-fs/ncdu'),
+    Package('sys-fs/ncdu-bin'),
     Package('net-fs/sshfs'),
     Package('net-fs/samba'),
     Package('net-fs/cifs-utils'),
