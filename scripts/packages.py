@@ -86,6 +86,7 @@ def move_kernel_src_from_tmpfs():
 
 
 MASKS = [
+    '<dev-libs/openssl-3.0.9'
 ]
 
 QUIRKED_PACKAGES = [
