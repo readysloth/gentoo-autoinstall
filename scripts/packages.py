@@ -459,7 +459,7 @@ def pre_install():
         for a in [dd_action, mkswap_action, swapon_action]:
             Executor.exec(a)
     with open('/etc/portage/package.mask/install.mask', 'w') as f:
-        f.writelines(MASKS)
+        f.writelines([f'{m}\n' for m in MASKS])
 
     if common.TMPFS_SIZE:
         tmpfs_action = Action(f'mount -t tmpfs -o size={common.TMPFS_SIZE} tmpfs /var/tmp/portage',
