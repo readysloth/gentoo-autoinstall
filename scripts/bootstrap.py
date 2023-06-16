@@ -100,7 +100,7 @@ def _chroot_to_mnt():
 
 def bootstrap(processor='amd64', init='openrc'):
     l = logging.getLogger(__name__)
-    _launch_ntpd()
+    #_launch_ntpd()
     stage3_archive = _stage3_download(processor=processor, init=init)
     _unpack(stage3_archive)
     #_mirrorselect()
