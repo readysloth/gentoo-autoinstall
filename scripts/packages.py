@@ -105,7 +105,8 @@ ESSENTIAL_PACKAGE_LIST = [
                        'graphite', 'ntpl', 'jit'],
             possible_quirks=['half-nproc',
                              'linker-tradeoff',
-                             'notmpfs']),
+                             'notmpfs'],
+            keywords={'minimal': False}),
 
     Package('dev-python/pypy3',
             use_flags='gdbm jit sqlite tk',
