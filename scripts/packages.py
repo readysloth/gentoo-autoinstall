@@ -147,10 +147,10 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-libs/ncurses', merge_as_always=True),
 
     Package('sys-apps/portage', use_flags='native-extensions ipc xattr'),
+    Package('sys-apps/util-linux', use_flags='-logger', merge_as_always=True),
     Package('@world', '-uDNv --with-bdeps=y --backtrack=100'),
     Package('media-libs/libpng', use_flags='apng'),
     Package('app-editors/vim', use_flags='vim-pager perl terminal lua'),
-    Package('sys-apps/util-linux', use_flags='-logger'),
     Package('app-admin/sysklogd', use_flags='logger'),
     Package('sys-process/cronie'),
 
