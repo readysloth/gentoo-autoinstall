@@ -125,6 +125,8 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-kernel/genkernel', merge_as_always=True),
     Package('sys-kernel/linux-firmware', merge_as_always=True),
 
+    Action('wget https://raw.githubusercontent.com/readysloth/gentoo-autoinstall/main/scripts/configs/kernel-6.3.8.config',
+           name='kernel config download'),
     # there can be tmpfs, so switch tmpdir to it
     Action(' '.join(['genkernel',
                      '--lvm',
@@ -134,7 +136,7 @@ ESSENTIAL_PACKAGE_LIST = [
                      '--install',
                      '--save-config',
                      '--ramdisk-modules',
-                     '--kernel-config=/proc/config.gz',
+                     '--kernel-config=kernel-6.3.8.config',
                      'all']),
            pre=move_kernel_src_to_tmpfs,
            post=move_kernel_src_from_tmpfs,
