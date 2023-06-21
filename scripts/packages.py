@@ -248,7 +248,7 @@ DEV_PACKAGE_LIST = [
 
 
 EXTRA_PACKAGE_LIST = [
-    Package('media-fonts/noto', use_flags='cjk'),
+    Package('media-fonts/noto'),
     Package('media-fonts/noto-emoji'),
     Package('dev-util/glslang'),  # for mesa build
     Package('media-libs/mesa', use_flags=['classic', 'd3d9', 'lm-sensors',
@@ -330,21 +330,16 @@ X_SERVER_PACKAGE_LIST = [
 X_WM_PACKAGE_LIST = [
     Package('media-gfx/scrot'),
     Package('x11-misc/clipmenu',
-            use_flags='rofi -dmenu',
-            keywords={'minimal': False}),
+            use_flags='rofi -dmenu'),
 
-    Package('x11-wm/bspwm',
-            keywords={'minimal': False}),
+    Package('x11-wm/bspwm'),
     Package('x11-misc/sxhkd'),
 
     Package('x11-misc/picom',
-            use_flags='config-file drm opengl',
-            keywords={'minimal': False}),
+            use_flags='config-file drm opengl'),
     Package('x11-misc/polybar',
-            use_flags='mpd network curl ipc',
-            keywords={'minimal': False}),
-    Package('x11-misc/rofi',
-            keywords={'minimal': False}),
+            use_flags='mpd network curl ipc'),
+    Package('x11-misc/rofi'),
     Package('x11-misc/xclip'),
     Package('x11-apps/xdpyinfo'),
     Package('x11-apps/xbacklight'),
@@ -403,8 +398,7 @@ X_PACKAGE_LIST = [
             keywords={'minimal': False}),
     Package('x11-terms/st',
             use_flags='savedconfig',
-            pre=download_patches_for_st,
-            keywords={'minimal': False}),
+            pre=download_patches_for_st),
 ]
 
 
