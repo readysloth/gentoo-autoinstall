@@ -333,8 +333,6 @@ X_WM_PACKAGE_LIST = [
             use_flags='rofi -dmenu',
             keywords={'minimal': False}),
 
-    Package('x11-wm/windowlab'),
-
     Package('x11-wm/bspwm',
             keywords={'minimal': False}),
     Package('x11-misc/sxhkd'),
