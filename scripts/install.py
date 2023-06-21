@@ -11,6 +11,8 @@ def parse_args():
 
     install_parser = subparsers.add_parser('install', help='install options')
 
+    mutex_group = install_parser.add_mutually_exclusive_group()
+
     install_parser.add_argument('disk', help='dev node to install gentoo')
     install_parser.add_argument('-n', '--dry-run',
                                 action='store_true',
@@ -69,12 +71,12 @@ def parse_args():
                                 default=[],
                                 nargs='+',
                                 help='install features')
-    install_parser.add_argument('-m', '--merge-early',
-                                action='store_true',
-                                help='add all needed packages to world file, then make world update')
-    install_parser.add_argument('-M', '--minimal',
-                                action='store_true',
-                                help='use only minimal set of packages')
+    mutex_group.add_argument('-m', '--merge-early',
+                             action='store_true',
+                             help='add all needed packages to world file, then make world update')
+    mutex_group.add_argument('-M', '--minimal',
+                             action='store_true',
+                             help='use only minimal set of packages')
 
 
     info_parser = subparsers.add_parser('info', help='information')
