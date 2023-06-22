@@ -547,14 +547,16 @@ def post_install():
     return execute_each_in(ACTION_LIST)
 
 
+def log_package_list(pkg_list):
+    l = logging.getLogger(__name__)
+    for p in pkg_list:
+        if type(p) == Package:
+            l.info(f'Would be installed {p.package}')
+
+
 PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \
                + NETWORK_PACKAGE_LIST \
                + FS_PACKAGE_LIST \
                + EXTRA_PACKAGE_LIST \
                + TERMINAL_PACKAGE_LIST \
                + DEV_PACKAGE_LIST
-
-if common.MERGE_EARLY:
-    PACKAGE_LIST = reoder_packages_for_early_merge(PACKAGE_LIST)
-else:
-    exclude_from_world_rebuild(PACKAGE_LIST)

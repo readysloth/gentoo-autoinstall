@@ -102,12 +102,18 @@ def parse_args():
         common.MERGE_EARLY = install_args.merge_early
         import packages as pkg
 
-        if install_args.verbose:
-            common.LOGGER_LEVEL = logging.DEBUG
-
         if install_args.minimal:
             pkg.PACKAGE_LIST = [p for p in pkg.PACKAGE_LIST
                                 if p.keywords.get('minimal', True)]
+
+        if common.MERGE_EARLY:
+            pkg.PACKAGE_LIST = pkg.reoder_packages_for_early_merge(pkg.PACKAGE_LIST)
+        else:
+            pkg.exclude_from_world_rebuild(pkg.PACKAGE_LIST)
+        pkg.log_package_list(pkg.PACKAGE_LIST)
+
+        if install_args.verbose:
+            common.LOGGER_LEVEL = logging.DEBUG
 
         if not install_args.no_gui or install_args.no_wm:
 
