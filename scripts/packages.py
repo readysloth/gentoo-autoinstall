@@ -309,7 +309,7 @@ TERMINAL_PACKAGE_LIST = [
 
     Package('app-shells/fzf'),
     Package('app-misc/tmux'),
-    Package('sys-apps/ripgrep-all'),
+    Package('sys-apps/ripgrep-all', keywords={'minimal': False}),
     Package('sys-process/htop'),
 ]
 
