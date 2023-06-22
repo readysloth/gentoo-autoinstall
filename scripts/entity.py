@@ -132,15 +132,13 @@ class Package(Action):
                          nondestructive=False,
                          **kwargs)
 
-
     def download(self):
-        cmd = self.cmd_template.format(opts=f'--fetchonly {self.options}',
+        cmd = self.cmd_template.format(opts=f'--fetchonly --deep {self.options}',
                                        pkg=self.package)
         download_action = Action(cmd,
                                  name=f'prefetch-{self.package.replace("/", "_")}',
                                  nondestructive=False)
         Executor.exec(download_action)
-
 
     def __call__(self, *append):
         l = logging.getLogger(__name__)
