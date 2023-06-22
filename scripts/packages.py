@@ -547,11 +547,15 @@ def post_install():
     return execute_each_in(ACTION_LIST)
 
 
-def log_package_list(pkg_list):
+def log_package_list(pkg_list, excluded_pkgs=None):
     l = logging.getLogger(__name__)
     for p in pkg_list:
         if type(p) == Package:
             l.info(f'Would be installed {p.package}')
+    if excluded_pkgs:
+        for p in excluded_pkgs:
+            if type(p) == Package:
+                l.info(f'Excluded from install {p.package}')
 
 
 PACKAGE_LIST = ESSENTIAL_PACKAGE_LIST \

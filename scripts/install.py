@@ -100,20 +100,11 @@ def parse_args():
     if install_args.subparser_name == 'install':
         common.DRY_RUN = install_args.dry_run
         common.MERGE_EARLY = install_args.merge_early
-        import packages as pkg
-
-        if install_args.minimal:
-            pkg.PACKAGE_LIST = [p for p in pkg.PACKAGE_LIST
-                                if p.keywords.get('minimal', True)]
-
-        if common.MERGE_EARLY:
-            pkg.PACKAGE_LIST = pkg.reoder_packages_for_early_merge(pkg.PACKAGE_LIST)
-        else:
-            pkg.exclude_from_world_rebuild(pkg.PACKAGE_LIST)
-        pkg.log_package_list(pkg.PACKAGE_LIST)
 
         if install_args.verbose:
             common.LOGGER_LEVEL = logging.DEBUG
+
+        import packages as pkg
 
         if not install_args.no_gui or install_args.no_wm:
 
@@ -124,6 +115,19 @@ def parse_args():
                 pkg.PACKAGE_LIST += pkg.X_SERVER_PACKAGE_LIST \
                                     + pkg.X_WM_PACKAGE_LIST \
                                     + pkg.X_PACKAGE_LIST
+
+        excluded_pkgs = None
+        if install_args.minimal:
+            old_package_list = pkg.PACKAGE_LIST
+            pkg.PACKAGE_LIST = [p for p in pkg.PACKAGE_LIST
+                                if p.keywords.get('minimal', True)]
+            excluded_pkgs = set(old_package_list) - set(pkg.PACKAGE_LIST)
+
+        if common.MERGE_EARLY:
+            pkg.PACKAGE_LIST = pkg.reoder_packages_for_early_merge(pkg.PACKAGE_LIST)
+        else:
+            pkg.exclude_from_world_rebuild(pkg.PACKAGE_LIST)
+        pkg.log_package_list(pkg.PACKAGE_LIST, excluded_pkgs=excluded_pkgs)
 
         quirks = {}
         common.ENABLED_QUIRKS = set(install_args.quirks)
