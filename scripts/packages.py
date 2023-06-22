@@ -86,7 +86,9 @@ def move_kernel_src_from_tmpfs():
 
 
 MASKS = [
-    '<dev-libs/openssl-3.0.9'
+    '<dev-libs/openssl-3.0.9',
+    # Installation results in SIGSEGV in compiler (wtf?)
+    '>dev-util/ccache-4.7.4'
 ]
 
 QUIRKED_PACKAGES = [
