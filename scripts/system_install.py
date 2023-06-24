@@ -138,7 +138,7 @@ def system_boot_configuration(bootloader_part):
 
 
 def enable_zswap():
-    text = '\n'.join(["echo lz4 > /sys/module/zswap/parameters/compressor"
+    text = '\n'.join(["echo lz4 > /sys/module/zswap/parameters/compressor",
                       "echo 1 > /sys/module/zswap/parameters/enabled"])
     with open('/etc/local.d/50-zswap.start', 'w') as f:
         f.write(text)
