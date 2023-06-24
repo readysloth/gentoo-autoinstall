@@ -328,6 +328,7 @@ X_SERVER_PACKAGE_LIST = [
                 'rm -rf warpd'],
                name='warpd git install'),
     Package('x11-misc/xfe'),
+    Package('x11-apps/xkill'),
 ]
 
 
