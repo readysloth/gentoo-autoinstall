@@ -22,13 +22,13 @@ def parted_on(disk):
 
 def part_for_boot():
     yield from ['mklabel gpt',
-                'mkpart primary 1MiB 256MiB',
+                'mkpart primary 1MiB 1GiB',
                 'name 1 boot',
                 'set 1 boot on']
 
 
 def part_for_lvm():
-    yield from ['mkpart primary 256MiB -1',
+    yield from ['mkpart primary 1GiB -1',
                 'name 2 lvm',
                 'set 2 lvm on']
 
