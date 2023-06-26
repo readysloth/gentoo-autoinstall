@@ -527,6 +527,8 @@ def pre_install():
                                 '/var/cache/ccache/cache',
                                 quot='')
 
+    shutil.chown('/var/cache/ccache/', user='portage', group='portage')
+
     prefetch_thread = t.Thread(target=predownload,
                                args=([p for p in PACKAGE_LIST if type(p) == Package][1:],))
     prefetch_thread.start()
