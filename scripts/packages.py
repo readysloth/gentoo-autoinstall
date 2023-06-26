@@ -142,6 +142,7 @@ ESSENTIAL_PACKAGE_LIST = [
                      '--firmware',
                      '--compress-initramfs-type=best',
                      '--all-ramdisk-modules',
+                     '--kernel-cc=/usr/lib/ccache/bin/gcc',
                      '--kernel-config=kernel-6.3.8.config',
                      'all']),
            pre=move_kernel_src_to_tmpfs,
