@@ -116,7 +116,7 @@ picom &
 clipmenud &
 conky
 warpd
-setxkbmap -option grp:alt_shift_toggle dvorak,ru
+setxkbmap -option grp:alt_shift_toggle "us(dvorak),ru"
 ${USER_HOME}/.config/polybar/launch.sh --forest &
 ${USER_HOME}/.scripts/autochanging_wallpaper.sh &
 exec bspwm
@@ -453,7 +453,7 @@ super + c
  CM_LAUNCHER=rofi clipmenu -i
 
 super + Tab
- setxkbmap -option grp:alt_shift_toggle {dvorak, us},ru
+ setxkbmap -option grp:alt_shift_toggle {"us(dvorak)", us},ru
 
 Print
  flameshot gui
