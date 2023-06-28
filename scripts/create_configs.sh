@@ -649,10 +649,8 @@ doas -u ${USERNAME} fish -c 'fisher install IlanCosman/tide@v5'
 doas -u ${USERNAME} bash -c "
 mkdir -p ${USER_HOME}/.config/polybar;
 touch ${USER_HOME}/.config/polybar/config;
-git clone https://github.com/adi1090x/polybar-themes;
-cd polybar-themes/;
+git clone https://github.com/adi1090x/polybar-themes /tmp/polybar-themes;
+cd /tmp/polybar-themes;
     echo 1 | ./setup.sh;
     fc-cache -v;
-cd -;
-rm -rf polybar-themes;
 "
