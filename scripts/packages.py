@@ -426,6 +426,8 @@ ACTION_LIST = [
            name='grub liux cmdline'),
     Action('grub-mkconfig -o /boot/grub/grub.cfg',
            name='grub config creation'),
+    Action("chmod +x /etc/local.d/*.start",
+           name='local.d execution privilege'),
 ] + [
     Action(f'rc-update add {s} boot',
            name=f'service {s} added to boot')
