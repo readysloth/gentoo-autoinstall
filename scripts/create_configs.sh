@@ -465,9 +465,9 @@ XF86AudioLowerVolume
 XF86AudioMute
  amixer set Master toggle
 XF86MonBrightnessUp
- xbacklight +5
+ light -A 5
 XF86MonBrightnessDown
- xbacklight -5
+ light -U 5
 
 super + n
  firefox

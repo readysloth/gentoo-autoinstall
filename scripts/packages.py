@@ -168,6 +168,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-apps/lm-sensors'),
     Package('sys-power/acpi'),
     Package('sys-process/procenv'),
+    Package('dev-libs/light'),
 ]
 
 
@@ -352,7 +353,6 @@ X_WM_PACKAGE_LIST = [
     Package('x11-misc/rofi'),
     Package('x11-misc/xclip'),
     Package('x11-apps/xdpyinfo'),
-    Package('x11-apps/xbacklight'),
 ]
 
 
