@@ -169,6 +169,7 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-power/acpi'),
     Package('sys-process/procenv'),
     Package('dev-libs/light'),
+    Package('app-arch/zip'),
 ]
 
 
@@ -208,6 +209,7 @@ FS_PACKAGE_LIST = [
     Package('net-fs/cifs-utils'),
     Package('sys-apps/smartmontools'),
     Package('sys-fs/dosfstools'),
+    Package('sys-fs/fuse-zip'),
 ]
 
 
