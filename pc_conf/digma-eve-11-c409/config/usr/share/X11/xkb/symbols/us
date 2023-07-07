@@ -314,7 +314,7 @@ xkb_symbols "dvorak" {
     key <AB08> { [	    m,	M		]	};
     key <AB09> { [	    w,	W		]	};
     key <AB10> { [	    v,	V		]	};
-    key <RTSH> { [	    z,	Z		]	};
+    key <NEWZ> { [	    z,	Z		]	};
 
     key <AB01> { [      Shift_R ] };
 };
