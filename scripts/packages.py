@@ -261,6 +261,7 @@ DEV_PACKAGE_LIST = [
 
 EXTRA_PACKAGE_LIST = [
     Package('media-fonts/noto'),
+    Package('media-fonts/fira-code'),
     Package('media-fonts/noto-emoji'),
     Package('dev-util/glslang'),  # for mesa build
     Package('media-libs/mesa', use_flags=['classic', 'd3d9', 'lm-sensors',
