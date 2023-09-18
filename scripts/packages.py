@@ -310,7 +310,8 @@ EXTRA_PACKAGE_LIST = [
                        'show', 'surface', 'techdraw'],
             keywords={'minimal': False}),
     Package('media-gfx/openscad'),
-    Package('net-print/hplip', use_flags='hpcups')
+    Package('net-print/hplip', use_flags='hpcups'),
+    Package('app-eselect/eselect-repository'),
 ]
 
 
