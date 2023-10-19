@@ -258,6 +258,7 @@ DEV_PACKAGE_LIST = [
     Package('dev-util/poke', use_flags='nbd'),
     Package('media-gfx/graphviz'),
     Package('dev-util/bear'),
+    Package('app-misc/hivex', use_flags='readline'),
 ]
 
 
