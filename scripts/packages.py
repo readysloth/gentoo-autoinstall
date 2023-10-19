@@ -170,6 +170,8 @@ ESSENTIAL_PACKAGE_LIST = [
     Package('sys-process/procenv'),
     Package('dev-libs/light'),
     Package('app-arch/zip'),
+    Package('app-admin/pass', use_flags='git'),
+    Package('app-admin/pass-otp'),
 ]
 
 
