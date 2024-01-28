@@ -29,21 +29,22 @@ def _stage3_download(processor='amd64',
         return ''
     site = 'https://mirror.yandex.ru'
     folder = f'gentoo-distfiles/releases/{processor}/autobuilds'
-    distro_location_file = f'latest-stage3-{processor}'
+    distro_prefix = 'latest-stage3'
+    distro_type = ''
     if desktop:
-        distro_location_file += '-desktop'
+        distro_type = 'desktop'
     if hardened:
-        distro_location_file += '-hardened'
+        distro_type = 'hardened'
     if nomultilib:
-        distro_location_file += '-nomultilib'
+        distro_type = 'nomultilib'
     if musl:
-        distro_location_file += '-musl'
-    distro_location_file += f'-{init}.txt'
+        distro_type = 'musl'
+    distro_isoname = f'{distro_prefix}-{processor}-{distro_type}-{init}'
 
-    l.info(f'Downloading {distro_location_file.replace(".txt", "")}')
+    l.info(f'Downloading {distro_isoname}')
 
-    distro_location_data = map(bytes.decode, ur.urlopen(f'{site}/{folder}/{distro_location_file}').readlines())
-    distro_path_line = next((l for l in distro_location_data if not l.startswith('#')))
+    distro_location_data = map(bytes.decode, ur.urlopen(f'{site}/{folder}/{distro_isoname}.txt').readlines())
+    distro_path_line = next((l for l in distro_location_data if f'{processor}-{distro_type}-{init}' in l))
     distro_path = distro_path_line.split()[0]
     filename = 'stage3'
     ur.urlretrieve(f'{site}/{folder}/{distro_path}', filename)
